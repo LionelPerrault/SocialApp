@@ -49,7 +49,6 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
       child: Container(
           width: 400,
           color: const Color.fromARGB(255, 255, 255, 255),
-          padding: const EdgeInsets.all(0),
           child: Column(
             children: [
               const SizedBox(
@@ -86,106 +85,100 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                 height: 1,
                 endIndent: 10,
               ),
-              SizedBox(
-                height: postCon.allNotification.isEmpty ? 100 : 300,
-                child: Column(
-                  children: [
-                    postCon.removingNotify
-                        ? Container(
-                            width: 30,
-                            height: 30,
-                            margin: const EdgeInsets.only(top: 30),
-                            child: const CircularProgressIndicator(
-                              color: Colors.blue,
-                            ),
-                          )
-                        : postCon.allNotification.isEmpty
-                            ? const Center(child: Text("No new notifications."))
-                            : ListView.separated(
-                                itemCount: postCon.allNotification.length,
-                                itemBuilder: (context, index) => Material(
-                                  child: ListTile(
-                                    onTap: () async {
-                                      if (postCon.allNotification[index]
-                                              ['redirect'] !=
-                                          null) {
-                                        widget.routerChange(
-                                            postCon.allNotification[index]
-                                                ['redirect']);
-                                        widget.hideMenu();
-                                      }
-                                      await postCon.checkNotification(
-                                        postCon.allNotification[index]['uid'],
-                                        UserManager.userInfo['uid'],
-                                      );
-                                      await postCon.allNotification
-                                          .removeAt(index);
-                                      setState(() {});
-                                    },
-                                    hoverColor: const Color.fromARGB(
-                                        255, 243, 243, 243),
-                                    enabled: true,
-                                    leading: postCon.allNotification[index]
-                                                ['avatar'] !=
-                                            ''
-                                        ? CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                            postCon.allNotification[index]
-                                                ['avatar'],
-                                          ))
-                                        : postCon.allNotification[index]
-                                                    ['userName'] ==
-                                                'System Message'
-                                            ? CircleAvatar(
-                                                child: SvgPicture.network(
-                                                    Helper.systemAvatar),
-                                              )
-                                            : CircleAvatar(
-                                                child: SvgPicture.network(
-                                                    Helper.avatar),
-                                              ),
-                                    title: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
+              postCon.removingNotify
+                  ? Container(
+                      width: 30,
+                      height: 30,
+                      margin: const EdgeInsets.symmetric(vertical: 100),
+                      child: const CircularProgressIndicator(
+                        color: Colors.blue,
+                      ),
+                    )
+                  : SizedBox(
+                      height: postCon.allNotification.isEmpty ? 100 : 300,
+                      child: postCon.allNotification.isEmpty
+                          ? const Center(child: Text("No new notifications."))
+                          : ListView.separated(
+                              itemCount: postCon.allNotification.length,
+                              itemBuilder: (context, index) => Material(
+                                child: ListTile(
+                                  onTap: () async {
+                                    if (postCon.allNotification[index]
+                                            ['redirect'] !=
+                                        null) {
+                                      widget.routerChange(postCon
+                                          .allNotification[index]['redirect']);
+                                      widget.hideMenu();
+                                    }
+                                    await postCon.checkNotification(
+                                      postCon.allNotification[index]['uid'],
+                                      UserManager.userInfo['uid'],
+                                    );
+                                    await postCon.allNotification
+                                        .removeAt(index);
+                                    setState(() {});
+                                  },
+                                  hoverColor:
+                                      const Color.fromARGB(255, 243, 243, 243),
+                                  enabled: true,
+                                  leading: postCon.allNotification[index]
+                                              ['avatar'] !=
+                                          ''
+                                      ? CircleAvatar(
+                                          backgroundImage: NetworkImage(
                                           postCon.allNotification[index]
-                                                  ['userName'] ??
-                                              "",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 10),
-                                        ),
-                                        Text(
-                                            postCon.allNotification[index]
-                                                    ['text'] ??
-                                                "",
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 10)),
-                                        Text(
+                                              ['avatar'],
+                                        ))
+                                      : postCon.allNotification[index]
+                                                  ['userName'] ==
+                                              'System Message'
+                                          ? CircleAvatar(
+                                              child: SvgPicture.network(
+                                                  Helper.systemAvatar),
+                                            )
+                                          : CircleAvatar(
+                                              child: SvgPicture.network(
+                                                  Helper.avatar),
+                                            ),
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        postCon.allNotification[index]
+                                                ['userName'] ??
+                                            "",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10),
+                                      ),
+                                      Text(
                                           postCon.allNotification[index]
-                                                  ['date'] ??
+                                                  ['text'] ??
                                               "",
                                           style: const TextStyle(
                                               fontWeight: FontWeight.normal,
-                                              fontSize: 8),
-                                        ),
-                                      ],
-                                    ),
+                                              fontSize: 10)),
+                                      Text(
+                                        postCon.allNotification[index]
+                                                ['date'] ??
+                                            "",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 8),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        const Divider(
-                                  height: 1,
-                                  endIndent: 10,
-                                ),
                               ),
-                  ],
-                ),
-              ),
-              const Divider(height: 1, indent: 0),
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const Divider(
+                                height: 1,
+                                endIndent: 10,
+                              ),
+                            ),
+                    ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
