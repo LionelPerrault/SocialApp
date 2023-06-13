@@ -71,7 +71,7 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
         children: [
           SingleChildScrollView(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              // mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const Divider(
@@ -204,65 +204,107 @@ class SharePostModalState extends mvc.StateMVC<SharePostModal> {
                     ),
                   ],
                 ),
-                const Padding(padding: EdgeInsets.only(top: 20)),
                 const Divider(
                   thickness: 0.1,
                   color: Colors.black,
                 ),
-                const Padding(padding: EdgeInsets.only(top: 20)),
               ],
             ),
           ),
-          Container(
-            height: 50,
-            margin: const EdgeInsets.only(right: 20, bottom: 10),
-            child: Row(
-              children: [
-                const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shadowColor: Colors.white,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3.0)),
-                    minimumSize: const Size(100, 50),
-                  ),
-                  onPressed: () async {
-                    setState(() {});
-                    if (_width != 2) return;
-                    String postCase = 'share';
-                    var postPayload;
-                    String header = postMessage;
+          const Flexible(fit: FlexFit.tight, child: SizedBox()),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              const Flexible(fit: FlexFit.tight, child: SizedBox()),
+              Container(
+                height: 50,
+                width: 100,
+                margin: const EdgeInsets.only(right: 20, bottom: 10),
+                child: Row(
+                  children: [
+                    const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shadowColor: Colors.white,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3.0)),
+                        minimumSize: const Size(100, 50),
+                      ),
+                      onPressed: () async {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: footerBtnState
+                          ? const SizedBox(
+                              width: 10,
+                              height: 10.0,
+                              child: CircularProgressIndicator(
+                                color: Colors.grey,
+                              ),
+                            )
+                          : const Text('Cancel',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                height: 50,
+                width: 100,
+                margin: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: [
+                    const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shadowColor: Colors.white,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3.0)),
+                        minimumSize: const Size(100, 50),
+                      ),
+                      onPressed: () async {
+                        setState(() {});
+                        if (_width != 2) return;
+                        String postCase = 'share';
+                        var postPayload;
+                        String header = postMessage;
 
-                    postPayload = widget.postInfo;
+                        postPayload = widget.postInfo;
 
-                    postLoading = true;
-                    await postCon
-                        .savePost(postCase, postPayload, 'Public',
-                            header: header)
-                        .then((value) {
-                      postLoading = false;
+                        postLoading = true;
+                        await postCon
+                            .savePost(postCase, postPayload, 'Public',
+                                header: header)
+                            .then((value) {
+                          postLoading = false;
 
-                      setState(() {});
-                      Navigator.of(context).pop(true);
-                    });
-                  },
-                  child: footerBtnState
-                      ? const SizedBox(
-                          width: 10,
-                          height: 10.0,
-                          child: CircularProgressIndicator(
-                            color: Colors.grey,
-                          ),
-                        )
-                      : const Text('Share',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold)),
-                )
-              ],
-            ),
+                          setState(() {});
+                          Navigator.of(context).pop(true);
+                        });
+                      },
+                      child: footerBtnState
+                          ? const SizedBox(
+                              width: 10,
+                              height: 10.0,
+                              child: CircularProgressIndicator(
+                                color: Colors.grey,
+                              ),
+                            )
+                          : const Text('Share',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
+                    )
+                  ],
+                ),
+              )
+            ],
           ),
         ],
       ),

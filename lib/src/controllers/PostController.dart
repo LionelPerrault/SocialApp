@@ -1750,7 +1750,7 @@ class PostController extends ControllerMVC {
             where == PostType.group.index ? PostController().viewGroupId : '',
       };
       Helper.postCollection.add(postData);
-
+      Helper.showToast('Successfully share post');
       setState(
         () {},
       );
