@@ -622,7 +622,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                       SingleChildScrollView(
                         controller: _scrollController,
                         scrollDirection: Axis.horizontal,
-                        child: nowPost != 'Upload Audio'
+                        child: nowPost != 'Upload Audio' &&
+                                nowPost != 'Upload Video'
                             ? const SizedBox()
                             : Container(
                                 alignment: Alignment.centerLeft,
@@ -676,9 +677,11 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                                     'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2FuploadChecked.svg?alt=media&token=4877f3f2-4de4-4e53-9e0e-1054cf2eb5dd',
                                                     width: 20,
                                                   ),
-                                                  const Text(
-                                                    'Audio uploaded successfully',
-                                                    style: TextStyle(
+                                                  Text(
+                                                    nowPost == 'Upload Video'
+                                                        ? 'Video uploaded successfully'
+                                                        : 'Audio uploaded successfully',
+                                                    style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
@@ -902,7 +905,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                   (postAudio == '' &&
                                       nowPost == 'Upload Audio') ||
                                   (postPhoto == '' &&
-                                      nowPost == 'Upload Photos')
+                                      nowPost == 'Upload Photos') ||
+                                  (postPhoto == '' && nowPost == 'Upload Video')
                               ? () {}
                               : {post()};
                         }

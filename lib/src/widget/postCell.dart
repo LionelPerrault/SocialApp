@@ -327,7 +327,10 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       case 'poll':
         return pollPostCell();
       case 'audio':
-        return audioPostCell();
+        return audioPostCell(0);
+      case 'video':
+        return audioPostCell(1);
+
       case 'product':
         return ProductCell(
             data: widget.postInfo,
@@ -1301,7 +1304,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
     );
   }
 
-  Widget audioPostCell() {
+  Widget audioPostCell(type) {
     Map privacy = {};
     if (widget.postInfo.containsKey('privacy')) {
       privacy = privacyMenuItem
@@ -1330,7 +1333,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       }
     }
 
-    verbSentence = ' added an audio';
+    verbSentence = ' added an {type==0?"audio":"video"}';
     verbSentence = '$verbSentence$whereWord';
 
     return Row(
