@@ -98,22 +98,23 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
           });
       setState(() {});
     } else {
-      footerBtnState = false;
-      showDialog(
-        context: context,
-        builder: (BuildContext dialogContext) => AlertDialog(
-          title: const SizedBox(),
-          content: AlertYesNoWidget(
-              yesFunc: () async {
-                payLoading = true;
-                setState(() {});
-                await postCon
-                    .createGroup(context, groupInfo, canCreate: true)
-                    .then((value) async {
-                  print(value);
-                  if (!value['result']) {
-                    Helper.showToast(value['msg']);
-                  } else {
+      await postCon
+          .createGroup(context, groupInfo, canCreate: true)
+          .then((value) async {
+        if (!value['result']) {
+          Helper.showToast(value['msg']);
+          footerBtnState = false;
+          setState(() {});
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext dialogContext) => AlertDialog(
+              title: const SizedBox(),
+              content: AlertYesNoWidget(
+                  yesFunc: () async {
+                    payLoading = true;
+                    setState(() {});
+
                     await UserController()
                         .payShnToken(paymail, price, 'Pay for creating group')
                         .then(
@@ -143,20 +144,20 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                               }
                           },
                         );
-                  }
-                });
-              },
-              noFunc: () {
-                Navigator.of(context).pop(true);
-                footerBtnState = false;
-                setState(() {});
-              },
-              header: 'Costs for creating page',
-              text:
-                  'By paying the fee of $price tokens, the group will be published.',
-              progress: payLoading),
-        ),
-      );
+                  },
+                  noFunc: () {
+                    Navigator.of(context).pop(true);
+                    footerBtnState = false;
+                    setState(() {});
+                  },
+                  header: 'Costs for creating page',
+                  text:
+                      'By paying the fee of $price tokens, the group will be published.',
+                  progress: payLoading),
+            ),
+          );
+        }
+      });
     }
   }
 
