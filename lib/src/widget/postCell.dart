@@ -14,6 +14,7 @@ import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/audioPlayer.dart';
 import 'package:shnatter/src/widget/likesCommentWidget.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
+import 'package:shnatter/src/widget/videoPlayer.dart';
 
 import '../views/realEstate/widget/realEstateCell.dart';
 
@@ -1333,7 +1334,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
       }
     }
 
-    verbSentence = ' added an {type==0?"audio":"video"}';
+    verbSentence = ' added an ${type == 0 ? "audio" : "video"}';
     verbSentence = '$verbSentence$whereWord';
 
     return Row(
@@ -1588,8 +1589,11 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                               overflow: TextOverflow.clip,
                             ),
                       const Padding(padding: EdgeInsets.only(top: 30)),
-                      AudioPlayerWidget(
-                          audioURL: widget.postInfo['data']['audio'])
+                      type == 0
+                          ? AudioPlayerWidget(
+                              audioURL: widget.postInfo['data']['audio'])
+                          : VideoPlayerWidget(
+                              videoURL: widget.postInfo['data']['video'])
                     ],
                   ),
                 ),
