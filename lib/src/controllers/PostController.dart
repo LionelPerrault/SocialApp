@@ -1243,7 +1243,7 @@ class PostController extends ControllerMVC {
       strtoast += 'product name, ';
     }
     if (productData['productPrice'] == null ||
-        productData['productPrice'] == '') {
+        productData['productPrice'] == '0') {
       strtoast += 'product price, ';
     }
     if (productData['productCategory'] == null ||
