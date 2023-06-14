@@ -66,7 +66,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       mainTabs(),
       tab == 'Members' ? MembersData() : InvitesData()
     ]);
@@ -183,7 +183,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
     List members = con.group['groupJoined'];
     return members.isEmpty
         ? Container(
-            padding: const EdgeInsets.only(top: 40),
+            padding: const EdgeInsets.symmetric(vertical: 60),
             alignment: Alignment.center,
             child: Text('${con.group['groupName']} doesn`t have members',
                 style:
@@ -226,7 +226,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
   Widget InvitesData() {
     return invites.isEmpty
         ? Container(
-            padding: const EdgeInsets.only(top: 40),
+            padding: const EdgeInsets.symmetric(vertical: 60),
             alignment: Alignment.center,
             child: Text('${con.group['groupName']} doesn`t have invite members',
                 style:
