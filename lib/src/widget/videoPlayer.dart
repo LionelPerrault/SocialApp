@@ -2,6 +2,8 @@
 // More advanced examples demonstrating other features can be found in the same
 // directory as this example in the GitHub repository.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:video_player/video_player.dart';
@@ -18,7 +20,9 @@ class VideoPlayerWidget extends StatefulWidget {
 class VideoPlayerWidgetState extends State<VideoPlayerWidget>
     with WidgetsBindingObserver {
   late VideoPlayerController _controller;
-//  final _player = VideoPlayer(_controller);
+  bool _isPlaying = false;
+  double _sliderValue = 0.0;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -29,46 +33,122 @@ class VideoPlayerWidgetState extends State<VideoPlayerWidget>
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
-    // ambiguate(WidgetsBinding.instance)!.addObserver(this);
-    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    //   statusBarColor: Colors.black,
-    // ));
-    // _init();
+    _controller.addListener(() {
+      setState(() {
+        _sliderValue = _controller.value.position.inMilliseconds.toDouble();
+      });
+      if (_controller.value.position == _controller.value.duration) {
+        setState(() {
+          _isPlaying = false;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Video Demo',
-      home: Scaffold(
-        body: Center(
-          child: _controller.value.isInitialized
-              ? AspectRatio(
-                  aspectRatio: _controller.value.aspectRatio,
-                  child: VideoPlayer(_controller),
-                )
-              : Container(),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              _controller.value.isPlaying
-                  ? _controller.pause()
-                  : _controller.play();
-            });
-          },
-          child: Icon(
-            _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+    double videoHeight = MediaQuery.of(context).size.width *
+        (9 / 16); // Set the video height based on aspect ratio (16:9)
+    return Container(
+      height: videoHeight,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        border: Border.all(color: Colors.grey),
+      ),
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _isPlaying = !_isPlaying;
+                });
+                if (_isPlaying) {
+                  _controller.play();
+                  startTimer();
+                } else {
+                  _controller.pause();
+                  stopTimer();
+                }
+              },
+              child: AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              ),
+            ),
           ),
-        ),
+          Positioned(
+            left: 0.0,
+            right: 0.0,
+            bottom: 0.0,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _isPlaying = !_isPlaying;
+                      });
+                      if (_isPlaying) {
+                        _controller.play();
+                        startTimer();
+                      } else {
+                        _controller.pause();
+                        stopTimer();
+                      }
+                    },
+                    icon: Icon(
+                      _isPlaying ? Icons.pause : Icons.play_arrow,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Expanded(
+                    child: Slider(
+                      value: _sliderValue,
+                      min: 0.0,
+                      max: _controller.value.duration.inMilliseconds.toDouble(),
+                      onChanged: (value) {
+                        setState(() {
+                          _sliderValue = value;
+                        });
+                        _controller
+                            .seekTo(Duration(milliseconds: value.toInt()));
+                      },
+                      activeColor: Colors.blue,
+                      inactiveColor: Colors.grey,
+                    ),
+                  ),
+                  Text(
+                    durationToString(_controller.value.duration),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
+  void startTimer() {
+    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+      setState(() {
+        _sliderValue = _controller.value.position.inMilliseconds.toDouble();
+      });
+    });
+  }
+
+  void stopTimer() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
+  String durationToString(Duration duration) {
+    return duration.toString().split('.').first;
   }
 }
 
