@@ -98,86 +98,84 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                       height: postCon.allNotification.isEmpty ? 100 : 300,
                       child: postCon.allNotification.isEmpty
                           ? const Center(child: Text("No new notifications."))
-                          : ListView.separated(
-                              itemCount: postCon.allNotification.length,
-                              itemBuilder: (context, index) => Material(
-                                child: ListTile(
-                                  onTap: () async {
-                                    if (postCon.allNotification[index]
-                                            ['redirect'] !=
-                                        null) {
-                                      widget.routerChange(postCon
-                                          .allNotification[index]['redirect']);
-                                      widget.hideMenu();
-                                    }
-                                    await postCon.checkNotification(
-                                      postCon.allNotification[index]['uid'],
-                                      UserManager.userInfo['uid'],
-                                    );
-                                    await postCon.allNotification
-                                        .removeAt(index);
-                                    setState(() {});
-                                  },
-                                  hoverColor:
-                                      const Color.fromARGB(255, 243, 243, 243),
-                                  enabled: true,
-                                  leading: postCon.allNotification[index]
-                                              ['avatar'] !=
-                                          ''
-                                      ? CircleAvatar(
-                                          backgroundImage: NetworkImage(
+                          : SingleChildScrollView(
+                              child: Column(
+                              children: [
+                                for (int index = 0;
+                                    index < postCon.allNotification.length;
+                                    index++)
+                                  ListTile(
+                                    onTap: () async {
+                                      if (postCon.allNotification[index]
+                                              ['redirect'] !=
+                                          null) {
+                                        widget.routerChange(
+                                            postCon.allNotification[index]
+                                                ['redirect']);
+                                        widget.hideMenu();
+                                      }
+                                      await postCon.checkNotification(
+                                        postCon.allNotification[index]['uid'],
+                                        UserManager.userInfo['uid'],
+                                      );
+                                      await postCon.allNotification
+                                          .removeAt(index);
+                                      setState(() {});
+                                    },
+                                    hoverColor: const Color.fromARGB(
+                                        255, 243, 243, 243),
+                                    enabled: true,
+                                    leading: postCon.allNotification[index]
+                                                ['avatar'] !=
+                                            ''
+                                        ? CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                            postCon.allNotification[index]
+                                                ['avatar'],
+                                          ))
+                                        : postCon.allNotification[index]
+                                                    ['userName'] ==
+                                                'System Message'
+                                            ? CircleAvatar(
+                                                child: SvgPicture.network(
+                                                    Helper.systemAvatar),
+                                              )
+                                            : CircleAvatar(
+                                                child: SvgPicture.network(
+                                                    Helper.avatar),
+                                              ),
+                                    title: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
                                           postCon.allNotification[index]
-                                              ['avatar'],
-                                        ))
-                                      : postCon.allNotification[index]
-                                                  ['userName'] ==
-                                              'System Message'
-                                          ? CircleAvatar(
-                                              child: SvgPicture.network(
-                                                  Helper.systemAvatar),
-                                            )
-                                          : CircleAvatar(
-                                              child: SvgPicture.network(
-                                                  Helper.avatar),
-                                            ),
-                                  title: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        postCon.allNotification[index]
-                                                ['userName'] ??
-                                            "",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 10),
-                                      ),
-                                      Text(
+                                                  ['userName'] ??
+                                              "",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10),
+                                        ),
+                                        Text(
+                                            postCon.allNotification[index]
+                                                    ['text'] ??
+                                                "",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 10)),
+                                        Text(
                                           postCon.allNotification[index]
-                                                  ['text'] ??
+                                                  ['date'] ??
                                               "",
                                           style: const TextStyle(
                                               fontWeight: FontWeight.normal,
-                                              fontSize: 10)),
-                                      Text(
-                                        postCon.allNotification[index]
-                                                ['date'] ??
-                                            "",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 8),
-                                      ),
-                                    ],
+                                              fontSize: 8),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      const Divider(
-                                height: 1,
-                                endIndent: 10,
-                              ),
-                            ),
+                              ],
+                            )),
                     ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
