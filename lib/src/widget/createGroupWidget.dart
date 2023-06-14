@@ -417,7 +417,7 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
                         }
                         if (groupInfo['groupLocation'] == null ||
                             groupInfo['groupLocation'] == '') {
-                          strtoast += 'location, ';
+                          strtoast += 'group location, ';
                         }
 
                         if (groupInfo['groupInterests'].length == 0) {

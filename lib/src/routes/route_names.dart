@@ -61,6 +61,9 @@ class RouteNames {
   static const search = '/search';
   static const notifications = '/notifications';
 
+  //live streaming
+  static const liveStreaming = '/liveStreaming';
+
   //admin routes
   static const adp = '/adminpanel';
   static const adp_settings_analytics = '/adminpanel/settings/analytics';

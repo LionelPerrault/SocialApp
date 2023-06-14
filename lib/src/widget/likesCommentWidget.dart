@@ -426,6 +426,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                                               size: 15,
                                               color: Color(0xff505050),
                                             ),
+                                            SizedBox(width: 5),
                                             Text(
                                               'Share',
                                               style: TextStyle(

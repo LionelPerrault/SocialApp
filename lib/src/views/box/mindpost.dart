@@ -18,6 +18,8 @@ import 'package:shnatter/src/widget/mindslice.dart';
 
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
+import '../messageBoard/widget/soundRecorder.dart';
+
 class MindPost extends StatefulWidget {
   MindPost({Key? key, required this.showPrivacy})
       : con = PostController(),
@@ -103,7 +105,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       'title': 'Voice Notes',
       'image':
           'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fvoice.svg?alt=media&token=b49c28b5-3b27-487e-a6c1-ffd978c215fa',
-      'mindFunc': (context) {}
+      'mindFunc': (option) {
+        uploadVoiceNotesReady(option);
+      }
     },
     // {
     //   'title': 'Write Aticle',
@@ -321,6 +325,12 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     uploadReady('audio', 0);
   }
 
+  uploadVoiceNotesReady(int option) {
+    nowPost = 'Voice Notes';
+    setState(() {});
+    // uploadReady('voice', 0);
+  }
+
   uploadVideoReady(int option) {
     nowPost = 'Upload Video';
     setState(() {});
@@ -397,6 +407,12 @@ class MindPostState extends mvc.StateMVC<MindPost> {
             'subAction': subActivity,
           };
         }
+        break;
+
+      case 'Voice Notes':
+        postCase = 'audio';
+        print("postAUdio is $postAudio");
+        postPayload[postCase] = postAudio;
         break;
       case 'Check In':
         if (checkLocation == '') {
@@ -606,7 +622,8 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                       SingleChildScrollView(
                         controller: _scrollController,
                         scrollDirection: Axis.horizontal,
-                        child: nowPost != 'Upload Audio'
+                        child: nowPost != 'Upload Audio' &&
+                                nowPost != 'Upload Video'
                             ? const SizedBox()
                             : Container(
                                 alignment: Alignment.centerLeft,
@@ -660,9 +677,11 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                                                     'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2FuploadChecked.svg?alt=media&token=4877f3f2-4de4-4e53-9e0e-1054cf2eb5dd',
                                                     width: 20,
                                                   ),
-                                                  const Text(
-                                                    'Audio uploaded successfully',
-                                                    style: TextStyle(
+                                                  Text(
+                                                    nowPost == 'Upload Video'
+                                                        ? 'Video uploaded successfully'
+                                                        : 'Audio uploaded successfully',
+                                                    style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
@@ -690,11 +709,13 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                       ),
                       nowPost == 'Feelings/Activity'
                           ? feelingActivityWidget()
-                          : nowPost == 'Check In'
-                              ? checkInWidget()
-                              : nowPost == 'Create Poll'
-                                  ? createPollWidget()
-                                  : const SizedBox(),
+                          : nowPost == 'Voice Notes'
+                              ? voiceNoteWidget()
+                              : nowPost == 'Check In'
+                                  ? checkInWidget()
+                                  : nowPost == 'Create Poll'
+                                      ? createPollWidget()
+                                      : const SizedBox(),
                       const Padding(padding: EdgeInsets.only(top: 5)),
                       nowPost == ''
                           ? const SizedBox()
@@ -876,13 +897,19 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                         minimumSize: const Size(85, 45),
                         maximumSize: const Size(85, 45),
                       ),
-                      onPressed: () {
-                        postLoading ||
-                                (postAudio == '' &&
-                                    nowPost == 'Upload Audio') ||
-                                (postPhoto == '' && nowPost == 'Upload Photos')
-                            ? () {}
-                            : {post()};
+                      onPressed: () async {
+                        if (nowPost == 'Voice Notes') {
+                          uploadReady('voice', 0);
+                        } else {
+                          postLoading ||
+                                  (postAudio == '' &&
+                                      nowPost == 'Upload Audio') ||
+                                  (postPhoto == '' &&
+                                      nowPost == 'Upload Photos') ||
+                                  (postPhoto == '' && nowPost == 'Upload Video')
+                              ? () {}
+                              : {post()};
+                        }
                       },
                       child: (postLoading)
                           ? Container(
@@ -962,6 +989,19 @@ class MindPostState extends mvc.StateMVC<MindPost> {
               : const SizedBox(),
         ],
       ),
+    );
+  }
+
+  var audioPath = '';
+  saveFilePath(value) {
+    audioPath = value;
+
+    setState(() {});
+  }
+
+  Widget voiceNoteWidget() {
+    return SoundRecorder(
+      savePath: saveFilePath,
     );
   }
 
@@ -1398,6 +1438,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
         reference = firebaseStorage
             .ref()
             .child('images/${PPath.basename(pickedFile.path)}');
+
+        print('images/${PPath.basename(pickedFile.path)}');
+
         uploadTask = reference.putFile(file);
       }
       uploadTask.whenComplete(() async {
@@ -1411,6 +1454,9 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           }
         } else {
           postAudio = downloadUrl;
+          if (type == 'voice') {
+            post();
+          }
           setState(() {});
         }
         postLoading = false;
@@ -1458,10 +1504,18 @@ class MindPostState extends mvc.StateMVC<MindPost> {
       pickedFile = await chooseImage(option);
     } else if (type == 'audio') {
       pickedFile = await chooseAudio();
-    } else {
+    } else if (type == 'video') {
       pickedFile = await chooseVideo();
+    } else if (type == 'voice') {
+      pickedFile = XFile(audioPath);
+      print("audioPath is $audioPath");
+      postLoading = true;
+      uploadFile(pickedFile, type);
+      return;
+      //con.uploadFile(XFile(audioPath), widget.type, 'audio');
     }
-    if (type != 'photo' && pickedFile.path == '') return;
+
+    if (type != 'photo' && pickedFile?.path == '') return;
     postLoading = true;
     uploadFile(pickedFile, type);
   }

@@ -160,6 +160,7 @@ class _SoundRecorderState extends State<SoundRecorder> {
         isRecording = false;
         showRecordedAudio = false;
         isRecorded = true;
+        print("value is $value");
         widget.savePath(value);
         _timer.cancel();
       });
