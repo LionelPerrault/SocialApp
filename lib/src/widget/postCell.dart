@@ -710,7 +710,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     routerChange: widget.routerChange,
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(top: 10)),
+                // const Padding(padding: EdgeInsets.only(top: 10)),
               ],
             ),
           ),
