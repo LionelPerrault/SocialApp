@@ -385,7 +385,7 @@ class PeopleController extends ControllerMVC {
       for (var elem in maplist) {
         newDocumentList.add(elem['doc']);
       }
-
+      var boxList = [];
       for (var elem in newDocumentList) {
         Map data = elem.data() as Map;
         data['uid'] = elem.id;
@@ -396,9 +396,11 @@ class PeopleController extends ControllerMVC {
           return m['users'].contains(userUid) == true;
         });
         if (value.isEmpty) {
-          userList.add(data);
+          boxList.add(data);
         }
       }
+      userList = boxList;
+      print('${userList.length} $userList this is peoplelist');
 
       // Set the lastData variable to the last user in the user list.
       lastData = newDocumentList[newDocumentList.length - 1];
