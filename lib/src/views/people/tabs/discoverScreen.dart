@@ -404,7 +404,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                          color: con.pageIndex * 5 > con.userList.length
+                          color: con.pageIndex * 5 >= con.userList.length
                               ? Colors.grey
                               : const Color.fromRGBO(55, 213, 242, 1),
                           borderRadius:
