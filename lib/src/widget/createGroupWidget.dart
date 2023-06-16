@@ -205,14 +205,14 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // FocusScopeNode currentFocus = FocusScope.of(context);
+        FocusScopeNode currentFocus = FocusScope.of(context);
 
-        setState(() {
-          autoLocationList = [];
-        });
-        // if (!currentFocus.hasPrimaryFocus) {
-        //   currentFocus.unfocus();
-        // }
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+          setState(() {
+            autoLocationList = [];
+          });
+        }
       },
       child: Stack(
         children: [
