@@ -81,7 +81,7 @@ class _SoundRecorderState extends State<SoundRecorder> {
     if (await _mRecorder!.isEncoderSupported(_codec) && !kIsWeb) {
       Directory? dir;
       if (Platform.isIOS) {
-        dir = await getApplicationDocumentsDirectory();
+        dir = await getTemporaryDirectory();
       } else {
         dir = await getExternalStorageDirectory();
       }
