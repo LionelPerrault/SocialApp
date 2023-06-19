@@ -520,7 +520,7 @@ class CreateEventModalState extends mvc.StateMVC<CreateEventModal> {
           ),
           if (autoLocationList.isNotEmpty)
             Positioned(
-              top: 140,
+              top: 150,
               left: 0,
               right: 0,
               child: SizedBox(
