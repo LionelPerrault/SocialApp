@@ -51,7 +51,55 @@ class _SoundRecorderState extends State<SoundRecorder> {
   }
 
   Future<bool> openTheRecorder() async {
-    if (!kIsWeb) {
+    // if (!kIsWeb) {
+    //   var contactsPermissionStatus = await Permission.contacts.request();
+    //   if (contactsPermissionStatus.isGranted) {
+    //     // Either the permission was already granted before or the user just granted it.
+    //   } else {
+    //     var microphonePermissionStatus = await Permission.microphone.request();
+    //     if (!microphonePermissionStatus.isGranted) {
+    //       print('Microphone permission not granted');
+    //       return false; // Exit the function or handle the error accordingly
+    //     }
+    //   }
+    // }
+
+    // _mRecorder!.closeRecorder();
+
+    // setState(() {
+    //   openedRecorder = false;
+    // });
+    // await _mRecorder!.openRecorder().then((value) {
+    //   openedRecorder = value != null;
+    // });
+    // setState(() {});
+    // if (openedRecorder == false) return false;
+    // if (kIsWeb) {
+    //   _codec = Codec.opusWebM;
+    //   _mPath = '${generateRandomFilename()}.webm';
+    // }
+    // if (await _mRecorder!.isEncoderSupported(_codec) && !kIsWeb) {
+    //   Directory? dir;
+    //   if (Platform.isIOS) {
+    //     dir = await getApplicationDocumentsDirectory();
+    //   } else {
+    //     dir = await getExternalStorageDirectory();
+    //   }
+
+    //   _mPath = '${dir?.path}/${generateRandomFilename()}.mp4';
+    //   _mRecorderIsInited = true;
+    //   return true;
+    // }
+
+    // _mRecorderIsInited = true;
+    // return true;
+    if (!kIsWeb && Platform.isIOS) {
+      var microphonePermissionStatus = await Permission.microphone.request();
+      if (!microphonePermissionStatus.isGranted) {
+        print('Microphone permission not granted');
+        return false; // Exit the function or handle the error accordingly
+      }
+    } else if (!kIsWeb) {
       var contactsPermissionStatus = await Permission.contacts.request();
       if (contactsPermissionStatus.isGranted) {
         // Either the permission was already granted before or the user just granted it.
@@ -69,16 +117,20 @@ class _SoundRecorderState extends State<SoundRecorder> {
     setState(() {
       openedRecorder = false;
     });
+
     await _mRecorder!.openRecorder().then((value) {
       openedRecorder = value != null;
     });
+
     setState(() {});
+
     if (openedRecorder == false) return false;
+
     if (kIsWeb) {
       _codec = Codec.opusWebM;
       _mPath = '${generateRandomFilename()}.webm';
-    }
-    if (await _mRecorder!.isEncoderSupported(_codec) && !kIsWeb) {
+    } else {
+      _codec = Codec.aacADTS;
       Directory? dir;
       if (Platform.isIOS) {
         dir = await getApplicationDocumentsDirectory();
@@ -87,12 +139,11 @@ class _SoundRecorderState extends State<SoundRecorder> {
       }
 
       _mPath = '${dir?.path}/${generateRandomFilename()}.mp4';
-      _mRecorderIsInited = true;
-      return true;
     }
 
-    _mRecorderIsInited = true;
-    return true;
+    if (await _mRecorder!.isEncoderSupported(_codec)) {}
+
+    return _mRecorderIsInited!;
   }
 
   String twoDigits(int n) {
