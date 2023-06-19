@@ -41,7 +41,8 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
   String searchText = '';
   List searchResult = [];
   Map mainRouterValue = {
-    'router': RouteNames.homePage,
+    'router': RouteNames.settings,
+    'subRouter': RouteNames.settings_delete,
   };
   List routerList = [];
   late UserController con;
