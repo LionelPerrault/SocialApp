@@ -16,6 +16,7 @@ import 'package:shnatter/src/widget/likesCommentWidget.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 import 'package:shnatter/src/widget/videoPlayer.dart';
 
+import '../views/photoView/photoscreen.dart';
 import '../views/realEstate/widget/realEstateCell.dart';
 
 class PostCell extends StatefulWidget {
@@ -665,13 +666,35 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     widget.postInfo['data'].containsKey('photo')
                         ? Row(
                             children: [
-                              for (var item in widget.postInfo['data']['photo'])
+                              for (var i = 0;
+                                  i < widget.postInfo['data']['photo'].length;
+                                  i++)
                                 Expanded(
-                                  child: Container(
-                                    height: 350,
-                                    color: const Color(0xfff5f5f5),
-                                    child: Image.network(item['url'],
-                                        fit: BoxFit.fitHeight),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => PhotoEachScreen(
+                                            photoUrls: widget.postInfo['data']
+                                                    ['photo']
+                                                .map((e) => e['url'])
+                                                .toList()
+                                                .cast<String>(),
+                                            initialIndex: i,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      height: 350,
+                                      color: const Color(0xfff5f5f5),
+                                      child: Image.network(
+                                        widget.postInfo['data']['photo'][i]
+                                            ['url'],
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    ),
                                   ),
                                 )
                             ],
@@ -687,7 +710,7 @@ class PostCellState extends mvc.StateMVC<PostCell> {
                     routerChange: widget.routerChange,
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(top: 10)),
+                // const Padding(padding: EdgeInsets.only(top: 10)),
               ],
             ),
           ),

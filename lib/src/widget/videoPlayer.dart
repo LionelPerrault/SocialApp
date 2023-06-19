@@ -135,7 +135,7 @@ class VideoPlayerWidgetState extends State<VideoPlayerWidget>
   }
 
   void startTimer() {
-    _timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 10), (timer) {
       setState(() {
         _sliderValue = _controller.value.position.inMilliseconds.toDouble();
       });

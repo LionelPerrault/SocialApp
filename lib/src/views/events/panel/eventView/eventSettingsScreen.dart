@@ -607,6 +607,10 @@ class EventSettingsScreenState extends mvc.StateMVC<EventSettingsScreen> {
                 maximumSize: const Size(120, 50),
               ),
               onPressed: () {
+                  if (eventNameController.text.isEmpty) {
+                  Helper.showToast("Please input Event name!");
+                  return;
+                }
                 footerBtnState = true;
                 setState(() {});
                 con.updateEventInfo(updateData).then(

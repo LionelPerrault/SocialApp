@@ -204,6 +204,9 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
 
         if (!currentFocus.hasPrimaryFocus) {
           currentFocus.unfocus();
+          setState(() {
+            autoLocationList = [];
+          });
         }
       },
       child: Stack(children: [

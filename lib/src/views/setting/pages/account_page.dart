@@ -75,7 +75,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
         }
       },
       child: Container(
-          padding: const EdgeInsets.only(top: 20, left: 30),
+          padding: const EdgeInsets.only(top: 20),
           child: Column(
             children: [
               SettingHeader(
@@ -86,14 +86,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
               ),
               const SizedBox(height: 20),
               Container(
-                  // width: SizeConfig.,
-                  padding: EdgeInsets.only(
-                      left: 10,
-                      right: SizeConfig(context).screenWidth > 900
-                          ? SizeConfig(context).screenWidth * 0.15
-                          : 0 - SizeConfig(context).screenWidth > 600
-                              ? 0
-                              : 20),
+                  margin: const EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,

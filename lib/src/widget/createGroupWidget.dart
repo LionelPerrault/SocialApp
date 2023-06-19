@@ -203,308 +203,334 @@ class CreateGroupModalState extends mvc.StateMVC<CreateGroupModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 60),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const Divider(
-                  height: 0,
-                  indent: 0,
-                  endIndent: 0,
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                SizedBox(
-                  width: 400,
-                  child: customInput(
-                    title: 'Name Your Group',
-                    onChange: (value) async {
-                      groupInfo['groupName'] = value;
-                      setState(() {});
-                    },
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                SizedBox(
-                  width: 400,
-                  child: customInput(
-                    controller: locationTextController,
-                    title: 'Location',
-                    onChange: (value) async {
-                      groupInfo['groupLocation'] = value;
-                      await fetchSuggestions(value);
+    return GestureDetector(
+      onVerticalDragEnd: (details) {
+        FocusScopeNode currentFocus = FocusScope.of(context);
 
-                      setState(() {});
-                    },
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+          autoLocationList = [];
+          setState(() {});
+        }
+      },
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+          setState(() {
+            autoLocationList = [];
+          });
+        }
+      },
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 60),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const Divider(
+                    height: 0,
+                    indent: 0,
+                    endIndent: 0,
                   ),
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        width: 400,
-                        margin: EdgeInsets.only(
-                            right:
-                                SizeConfig(context).screenWidth > 540 ? 15 : 0),
-                        height: 40,
-                        child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 17, 205, 239),
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
-                                  color:
-                                      const Color.fromARGB(255, 17, 205, 239),
-                                  width: 0.1),
-                            ),
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 7, left: 15),
-                                child: DropdownButton(
-                                  value: privacy,
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: "public",
-                                      child: Row(children: [
-                                        Icon(
-                                          Icons.language,
-                                          color: Colors.black,
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: 5)),
-                                        Text(
-                                          "Public",
-                                          style: TextStyle(fontSize: 13),
-                                        )
-                                      ]),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "closed",
-                                      child: Row(children: [
-                                        Icon(
-                                          Icons.groups,
-                                          color: Colors.black,
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: 5)),
-                                        Text(
-                                          "Closed",
-                                          style: TextStyle(fontSize: 13),
-                                        )
-                                      ]),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "security",
-                                      child: Row(children: [
-                                        Icon(
-                                          Icons.lock_outline,
-                                          color: Colors.black,
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.only(left: 5)),
-                                        Text(
-                                          "Security",
-                                          style: TextStyle(fontSize: 13),
-                                        )
-                                      ]),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    privacy = value.toString();
-                                    groupInfo['groupPrivacy'] = privacy;
-                                    setState(() {});
-                                  },
-                                  icon: const Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Icon(Icons.arrow_drop_down)),
-                                  iconEnabledColor: Colors.white, //Icon color
-                                  style: const TextStyle(
-                                    color: Colors.black, //Font color
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  dropdownColor: Colors.white,
-                                  underline: Container(), //remove underline
-                                  isExpanded: true,
-                                  isDense: true,
-                                ))),
-                      ),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  SizedBox(
+                    width: 400,
+                    child: customInput(
+                      title: 'Name Your Group',
+                      onChange: (value) async {
+                        groupInfo['groupName'] = value;
+                        setState(() {});
+                      },
                     ),
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.only(top: 15)),
-                SizedBox(
-                  width: 400,
-                  child: titleAndsubtitleInput(
-                    'About',
-                    70,
-                    5,
-                    (value) async {
-                      groupInfo['groupAbout'] = value;
-                      // setState(() {});
-                    },
                   ),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  SizedBox(
+                    width: 400,
+                    child: customInput(
+                      controller: locationTextController,
+                      title: 'Location',
+                      onChange: (value) async {
+                        groupInfo['groupLocation'] = value;
+                        await fetchSuggestions(value);
+
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          width: 400,
+                          margin: EdgeInsets.only(
+                              right: SizeConfig(context).screenWidth > 540
+                                  ? 15
+                                  : 0),
+                          height: 40,
+                          child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 17, 205, 239),
+                                borderRadius: BorderRadius.circular(4),
+                                border: Border.all(
+                                    color:
+                                        const Color.fromARGB(255, 17, 205, 239),
+                                    width: 0.1),
+                              ),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 7, left: 15),
+                                  child: DropdownButton(
+                                    value: privacy,
+                                    items: const [
+                                      DropdownMenuItem(
+                                        value: "public",
+                                        child: Row(children: [
+                                          Icon(
+                                            Icons.language,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            "Public",
+                                            style: TextStyle(fontSize: 13),
+                                          )
+                                        ]),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: "closed",
+                                        child: Row(children: [
+                                          Icon(
+                                            Icons.groups,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            "Closed",
+                                            style: TextStyle(fontSize: 13),
+                                          )
+                                        ]),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: "security",
+                                        child: Row(children: [
+                                          Icon(
+                                            Icons.lock_outline,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 5)),
+                                          Text(
+                                            "Security",
+                                            style: TextStyle(fontSize: 13),
+                                          )
+                                        ]),
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      privacy = value.toString();
+                                      groupInfo['groupPrivacy'] = privacy;
+                                      setState(() {});
+                                    },
+                                    icon: const Padding(
+                                        padding: EdgeInsets.only(left: 20),
+                                        child: Icon(Icons.arrow_drop_down)),
+                                    iconEnabledColor: Colors.white, //Icon color
+                                    style: const TextStyle(
+                                      color: Colors.black, //Font color
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    dropdownColor: Colors.white,
+                                    underline: Container(), //remove underline
+                                    isExpanded: true,
+                                    isDense: true,
+                                  ))),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 15)),
+                  SizedBox(
+                    width: 400,
+                    child: titleAndsubtitleInput(
+                      'About',
+                      70,
+                      5,
+                      (value) async {
+                        groupInfo['groupAbout'] = value;
+                        // setState(() {});
+                      },
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 20)),
+                  SizedBox(
+                    width: 400,
+                    child: InterestsWidget(
+                      context: context,
+                      sendUpdate: (value) {
+                        groupInfo['groupInterests'] = value;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const SizedBox(
+                  height: 15,
                 ),
-                const Padding(padding: EdgeInsets.only(top: 20)),
-                SizedBox(
+                Container(
                   width: 400,
-                  child: InterestsWidget(
-                    context: context,
-                    sendUpdate: (value) {
-                      groupInfo['groupInterests'] = value;
-                    },
+                  margin: const EdgeInsets.only(
+                    right: 15,
+                  ),
+                  child: Row(
+                    children: [
+                      const Flexible(fit: FlexFit.tight, child: SizedBox()),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[400],
+                          shadowColor: Colors.grey[400],
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(3.0)),
+                          minimumSize: const Size(100, 50),
+                        ),
+                        onPressed: () {
+                          Navigator.of(widget.context).pop(true);
+                        },
+                        child: const Text('Cancel',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const Padding(padding: EdgeInsets.only(left: 10)),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shadowColor: Colors.white,
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(3.0)),
+                          minimumSize: const Size(100, 50),
+                        ),
+                        onPressed: () {
+                          String strtoast = "";
+                          if (groupInfo['groupName'] == null ||
+                              groupInfo['groupName'] == '') {
+                            strtoast += 'group name, ';
+                          }
+                          if (groupInfo['groupLocation'] == null ||
+                              groupInfo['groupLocation'] == '') {
+                            strtoast += 'group location, ';
+                          }
+
+                          if (groupInfo['groupInterests'].length == 0) {
+                            strtoast += 'group interest, ';
+                          }
+                          if (strtoast.isNotEmpty) {
+                            strtoast =
+                                'Please add your ${strtoast.substring(0, strtoast.length - 2)}';
+                            Helper.showToast(strtoast);
+                            return;
+                          }
+
+                          // if (groupInfo['groupName'] == null ||
+                          //     groupInfo['groupName'] == '') {
+                          //   Helper.showToast('Please add your group name');
+                          //   return;
+                          // } else if (groupInfo['groupLocation'] == null ||
+                          //     groupInfo['groupLocation'] == '') {
+                          //   Helper.showToast('Please add your group location');
+                          //   return;
+                          // } else if (groupInfo['groupInterests'].length == 0) {
+                          //   Helper.showToast('Please select interest');
+                          //   return;
+                          // }
+                          footerBtnState = true;
+                          setState(() {});
+                          getTokenBudget();
+                        },
+                        child: footerBtnState
+                            ? const SizedBox(
+                                width: 10,
+                                height: 10.0,
+                                child: CircularProgressIndicator(
+                                  color: Colors.grey,
+                                ),
+                              )
+                            : const Text('Create',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                      )
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-        ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              const SizedBox(
-                height: 15,
-              ),
-              Container(
-                width: 400,
-                margin: const EdgeInsets.only(
-                  right: 15,
+          if (autoLocationList.isNotEmpty)
+            Positioned(
+              top: 150,
+              left: 0,
+              right: 0,
+              child: SizedBox(
+                height: 190,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: autoLocationList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                        onTap: () {
+                          locationTextController.text =
+                              autoLocationList[index].description;
+                          groupInfo['groupLocation'] =
+                              autoLocationList[index].description;
+                          setState(() {
+                            autoLocationList = [];
+                          });
+                        },
+                        child: Container(
+                          height: 50,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.only(bottom: 3),
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color:
+                                          Color.fromARGB(255, 209, 209, 209))),
+                              color: Color.fromARGB(255, 224, 224, 224)),
+                          child: Text(
+                            autoLocationList[index].description,
+                            textAlign: TextAlign.center,
+                          ),
+                        ));
+                  },
                 ),
-                child: Row(
-                  children: [
-                    const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[400],
-                        shadowColor: Colors.grey[400],
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(3.0)),
-                        minimumSize: const Size(100, 50),
-                      ),
-                      onPressed: () {
-                        Navigator.of(widget.context).pop(true);
-                      },
-                      child: const Text('Cancel',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    const Padding(padding: EdgeInsets.only(left: 10)),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shadowColor: Colors.white,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(3.0)),
-                        minimumSize: const Size(100, 50),
-                      ),
-                      onPressed: () {
-                        String strtoast = "";
-                        if (groupInfo['groupName'] == null ||
-                            groupInfo['groupName'] == '') {
-                          strtoast += 'group name, ';
-                        }
-                        if (groupInfo['groupLocation'] == null ||
-                            groupInfo['groupLocation'] == '') {
-                          strtoast += 'group location, ';
-                        }
-
-                        if (groupInfo['groupInterests'].length == 0) {
-                          strtoast += 'group interest, ';
-                        }
-                        if (strtoast.isNotEmpty) {
-                          strtoast =
-                              'Please add your ${strtoast.substring(0, strtoast.length - 2)}';
-                          Helper.showToast(strtoast);
-                          return;
-                        }
-
-                        // if (groupInfo['groupName'] == null ||
-                        //     groupInfo['groupName'] == '') {
-                        //   Helper.showToast('Please add your group name');
-                        //   return;
-                        // } else if (groupInfo['groupLocation'] == null ||
-                        //     groupInfo['groupLocation'] == '') {
-                        //   Helper.showToast('Please add your group location');
-                        //   return;
-                        // } else if (groupInfo['groupInterests'].length == 0) {
-                        //   Helper.showToast('Please select interest');
-                        //   return;
-                        // }
-                        footerBtnState = true;
-                        setState(() {});
-                        getTokenBudget();
-                      },
-                      child: footerBtnState
-                          ? const SizedBox(
-                              width: 10,
-                              height: 10.0,
-                              child: CircularProgressIndicator(
-                                color: Colors.grey,
-                              ),
-                            )
-                          : const Text('Create',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        if (autoLocationList.isNotEmpty)
-          Positioned(
-            top: 150,
-            left: 0,
-            right: 0,
-            child: SizedBox(
-              height: 190,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: autoLocationList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                      onTap: () {
-                        locationTextController.text =
-                            autoLocationList[index].description;
-                        groupInfo['groupLocation'] =
-                            autoLocationList[index].description;
-                        setState(() {
-                          autoLocationList = [];
-                        });
-                      },
-                      child: Container(
-                        height: 50,
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.only(bottom: 3),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: Color.fromARGB(255, 209, 209, 209))),
-                            color: Color.fromARGB(255, 224, 224, 224)),
-                        child: Text(
-                          autoLocationList[index].description,
-                          textAlign: TextAlign.center,
-                        ),
-                      ));
-                },
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }

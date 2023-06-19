@@ -58,7 +58,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
             : con.tabName == 'Friend Requests'
                 ? FriendRequestsScreen(routerChange: widget.routerChange)
                 : con.tabName == 'Requests Sent'
-                    ? SendRequestsScreen()
+                    ? SendRequestsScreen(routerChange: widget.routerChange)
                     : FriendsScreen(routerChange: widget.routerChange)
       ],
     );

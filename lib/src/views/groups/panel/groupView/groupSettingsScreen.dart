@@ -926,7 +926,12 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                 maximumSize: const Size(120, 50),
               ),
               onPressed: () {
+                if (groupNameController.text.isEmpty) {
+                  Helper.showToast("Please input Group name!");
+                  return;
+                }
                 footerBtnState = true;
+
                 setState(() {});
                 con.updateGroupInfo({
                   'groupName': groupNameController.text,

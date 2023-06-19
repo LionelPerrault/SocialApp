@@ -193,11 +193,13 @@ class PeopleController extends ControllerMVC {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendCollection)
         .where('users', arrayContains: UserManager.userInfo['uid'])
+        .where('state', isEqualTo: true)
         .get();
     var allFriendsData = [];
     for (var i = 0; i < snapshot.docs.length; i++) {
       var friendUid = snapshot.docs[i].data()['users'];
       friendUid.removeWhere((item) => item == UserManager.userInfo['uid']);
+      print(friendUid);
       var fData = Helper.userUidToInfo[friendUid[0]];
       fData['uid'] = friendUid[0];
       fData['fieldUid'] = snapshot.docs[i].id;
@@ -380,7 +382,7 @@ class PeopleController extends ControllerMVC {
       for (var elem in maplist) {
         newDocumentList.add(elem['doc']);
       }
-
+      var boxList = [];
       for (var elem in newDocumentList) {
         Map data = elem.data() as Map;
         data['uid'] = elem.id;
@@ -391,9 +393,10 @@ class PeopleController extends ControllerMVC {
           return m['users'].contains(userUid) == true;
         });
         if (value.isEmpty) {
-          userList.add(data);
+          boxList.add(data);
         }
       }
+      userList = boxList;
 
       // Set the lastData variable to the last user in the user list.
       lastData = newDocumentList[newDocumentList.length - 1];
@@ -416,7 +419,7 @@ class PeopleController extends ControllerMVC {
         .snapshots();
     subscription = friendStream.listen((event) {
       requestFriends = event.docs.map((doc) {
-        var friendUid = doc['receiver'];
+        var friendUid = doc['requester'];
         var fData = Helper.userUidToInfo[friendUid];
         fData['uid'] = friendUid;
         fData['fieldUid'] = doc.id;

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
+import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/people/widget/searchScreen.dart';
@@ -159,10 +161,20 @@ class FriendRequestsScreenState extends mvc.StateMVC<FriendRequestsScreen> {
                           style: TextStyle(fontSize: 14)))
                   : Column(
                       children: con.requestFriends.map((e) {
-                      return RequestFriendCell(
-                          cellData: e,
-                          onClick: () {},
-                          routerChange: widget.routerChange);
+                      return InkWell(
+                          onTap: () async {
+                            await ProfileController()
+                                .updateProfile(e['userName']);
+                            print(e);
+                            widget.routerChange({
+                              'router': RouteNames.profile,
+                              'subRouter': e['userName'],
+                            });
+                          },
+                          child: RequestFriendCell(
+                              cellData: e,
+                              onClick: () {},
+                              routerChange: widget.routerChange));
                     }).toList()),
         ],
       ),
