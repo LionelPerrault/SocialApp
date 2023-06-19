@@ -51,7 +51,7 @@ class SettingSecurityPasswordScreenState
         height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight - 30,
         child: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.only(top: 20, left: 30),
+            padding: const EdgeInsets.only(top: 20),
             child: Column(
               children: [
                 SettingHeader(
@@ -64,11 +64,8 @@ class SettingSecurityPasswordScreenState
                   button: const {'flag': false},
                 ),
                 const Padding(padding: EdgeInsets.only(top: 20)),
-                SizedBox(
-                  width: SizeConfig(context).screenWidth >
-                          SizeConfig.smallScreenSize
-                      ? SizeConfig(context).screenWidth * 0.5 + 40
-                      : SizeConfig(context).screenWidth * 0.9 - 30,
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     children: [
                       Row(

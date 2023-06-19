@@ -110,15 +110,12 @@ class SettingShnatterTokenScreenState
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             Container(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              width: SizeConfig(context).screenWidth > 800
-                  ? SizeConfig(context).screenWidth * 0.85
-                  : SizeConfig(context).screenWidth,
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
                         child: Column(
@@ -179,12 +176,9 @@ class SettingShnatterTokenScreenState
                           ],
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20.0),
-                      ),
                     ],
                   ),
-
+                  const SizedBox(height: 20),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,

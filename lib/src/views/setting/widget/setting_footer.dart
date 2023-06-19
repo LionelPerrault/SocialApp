@@ -9,8 +9,9 @@ class SettingFooter extends StatelessWidget {
   // String pagename;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20, top: 20),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: Container(
           height: 65,
           decoration: const BoxDecoration(

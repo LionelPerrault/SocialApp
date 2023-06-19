@@ -51,7 +51,7 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.only(top: 20, left: 30),
+        padding: const EdgeInsets.only(top: 20),
         child: Column(
           children: [
             SettingHeader(
@@ -65,7 +65,7 @@ class SettingDeleteScreenState extends mvc.StateMVC<SettingDeleteScreen> {
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
             Container(
-              padding: const EdgeInsets.only(right: 30, left: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: [
                   Row(

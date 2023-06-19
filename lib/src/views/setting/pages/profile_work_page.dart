@@ -42,7 +42,7 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
         }
       },
       child: Container(
-        padding: const EdgeInsets.only(top: 20, left: 30),
+        padding: const EdgeInsets.only(top: 20),
         child: Column(
           children: [
             SettingHeader(
@@ -60,11 +60,8 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
               },
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
-            SizedBox(
-              width:
-                  SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-                      ? SizeConfig(context).screenWidth * 0.5 + 40
-                      : SizeConfig(context).screenWidth * 0.9 - 30,
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: [
                   Row(
@@ -81,7 +78,6 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
                           workInfo['workTitle'] ?? '',
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.only(right: 20))
                     ],
                   ),
                   const Padding(padding: EdgeInsets.only(top: 20)),
@@ -112,7 +108,6 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
                           workInfo['workWebsite'] ?? '',
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.only(right: 20))
                     ],
                   ),
                 ],
@@ -128,7 +123,6 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
 
   Widget titleAndsubtitleInput(title, double height, line, onChange, text) {
     return Container(
-      margin: const EdgeInsets.only(top: 15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,8 +171,9 @@ class SettingWorkScreenState extends mvc.StateMVC<SettingWorkScreen> {
   }
 
   Widget footer() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20, top: 20),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: Container(
           height: 65,
           decoration: const BoxDecoration(

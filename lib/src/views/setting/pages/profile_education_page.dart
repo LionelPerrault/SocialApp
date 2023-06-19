@@ -39,7 +39,7 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
         }
       },
       child: Container(
-          padding: const EdgeInsets.only(top: 20, left: 30),
+          padding: const EdgeInsets.only(top: 20),
           child: Column(
             children: [
               SettingHeader(
@@ -57,7 +57,8 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
                 },
               ),
               const Padding(padding: EdgeInsets.only(top: 20)),
-              SizedBox(
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 30),
                 width:
                     SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
                         ? SizeConfig(context).screenWidth * 0.5 + 40
@@ -171,8 +172,9 @@ class SettingEducationScreenState extends mvc.StateMVC<SettingEducationScreen> {
   }
 
   Widget footer() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20, top: 20),
+    return Container(
+      padding: const EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
           height: 65,
           decoration: const BoxDecoration(
