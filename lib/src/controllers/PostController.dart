@@ -1243,7 +1243,7 @@ class PostController extends ControllerMVC {
       strtoast += 'product name, ';
     }
     if (productData['productPrice'] == null ||
-        productData['productPrice'] == '') {
+        productData['productPrice'] == '0') {
       strtoast += 'product price, ';
     }
     if (productData['productCategory'] == null ||
@@ -1714,7 +1714,8 @@ class PostController extends ControllerMVC {
         .update({'realEstateSellState': true});
   }
 
-  savePost(type, value, privacy, {header = ''}) async {
+  savePost(type, value, privacy,
+      {header = '', message = 'Post published!'}) async {
     Map<String, dynamic> postData = {};
     List followers = [];
 
@@ -1750,7 +1751,7 @@ class PostController extends ControllerMVC {
             where == PostType.group.index ? PostController().viewGroupId : '',
       };
       Helper.postCollection.add(postData);
-      Helper.showToast('Successfully share post');
+      //  Helper.showToast(message);
       setState(
         () {},
       );

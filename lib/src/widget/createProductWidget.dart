@@ -266,6 +266,9 @@ class CreateProductModalState extends mvc.StateMVC<CreateProductModal> {
 
         if (!currentFocus.hasPrimaryFocus) {
           currentFocus.unfocus();
+          setState(() {
+            autoLocationList = [];
+          });
         }
       },
       child: Stack(children: [

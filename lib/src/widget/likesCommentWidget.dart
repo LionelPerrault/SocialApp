@@ -609,7 +609,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
             width: SizeConfig(context).screenWidth > 600
                 ? 600
                 : SizeConfig(context).screenWidth,
-            padding: const EdgeInsets.only(left: 20, right: 15, bottom: 10),
+            padding: const EdgeInsets.only(left: 20, right: 15, bottom: 1),
             color: const Color.fromRGBO(245, 245, 245, 1),
             child: isComment && allComment != null && allComment.isNotEmpty
                 ? ListView.builder(

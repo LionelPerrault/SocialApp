@@ -89,7 +89,7 @@ class RegisterScreenState extends mvc.StateMVC<RegisterScreen> {
                   width: SizeConfig(context).screenWidth <
                           SizeConfig.smallScreenSize
                       ? SizeConfig.smallScreenSize * 0.94
-                      : 300,
+                      : 320,
                   margin: EdgeInsets.only(
                     left: SizeConfig(context).screenWidth <
                             SizeConfig.smallScreenSize

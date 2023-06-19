@@ -5,14 +5,19 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/people/widget/searchScreen.dart';
 
+import '../../../controllers/ProfileController.dart';
+
 class SendRequestsScreen extends StatefulWidget {
-  SendRequestsScreen({Key? key})
+  SendRequestsScreen({Key? key, required this.routerChange})
       : con = PeopleController(),
         super(key: key);
   final PeopleController con;
+
+  Function routerChange;
   @override
   State createState() => SendRequestsScreenState();
 }
@@ -162,167 +167,188 @@ class SendRequestsScreenState extends mvc.StateMVC<SendRequestsScreen> {
                           style: TextStyle(fontSize: 14)))
                   : Column(
                       children: con.sendFriends
-                          .map((e) => Container(
-                              padding: const EdgeInsets.only(
-                                  top: 10, left: 20, right: 20),
-                              child: Column(
-                                children: [
-                                  Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        const Padding(
-                                            padding: EdgeInsets.only(left: 10)),
-                                        e['avatar'] == ''
-                                            ? CircleAvatar(
-                                                radius: 20,
-                                                child: SvgPicture.network(
-                                                    Helper.avatar))
-                                            : CircleAvatar(
-                                                radius: 20,
-                                                backgroundImage:
-                                                    NetworkImage(e['avatar'])),
-                                        Container(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, top: 5),
-                                          child: Text(
-                                            e['fullName'],
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w900,
-                                                fontSize: 11),
+                          .map(
+                            (e) => InkWell(
+                              onTap: () {
+                                ProfileController()
+                                    .updateProfile(e['userName']);
+
+                                widget.routerChange({
+                                  'router': RouteNames.profile,
+                                  'subRouter': e['userName']
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                    top: 10, left: 20, right: 20),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          const Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 10)),
+                                          e['avatar'] == ''
+                                              ? CircleAvatar(
+                                                  radius: 20,
+                                                  child: SvgPicture.network(
+                                                      Helper.avatar))
+                                              : CircleAvatar(
+                                                  radius: 20,
+                                                  backgroundImage: NetworkImage(
+                                                      e['avatar'])),
+                                          Container(
+                                            padding: const EdgeInsets.only(
+                                                left: 10, top: 5),
+                                            child: Text(
+                                              e['fullName'],
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w900,
+                                                  fontSize: 11),
+                                            ),
                                           ),
-                                        ),
-                                        const Flexible(
-                                            fit: FlexFit.tight,
-                                            child: SizedBox()),
-                                        Container(
-                                          padding:
-                                              const EdgeInsets.only(top: 6),
-                                          child: ElevatedButton(
-                                            onPressed: () async {
-                                              if (!e.containsKey('state') ||
-                                                  e['state'] == 0) {
-                                                e['state'] = -1;
-                                                setState(() {});
-                                                await con
-                                                    .cancelFriendDirectlyMap(
-                                                        {'uid': e['uid']});
-                                                e['state'] = -2;
-                                                setState(() {});
-                                              } else if (e['state'] == 0) {
-                                                e['state'] = -1;
-                                                setState(() {});
-                                                await con
-                                                    .cancelFriendDirectlyMap(
-                                                        {'uid': e['uid']});
-                                                e['state'] = -2;
-                                                setState(() {});
-                                              } else if (e['state'] == -2) {
-                                                e['state'] = -1;
-                                                setState(() {});
-                                                await con.requestFriendAsData(
-                                                  e['uid'],
-                                                );
-                                                e['state'] = 0;
-                                                setState(() {});
-                                              }
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    (e as Map).containsKey('state') &&
-                                                            e['state'] == -2
-                                                        ? Colors.black
-                                                        : const Color.fromRGBO(
-                                                            245, 54, 92, 1),
-                                                elevation: 3,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(
-                                                        2.0)),
-                                                minimumSize: (e).containsKey('state') &&
-                                                        e['state'] == -1
-                                                    ? const Size(60, 35)
-                                                    : const Size(70, 35),
-                                                maximumSize:
-                                                    (e).containsKey('state') &&
-                                                            e['state'] == -1
-                                                        ? const Size(60, 35)
-                                                        : const Size(70, 35)),
-                                            child: (e).containsKey('state') &&
-                                                    e['state'] == -1
-                                                ? const SizedBox(
-                                                    width: 10,
-                                                    height: 10,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: Colors.white,
-                                                    ),
-                                                  )
-                                                : (e).containsKey('state') &&
-                                                        e['state'] == -2
-                                                    ? const Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Icon(
-                                                            Icons
-                                                                .person_add_alt_rounded,
-                                                            color: Colors.white,
-                                                            size: 13,
-                                                          ),
-                                                          Padding(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      left: 2)),
-                                                          Text('Add',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 11,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w900))
-                                                        ],
-                                                      )
-                                                    : const Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Icon(
-                                                            FontAwesomeIcons
-                                                                .clock,
-                                                            color: Colors.white,
-                                                            size: 13,
-                                                          ),
-                                                          Padding(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      left: 2)),
-                                                          Text('Sent',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 11,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w900))
-                                                        ],
+                                          const Flexible(
+                                              fit: FlexFit.tight,
+                                              child: SizedBox()),
+                                          Container(
+                                            padding:
+                                                const EdgeInsets.only(top: 6),
+                                            child: ElevatedButton(
+                                              onPressed: () async {
+                                                if (!e.containsKey('state') ||
+                                                    e['state'] == 0) {
+                                                  e['state'] = -1;
+                                                  setState(() {});
+                                                  await con
+                                                      .cancelFriendDirectlyMap(
+                                                          {'uid': e['uid']});
+                                                  e['state'] = -2;
+                                                  setState(() {});
+                                                } else if (e['state'] == 0) {
+                                                  e['state'] = -1;
+                                                  setState(() {});
+                                                  await con
+                                                      .cancelFriendDirectlyMap(
+                                                          {'uid': e['uid']});
+                                                  e['state'] = -2;
+                                                  setState(() {});
+                                                } else if (e['state'] == -2) {
+                                                  e['state'] = -1;
+                                                  setState(() {});
+                                                  await con.requestFriendAsData(
+                                                    e['uid'],
+                                                  );
+                                                  e['state'] = 0;
+                                                  setState(() {});
+                                                }
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      (e as Map).containsKey('state') && e['state'] == -2
+                                                          ? Colors.black
+                                                          : const Color.fromRGBO(
+                                                              245, 54, 92, 1),
+                                                  elevation: 3,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              2.0)),
+                                                  minimumSize: (e).containsKey('state') &&
+                                                          e['state'] == -1
+                                                      ? const Size(60, 35)
+                                                      : const Size(70, 35),
+                                                  maximumSize:
+                                                      (e).containsKey('state') &&
+                                                              e['state'] == -1
+                                                          ? const Size(60, 35)
+                                                          : const Size(70, 35)),
+                                              child: (e).containsKey('state') &&
+                                                      e['state'] == -1
+                                                  ? const SizedBox(
+                                                      width: 10,
+                                                      height: 10,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color: Colors.white,
                                                       ),
-                                          ),
-                                        )
-                                      ]),
-                                  const Padding(
-                                      padding: EdgeInsets.only(top: 10)),
-                                  Container(
-                                    height: 1,
-                                    color: color,
-                                  ),
-                                ],
-                              )))
+                                                    )
+                                                  : (e).containsKey('state') &&
+                                                          e['state'] == -2
+                                                      ? const Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .person_add_alt_rounded,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 13,
+                                                            ),
+                                                            Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            2)),
+                                                            Text('Add',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        11,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w900))
+                                                          ],
+                                                        )
+                                                      : const Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Icon(
+                                                              FontAwesomeIcons
+                                                                  .clock,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 13,
+                                                            ),
+                                                            Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            2)),
+                                                            Text('Sent',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        11,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w900))
+                                                          ],
+                                                        ),
+                                            ),
+                                          )
+                                        ]),
+                                    const Padding(
+                                        padding: EdgeInsets.only(top: 10)),
+                                    Container(
+                                      height: 1,
+                                      color: color,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
                           .toList()),
         ],
       ),

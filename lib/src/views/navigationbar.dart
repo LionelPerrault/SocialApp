@@ -234,18 +234,18 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
       }
     });
 
-    final Stream<QuerySnapshot> triggerLogout = Helper.userCollection
-        .where('userName', isEqualTo: UserManager.userInfo['userName'])
-        .snapshots();
-    triggerLogout.listen((event) async {
-      try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: UserManager.userInfo['email'],
-            password: UserManager.userInfo['password']);
-      } catch (e) {
-        UserController().signOutUser(context);
-      }
-    });
+    // final Stream<QuerySnapshot> triggerLogout = Helper.userCollection
+    //     .where('userName', isEqualTo: UserManager.userInfo['userName'])
+    //     .snapshots();
+    // triggerLogout.listen((event) async {
+    //   try {
+    //     await FirebaseAuth.instance.signInWithEmailAndPassword(
+    //         email: UserManager.userInfo['email'],
+    //         password: UserManager.userInfo['password']);
+    //   } catch (e) {
+    //     UserController().signOutUser(context);
+    //   }
+    // });
 
     SearcherController().getAllSearchResult();
     super.initState();

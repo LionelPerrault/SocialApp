@@ -75,7 +75,8 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
             child: SingleChildScrollView(
                 physics: const NeverScrollableScrollPhysics(),
                 child: Container(
-                  height: SizeConfig(context).screenHeight,
+                  height: SizeConfig(context).screenHeight -
+                      SizeConfig(context).padding,
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
