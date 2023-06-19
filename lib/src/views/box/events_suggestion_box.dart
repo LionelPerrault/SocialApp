@@ -29,6 +29,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
   var isJoining = {};
   @override
   void initState() {
+    isSound = UserManager.userInfo['eventsSuggestion'] ?? true;
     Future.delayed(const Duration(microseconds: 0), () async {
       con.unInterestedEvents =
           await con.getEvent('unInterested', userInfo['userName']);
@@ -81,10 +82,23 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                           //thumbColor: kprimaryColor,
                           activeColor: kprimaryColor,
                           value: isSound,
-                          onChanged: (value) {
+                          onChanged: (value) async {
+                            await Helper.userCollection
+                                .doc(UserManager.userInfo['uid'])
+                                .update({'eventsSuggestion': value});
+
                             setState(() {
                               isSound = value;
                             });
+                            var userManager = UserManager.userInfo;
+                            userManager['eventsSuggestion'] = value;
+                            var box = {};
+                            userManager.forEach((key, value) {
+                              box = {...box, key.toString(): value};
+                            });
+                            await Helper.saveJSONPreference(
+                                Helper.userField, {...box});
+                            await UserManager.getUserInfo();
                           },
                         ),
                       ),

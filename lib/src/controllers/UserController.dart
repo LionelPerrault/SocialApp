@@ -1195,11 +1195,11 @@ class UserController extends ControllerMVC {
       profile.forEach((key, value) {
         userManager[key] = value;
       });
-      var j = {};
+      var box = {};
       userManager.forEach((key, value) {
-        j = {...j, key.toString(): value};
+        box = {...box, key.toString(): value};
       });
-      await Helper.saveJSONPreference(Helper.userField, {...j});
+      await Helper.saveJSONPreference(Helper.userField, {...box});
       await UserManager.getUserInfo();
       setState(() {});
       isProfileChange = false;
