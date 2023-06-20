@@ -60,6 +60,15 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
         );
   }
 
+  removeShow() {
+    for (var i = 0; i < allProducts.length; i++) {
+      allProducts[i]['state'] = false;
+    }
+    print(allProducts);
+    setState(() {});
+    print('object');
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.productCategory != 'All') {
@@ -92,7 +101,7 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
             product['data']['productName'].contains(widget.searchValue) == true)
         .toList();
     return SizedBox(
-      width: SizeConfig(context).screenWidth < 800
+      width: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
           ? SizeConfig(context).screenWidth
           : (SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth) *
               0.8,
@@ -134,14 +143,26 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
                                   ),
                                 ],
                               ),
-                            )
+                            ),
                           ]
-                        : allProducts
-                            .map((product) => MarketCell(
-                                  data: product,
-                                  routerChange: widget.routerChange,
-                                ))
-                            .toList())
+                        : allProducts.map((product) {
+                            clicked() {
+                              removeShow();
+                              if (product['state'] == true) {
+                                product['state'] = false;
+                              } else {
+                                product['state'] = true;
+                              }
+                              setState(() {});
+                            }
+
+                            return MarketCell(
+                              clicked: clicked,
+                              data: product,
+                              routerChange: widget.routerChange,
+                            );
+                          }).toList(),
+                  )
                 : allProducts.isEmpty
                     ? Container(
                         padding: const EdgeInsets.only(top: 40),
@@ -172,19 +193,30 @@ class MarketAllProductState extends mvc.StateMVC<MarketAllProduct> {
                       )
                     : GridView.count(
                         crossAxisCount:
-                            SizeConfig(context).screenWidth > 1000 ? 3 : 2,
+                            SizeConfig(context).screenWidth > 1200 ? 3 : 2,
                         childAspectRatio: 2 / 3,
                         padding: const EdgeInsets.all(4.0),
                         mainAxisSpacing: 10.0,
                         shrinkWrap: true,
                         crossAxisSpacing: 10.0,
                         primary: false,
-                        children: allProducts
-                            .map((product) => MarketCell(
-                                  data: product,
-                                  routerChange: widget.routerChange,
-                                ))
-                            .toList()),
+                        children: allProducts.map((product) {
+                          clicked() {
+                            removeShow();
+                            if (product['state'] == true) {
+                              product['state'] = false;
+                            } else {
+                              product['state'] = true;
+                            }
+                            setState(() {});
+                          }
+
+                          return MarketCell(
+                            data: product,
+                            clicked: clicked,
+                            routerChange: widget.routerChange,
+                          );
+                        }).toList()),
           ),
         ],
       ),

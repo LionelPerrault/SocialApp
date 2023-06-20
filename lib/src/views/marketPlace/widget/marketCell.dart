@@ -12,10 +12,12 @@ class MarketCell extends StatefulWidget {
   MarketCell({
     super.key,
     required this.data,
+    required this.clicked,
     required this.routerChange,
   }) : con = PostController();
   // ignore: prefer_typing_uninitialized_variables
   var data;
+  Function clicked;
   Function routerChange;
   late PostController con;
   @override
@@ -28,7 +30,6 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
   // ignore: prefer_typing_uninitialized_variables
   var product;
   var productId = '';
-  var readyShow = false;
   @override
   void initState() {
     add(widget.con);
@@ -45,8 +46,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        readyShow = true;
-        setState(() {});
+        widget.clicked();
       },
       child: Stack(
         children: [
@@ -58,7 +58,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
             height: 390,
             decoration: BoxDecoration(
               color: Colors.white,
-              boxShadow: readyShow
+              boxShadow: widget.data['state'] == true
                   ? [
                       const BoxShadow(
                         color: Colors.grey,
@@ -113,7 +113,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                     ),
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 500),
-                      child: readyShow
+                      child: widget.data['state'] == true
                           ? Container(
                               // alignment: Alignment.center,
                               decoration: BoxDecoration(
