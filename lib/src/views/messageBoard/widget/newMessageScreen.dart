@@ -105,15 +105,16 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
             // height: SizeConfig(context).screenHeight,
             child: Padding(
                 padding: EdgeInsets.only(top: 60),
-                child: searchUser.isNotEmpty ? userList() : Container()),
+                child: searchUser.isNotEmpty ? userList(context) : Container()),
           ),
         ],
       )
     ]));
   }
 
-  Widget userList() {
-    return Expanded(
+  Widget userList(context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
       child: SingleChildScrollView(
         child: Column(
           children: searchUser
