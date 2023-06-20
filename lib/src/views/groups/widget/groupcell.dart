@@ -113,110 +113,112 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
           margin: const EdgeInsets.only(top: 10),
           width: 288,
           height: 233,
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Container(
-                width: 260,
-                margin: const EdgeInsets.only(top: 60),
-                padding: const EdgeInsets.only(top: 70),
-                decoration: BoxDecoration(
-                  color: Colors.grey[350],
-                  borderRadius: BorderRadius.circular(5),
+          child: GestureDetector(
+            onTap: () {
+              widget.routerChange({
+                'router': RouteNames.groups,
+                'subRouter': widget.groupData['id'],
+              });
+            },
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Container(
+                  width: 260,
+                  margin: const EdgeInsets.only(top: 60),
+                  padding: const EdgeInsets.only(top: 70),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[350],
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Column(
+                    children: [
+                      RichText(
+                        text: TextSpan(children: <TextSpan>[
+                          TextSpan(
+                              text: widget.groupData['data']['groupName'],
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  widget.routerChange({
+                                    'router': RouteNames.groups,
+                                    'subRouter': widget.groupData['id'],
+                                  });
+                                }),
+                        ]),
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 5)),
+                      Text(
+                        '${widget.groupData['data']['groupJoined'].length} Members',
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 13),
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 5)),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(2.0)),
+                              minimumSize: const Size(120, 35),
+                              maximumSize: const Size(120, 35)),
+                          onPressed: () {
+                            groupJoinFunc();
+                          },
+                          child: loading
+                              ? const SizedBox(
+                                  width: 10,
+                                  height: 10,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.grey,
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    widget.groupData['joined']
+                                        ? const Icon(
+                                            Icons.star,
+                                            color: Colors.black,
+                                            size: 18.0,
+                                          )
+                                        : Icon(
+                                            widget.groupData['joined']
+                                                ? Icons.check
+                                                : Icons.group_add,
+                                            color: Colors.black,
+                                            size: 18.0,
+                                          ),
+                                    Text(
+                                        widget.groupData['joined']
+                                            ? 'Joined'
+                                            : 'Join',
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                )),
+                      const Padding(padding: EdgeInsets.only(top: 5))
+                    ],
+                  ),
                 ),
-                child: Column(
-                  children: [
-                    RichText(
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                            text: widget.groupData['data']['groupName'],
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                widget.routerChange({
-                                  'router': RouteNames.groups,
-                                  'subRouter': widget.groupData['id'],
-                                });
-                              }),
-                      ]),
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 5)),
-                    Text(
-                      '${widget.groupData['data']['groupJoined'].length} Members',
-                      style: const TextStyle(color: Colors.black, fontSize: 13),
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 5)),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2.0)),
-                            minimumSize: const Size(120, 35),
-                            maximumSize: const Size(120, 35)),
-                        onPressed: () {
-                          groupJoinFunc();
-                        },
-                        child: loading
-                            ? const SizedBox(
-                                width: 10,
-                                height: 10,
-                                child: CircularProgressIndicator(
-                                  color: Colors.grey,
-                                ),
-                              )
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  widget.groupData['joined']
-                                      ? const Icon(
-                                          Icons.star,
-                                          color: Colors.black,
-                                          size: 18.0,
-                                        )
-                                      : Icon(
-                                          widget.groupData['joined']
-                                              ? Icons.check
-                                              : Icons.group_add,
-                                          color: Colors.black,
-                                          size: 18.0,
-                                        ),
-                                  Text(
-                                      widget.groupData['joined']
-                                          ? 'Joined'
-                                          : 'Join',
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              )),
-                    const Padding(padding: EdgeInsets.only(top: 5))
-                  ],
-                ),
-              ),
-              GestureDetector(
-                  onTap: () {
-                    widget.routerChange({
-                      'router': RouteNames.groups,
-                      'subRouter': widget.groupData['id'],
-                    });
-                  },
+                CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.white,
                   child: CircleAvatar(
-                    radius: 60,
-                    backgroundColor: Colors.white,
-                    child: CircleAvatar(
-                        radius: 75,
-                        backgroundImage: NetworkImage(
-                            widget.groupData['data']['groupPicture'] == ''
-                                ? Helper.groupImage
-                                : widget.groupData['data']['groupPicture'])),
-                  ))
-            ],
+                      radius: 75,
+                      backgroundImage: NetworkImage(
+                          widget.groupData['data']['groupPicture'] == ''
+                              ? Helper.groupImage
+                              : widget.groupData['data']['groupPicture'])),
+                ),
+              ],
+            ),
           ),
         )
       ],
