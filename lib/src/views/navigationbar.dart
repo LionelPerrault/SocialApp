@@ -181,7 +181,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
               addData = {
                 // ...allNotifi[i],
                 'uid': allNotifi[i].id,
-                'avatar': Helper.systemAvatar,
+                'avatar': '',
                 'userName': Helper.notificationName[postType]['name'],
                 'text': text,
                 'userList': allNotifi[i]['userList'],

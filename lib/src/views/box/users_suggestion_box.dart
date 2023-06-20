@@ -9,6 +9,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PeopleController.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/colors.dart';
 
@@ -30,6 +31,7 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
   var isFirst = false;
   @override
   void initState() {
+    isSound = UserManager.userInfo['friendSuggestion'] ?? true;
     super.initState();
     con.addNotifyCallBack(this);
     con.getUserList();
@@ -79,10 +81,23 @@ class ShnatterUserSuggestState extends mvc.StateMVC<ShnatterUserSuggest> {
                           //thumbColor: kprimaryColor,
                           activeColor: kprimaryColor,
                           value: isSound,
-                          onChanged: (value) {
+                          onChanged: (value) async {
+                            await Helper.userCollection
+                                .doc(UserManager.userInfo['uid'])
+                                .update({'friendSuggestion': value});
+
                             setState(() {
                               isSound = value;
                             });
+                            var userManager = UserManager.userInfo;
+                            userManager['friendSuggestion'] = value;
+                            var box = {};
+                            userManager.forEach((key, value) {
+                              box = {...box, key.toString(): value};
+                            });
+                            await Helper.saveJSONPreference(
+                                Helper.userField, {...box});
+                            await UserManager.getUserInfo();
                           },
                         ),
                       ),

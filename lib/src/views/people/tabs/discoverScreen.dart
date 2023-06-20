@@ -131,7 +131,6 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
     int lastIndex = con.pageIndex * 5;
     if (lastIndex > con.userList.length) lastIndex = con.userList.length;
     List data = con.userList.getRange(0, lastIndex).toList();
-
     return con.isGetList || con.pageIndex > 1
         ? Container(
             margin: const EdgeInsets.only(top: 10),

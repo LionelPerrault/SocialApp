@@ -115,7 +115,7 @@ class NotificationsPageState extends mvc.StateMVC<NotificationsPage> {
                                 : postCon.allNotification[index]['userName'] ==
                                         'System Message'
                                     ? CircleAvatar(
-                                        child: SvgPicture.network(
+                                        child: SvgPicture.asset(
                                             Helper.systemAvatar),
                                       )
                                     : CircleAvatar(
