@@ -54,8 +54,7 @@ class Helper {
       "https://us-central1-shnatter-a69cd.cloudfunctions.net/";
   static String couldFunctionDev =
       "https://us-central1-shnatter-dev.cloudfunctions.net/";
-  static var systemAvatar =
-      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsystem_avatar.svg?alt=media&token=1b903903-95d8-4826-808d-ddbde4ac55c3';
+  static var systemAvatar = 'svg/system_avatar.svg';
   static var avatar =
       'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fprofile%2Fblank_profile_male.svg?alt=media&token=eaf0c1c7-5a30-4771-a7b8-9dc312eafe82';
   static var pageAvatar =

@@ -137,8 +137,8 @@ class ShnatterNotificationState extends mvc.StateMVC<ShnatterNotification> {
                                                     ['userName'] ==
                                                 'System Message'
                                             ? CircleAvatar(
-                                                child: SvgPicture.network(
-                                                    Helper.systemAvatar),
+                                                child: SvgPicture.asset(
+                                                    'svg/system_avatar.svg'),
                                               )
                                             : CircleAvatar(
                                                 child: SvgPicture.network(

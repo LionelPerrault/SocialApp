@@ -77,7 +77,7 @@ class NotificationsScreenState extends mvc.StateMVC<NotificationsScreen> {
         if (data != null) {
           addData = {
             // ...notifyData,
-            'avatar': Helper.systemAvatar,
+            'avatar': '',
             'userName': Helper.notificationName[notifyData['postType']]['name'],
             'text': text,
           };
@@ -120,7 +120,7 @@ class NotificationsScreenState extends mvc.StateMVC<NotificationsScreen> {
                                   : notifications[index]['userName'] ==
                                           'System Message'
                                       ? CircleAvatar(
-                                          child: SvgPicture.network(
+                                          child: SvgPicture.asset(
                                               Helper.systemAvatar),
                                         )
                                       : CircleAvatar(
