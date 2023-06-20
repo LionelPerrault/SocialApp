@@ -67,64 +67,66 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onHorizontalDragEnd: (DragEndDetails details) {
-        if (details.primaryVelocity! < 0) {
-          goToNextPhoto();
-        } else if (details.primaryVelocity! > 0) {
-          goToPreviousPhoto();
-        }
-      },
-      child: Stack(
-        children: [
-          Container(
-            color: Colors.black,
-            width: SizeConfig(context).screenWidth,
-            height: SizeConfig(context).screenHeight,
-            alignment: Alignment.center,
-            child: Container(
+    return SafeArea(
+      child: GestureDetector(
+        onHorizontalDragEnd: (DragEndDetails details) {
+          if (details.primaryVelocity! < 0) {
+            goToNextPhoto();
+          } else if (details.primaryVelocity! > 0) {
+            goToPreviousPhoto();
+          }
+        },
+        child: Stack(
+          children: [
+            Container(
               color: Colors.black,
-              child: Center(
-                child: FittedBox(
-                  fit: BoxFit.none,
-                  child: LimitedBox(
-                    maxWidth: SizeConfig(context).screenWidth,
-                    maxHeight: SizeConfig(context).screenHeight,
-                    child: InteractiveViewer(
-                      transformationController: _transformationController,
-                      boundaryMargin: const EdgeInsets.all(20),
-                      onInteractionEnd: (_) {
-                        //  _transformationController.value = Matrix4.identity();
-                      },
-                      child: Image.network(widget.photoUrls[currentIndex]),
+              width: SizeConfig(context).screenWidth,
+              height: SizeConfig(context).screenHeight,
+              alignment: Alignment.center,
+              child: Container(
+                color: Colors.black,
+                child: Center(
+                  child: FittedBox(
+                    fit: BoxFit.none,
+                    child: LimitedBox(
+                      maxWidth: SizeConfig(context).screenWidth,
+                      maxHeight: SizeConfig(context).screenHeight,
+                      child: InteractiveViewer(
+                        transformationController: _transformationController,
+                        boundaryMargin: const EdgeInsets.all(20),
+                        onInteractionEnd: (_) {
+                          //  _transformationController.value = Matrix4.identity();
+                        },
+                        child: Image.network(widget.photoUrls[currentIndex]),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-          Positioned(
-            top: 10,
-            right: 10,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-                padding: const EdgeInsets.all(8),
-                child: const Icon(
-                  Icons.close,
-                  color: Colors.black,
-                  size: 20,
+            Positioned(
+              top: 10,
+              right: 10,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: const Icon(
+                    Icons.close,
+                    color: Colors.black,
+                    size: 20,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
