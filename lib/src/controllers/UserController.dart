@@ -1265,6 +1265,34 @@ class UserController extends ControllerMVC {
             }
         },
       );
+
+      var eventSnapshot = await FirebaseFirestore.instance
+          .collection(Helper.eventsField)
+          .where('eventAdmin', arrayContains: {'uid': userManager['uid']})
+          .get()
+          .then((QuerySnapshot) {
+            QuerySnapshot.docs.forEach((doc) {
+              doc.reference.delete();
+            });
+          });
+      var groupSnapshot = await FirebaseFirestore.instance
+          .collection(Helper.groupsField)
+          .where('groupAdmin', arrayContains: {'uid': userManager['uid']})
+          .get()
+          .then((QuerySnapshot) {
+            QuerySnapshot.docs.forEach((doc) {
+              doc.reference.delete();
+            });
+          });
+      // groupSnapshot.docs.forEach((doc) {
+      //   FirebaseFirestore.instance
+      //       .collection(Helper.groupsField)
+      //       .doc(doc.id)
+      //       .delete().then((_) async{
+
+      //       });
+      // });
+
       var snapshot = await FirebaseFirestore.instance
           .collection(Helper.userField)
           .where('userName', isEqualTo: userManager['userName'])
