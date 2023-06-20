@@ -32,8 +32,6 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
   bool showMenu = false;
   double width = 0;
   double itemWidth = 0;
-  //
-  var tab = 'Friends';
   var userInfo = UserManager.userInfo;
   var profileCon = ProfileController();
   List<Map> mainInfoList = [];
@@ -98,7 +96,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
   Widget mainTabs() {
     return Container(
       width: SizeConfig(context).screenWidth,
-      height: 100,
+      height: 70,
       decoration: BoxDecoration(
         color: const Color.fromRGBO(240, 240, 240, 1),
         borderRadius: BorderRadius.circular(3),
@@ -122,32 +120,6 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                   )
                 ],
               )),
-          Container(
-            margin: const EdgeInsets.only(top: 15),
-            child: Row(children: [
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () {
-                    tab = 'Friends';
-                    setState(() {});
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 100,
-                    height: 40,
-                    color: tab == 'Friends'
-                        ? Colors.white
-                        : const Color.fromRGBO(240, 240, 240, 1),
-                    child: const Text(
-                      'Friends',
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-          )
         ],
       ),
     );
@@ -157,15 +129,28 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     var screenWidth = SizeConfig(context).screenWidth;
     return friendModel.friends.isEmpty
         ? Container(
-            margin: const EdgeInsets.only(left: 10),
-            height: SizeConfig(context).screenHeight * 0.2,
+            margin: const EdgeInsets.only(left: 30, right: 30),
+            height: 200,
             color: Colors.white,
             alignment: Alignment.center,
-            child: Text(
-                '${profileCon.viewProfileFullName} doesn`t have friends',
-                style:
-                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
-          )
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              SvgPicture.network(Helper.emptySVG, width: 90),
+              Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  width: 140,
+                  decoration: const BoxDecoration(
+                      color: Color.fromRGBO(240, 240, 240, 1),
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  child: const Text(
+                    'No data to show',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(108, 117, 125, 1)),
+                  ))
+            ]))
         : Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

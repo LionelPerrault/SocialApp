@@ -245,10 +245,13 @@ class PeopleController extends ControllerMVC {
     var docId = '';
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendCollection)
-        .where('receiver', isEqualTo: UserManager.userInfo['uid'])
-        .where('requester', isEqualTo: receiver)
+        .where('users', arrayContains: UserManager.userInfo['uid'])
         .get();
-    if (snapshot.docs.isNotEmpty) {
+    var myFriendsSnap = snapshot.docs;
+    myFriendsSnap = myFriendsSnap
+        .where((element) => element.data()['users'].contains(receiver))
+        .toList();
+    if (myFriendsSnap.isNotEmpty) {
       if (mapData != null) mapData['state'] = 0;
       return;
     }
@@ -319,24 +322,16 @@ class PeopleController extends ControllerMVC {
 
         List<DocumentSnapshot> newDocumentList = snapshot.docs;
         for (var elem in newDocumentList) {
-          //check if it is already friends now.
           Map data = elem.data() as Map;
-          var userName = '';
-          try {
-            userName = data['userName'];
-          } catch (e) {}
+          data['uid'] = elem.id;
+          var userUid = '';
+          userUid = data['uid'];
           Iterable value = friends.where((element) {
             Map m = element as Map;
-            return m['users'][userName] == true;
+            return m['users'].contains(userUid) == true;
           });
           if (value.isEmpty) {
-            //  if (friendids.contains(data['userName'])) {
-            //    userList = [elem.data(), ...userList];
-            //    print("datausername is ${data['userName']}");
-            //    setState(() {});
-            //  } else {
-            userList.add(elem.data());
-            //   }
+            userList.add(data);
           }
         }
         lastData = newDocumentList[newDocumentList.length - 1];

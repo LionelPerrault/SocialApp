@@ -168,25 +168,23 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                               setState(() {});
                               await PeopleController()
                                   .cancelFriend({"uid": friendUseruid});
-                              e['state'] = 2;
+                              e['state'] = 3;
                               //widget.onClick();
                               setState(() {});
-                            } else {
-                              if (e['state'] == 2) {
-                                e['state'] = -3;
-                                setState(() {});
-                                var requester = e['uid'];
-                                e['id'] =
-                                    await con.requestFriendAsData(requester);
-                                e['state'] = 0;
-                                widget.onClick();
-                                setState(() {});
-                              }
+                            } else if (e['state'] == 2) {
+                              e['state'] = -3;
+                              setState(() {});
+                              var requester = e['uid'];
+                              e['id'] =
+                                  await con.requestFriendAsData(requester);
+                              e['state'] = 0;
+                              widget.onClick();
+                              setState(() {});
                             }
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  e['state'] == 1 ? Colors.green : Colors.black,
+                                  e['state'] == 1 ? Colors.red : Colors.black,
                               elevation: 3,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(2.0)),
@@ -222,7 +220,7 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                         padding: EdgeInsets.only(left: 3)),
                                     ((e as Map).containsKey('state') &&
                                             e['state'] == 1)
-                                        ? const Text('Friend',
+                                        ? const Text('Delete',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 11,

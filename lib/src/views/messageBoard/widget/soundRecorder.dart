@@ -81,7 +81,7 @@ class _SoundRecorderState extends State<SoundRecorder> {
     if (await _mRecorder!.isEncoderSupported(_codec) && !kIsWeb) {
       Directory? dir;
       if (Platform.isIOS) {
-        dir = await getApplicationDocumentsDirectory();
+        dir = await getTemporaryDirectory();
       } else {
         dir = await getExternalStorageDirectory();
       }
@@ -93,6 +93,57 @@ class _SoundRecorderState extends State<SoundRecorder> {
 
     _mRecorderIsInited = true;
     return true;
+    // if (!kIsWeb && Platform.isIOS) {
+    //   var microphonePermissionStatus = await Permission.microphone.request();
+    //   if (!microphonePermissionStatus.isGranted) {
+    //     print('Microphone permission not granted');
+    //     return false; // Exit the function or handle the error accordingly
+    //   }
+    // } else if (!kIsWeb) {
+    //   var contactsPermissionStatus = await Permission.contacts.request();
+    //   if (contactsPermissionStatus.isGranted) {
+    //     // Either the permission was already granted before or the user just granted it.
+    //   } else {
+    //     var microphonePermissionStatus = await Permission.microphone.request();
+    //     if (!microphonePermissionStatus.isGranted) {
+    //       print('Microphone permission not granted');
+    //       return false; // Exit the function or handle the error accordingly
+    //     }
+    //   }
+    // }
+
+    // _mRecorder!.closeRecorder();
+
+    // setState(() {
+    //   openedRecorder = false;
+    // });
+
+    // await _mRecorder!.openRecorder().then((value) {
+    //   openedRecorder = value != null;
+    // });
+
+    // setState(() {});
+
+    // if (openedRecorder == false) return false;
+
+    // if (kIsWeb) {
+    //   _codec = Codec.opusWebM;
+    //   _mPath = '${generateRandomFilename()}.webm';
+    // } else {
+    //   _codec = Codec.aacADTS;
+    //   Directory? dir;
+    //   if (Platform.isIOS) {
+    //     dir = await getApplicationDocumentsDirectory();
+    //   } else {
+    //     dir = await getExternalStorageDirectory();
+    //   }
+
+    //   _mPath = '${dir?.path}/${generateRandomFilename()}.mp4';
+    // }
+
+    // if (await _mRecorder!.isEncoderSupported(_codec)) {}
+
+    // return _mRecorderIsInited!;
   }
 
   String twoDigits(int n) {

@@ -27,6 +27,7 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
   var isJoining = {};
   @override
   void initState() {
+    isSound = UserManager.userInfo['groupsSuggestion'] ?? true;
     Future.delayed(const Duration(microseconds: 0), () async {
       con.unJoindGroups = await con.getGroup('unJoined', userInfo['userName']);
       setState(() {});
@@ -78,10 +79,23 @@ class ShnatterGroupSuggestState extends mvc.StateMVC<ShnatterGroupSuggest> {
                           //thumbColor: kprimaryColor,
                           activeColor: kprimaryColor,
                           value: isSound,
-                          onChanged: (value) {
+                          onChanged: (value) async {
+                            await Helper.userCollection
+                                .doc(UserManager.userInfo['uid'])
+                                .update({'groupsSuggestion': value});
+
                             setState(() {
                               isSound = value;
                             });
+                            var userManager = UserManager.userInfo;
+                            userManager['groupsSuggestion'] = value;
+                            var box = {};
+                            userManager.forEach((key, value) {
+                              box = {...box, key.toString(): value};
+                            });
+                            await Helper.saveJSONPreference(
+                                Helper.userField, {...box});
+                            await UserManager.getUserInfo();
                           },
                         ),
                       ),

@@ -437,7 +437,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                   label: _currentSliderValue.round().toString(),
                   onChanged: (double value) {
                     setState(() {
-                      _currentSliderValue = value;
+                      _currentSliderValue = value.roundToDouble();
                     });
                   },
                 )),

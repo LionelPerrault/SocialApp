@@ -31,13 +31,13 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
     add(widget.con);
     con = controller as UserController;
     super.initState();
-    Stream<QuerySnapshot<TokenLogin>> stream = Helper.authdata
-        .where('email', isEqualTo: UserManager.userInfo['email'])
-        .snapshots();
-    stream.listen((event) async {
-      await con.checkAuthToken(context);
-      setState(() {});
-    });
+    // Stream<QuerySnapshot<TokenLogin>> stream = Helper.authdata
+    //     .where('email', isEqualTo: UserManager.userInfo['email'])
+    //     .snapshots();
+    // stream.listen((event) async {
+    //   await con.checkAuthToken(context);
+    //   setState(() {});
+    // });
   }
 
   @override
