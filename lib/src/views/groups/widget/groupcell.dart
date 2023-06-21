@@ -47,6 +47,7 @@ class GroupCellState extends mvc.StateMVC<GroupCell> {
         .getUserInfo(widget.groupData['data']['groupAdmin'][0]['uid']);
     if (groupAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
         groupAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
+        widget.groupData['joined'] ||
         widget.groupData['data']['groupAdmin'][0]['uid'] ==
             UserManager.userInfo['uid']) {
       loading = true;
