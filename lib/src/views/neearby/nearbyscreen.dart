@@ -317,60 +317,67 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-        child: SizedBox(
-      height: SizeConfig(context).screenHeight - 80,
-      child: Stack(children: [
-        _currentTabIndex == 1 ? googleMap() : listData(),
-        Padding(
-          padding: const EdgeInsets.only(top: 10, left: 30, right: 30),
-          child: InkWell(
-            child: boardPane(),
-            onTap: () {
-              setState(() {
-                isShowChoosePane = true;
-              });
-            },
+    return SafeArea(
+      child: Column(
+        children: [
+          Expanded(
+            child: SizedBox(
+              height: SizeConfig(context).screenHeight - 80,
+              child: Stack(children: [
+                _currentTabIndex == 1 ? googleMap() : listData(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 30, right: 30),
+                  child: InkWell(
+                    child: boardPane(),
+                    onTap: () {
+                      setState(() {
+                        isShowChoosePane = true;
+                      });
+                    },
+                  ),
+                ),
+                // Padding(
+                //   padding: EdgeInsets.only(top: 10, left: 10),
+                //   child: InkWell(
+                //       onTap: () =>
+                //           {print("this is log clicked"), Navigator.of(context).pop()},
+                //       onHover: (value) => {
+                //             setState(() {
+                //               isBackHovered = value;
+                //             }),
+                //             print("onHover")
+                //           },
+                //       onFocusChange: (value) => {
+                //             setState(() {
+                //               isBackHovered = value;
+                //             }),
+                //             print("onHover")
+                //           },
+                //       child: Container(
+                //           width: 60,
+                //           height: 60,
+                //           child: Center(child: Icon(Icons.arrow_back_ios)),
+                //           decoration: BoxDecoration(
+                //             color: isBackHovered
+                //                 ? Colors.lightBlue
+                //                 : Color.fromARGB(51, 33, 73, 54),
+                //             borderRadius: BorderRadius.all(Radius.circular(30)),
+                //           ))),
+                // ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 100),
+                  child: tabPane(),
+                ),
+                isShowChoosePane == true ? choosePane() : Container(),
+                isShowChoosePane == false && _currentTabIndex == 1
+                    ? chooseArea()
+                    : Container()
+              ]),
+            ),
           ),
-        ),
-        // Padding(
-        //   padding: EdgeInsets.only(top: 10, left: 10),
-        //   child: InkWell(
-        //       onTap: () =>
-        //           {print("this is log clicked"), Navigator.of(context).pop()},
-        //       onHover: (value) => {
-        //             setState(() {
-        //               isBackHovered = value;
-        //             }),
-        //             print("onHover")
-        //           },
-        //       onFocusChange: (value) => {
-        //             setState(() {
-        //               isBackHovered = value;
-        //             }),
-        //             print("onHover")
-        //           },
-        //       child: Container(
-        //           width: 60,
-        //           height: 60,
-        //           child: Center(child: Icon(Icons.arrow_back_ios)),
-        //           decoration: BoxDecoration(
-        //             color: isBackHovered
-        //                 ? Colors.lightBlue
-        //                 : Color.fromARGB(51, 33, 73, 54),
-        //             borderRadius: BorderRadius.all(Radius.circular(30)),
-        //           ))),
-        // ),
-        Padding(
-          padding: const EdgeInsets.only(top: 100),
-          child: tabPane(),
-        ),
-        isShowChoosePane == true ? choosePane() : Container(),
-        isShowChoosePane == false && _currentTabIndex == 1
-            ? chooseArea()
-            : Container()
-      ]),
-    ));
+        ],
+      ),
+    );
   }
 
   Widget choosePane() {
