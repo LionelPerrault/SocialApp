@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable
 class SearchEventCell extends StatefulWidget {
@@ -28,6 +31,8 @@ class SearchEventCellState extends mvc.StateMVC<SearchEventCell> {
   late PostController con;
   bool requestStatus = false;
   bool interested = false;
+  bool loading = false;
+  bool payLoading = false;
   @override
   void initState() {
     super.initState();
@@ -35,6 +40,64 @@ class SearchEventCellState extends mvc.StateMVC<SearchEventCell> {
     con = controller as PostController;
     interested =
         con.boolInterested(widget.eventInfo, UserManager.userInfo['uid']);
+  }
+
+  eventInterestedFunc() async {
+    var eventAdminInfo = await ProfileController()
+        .getUserInfo(widget.eventInfo['eventAdmin'][0]['uid']);
+    if (eventAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
+        eventAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
+        interested ||
+        widget.eventInfo['eventAdmin'][0]['uid'] ==
+            UserManager.userInfo['uid']) {
+      loading = true;
+      setState(() {});
+      await con.interestedEvent(widget.eventInfo['uid']).then((value) {});
+      loading = false;
+      setState(() {});
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                await UserController()
+                    .payShnToken(
+                        eventAdminInfo['paymail'].toString(),
+                        eventAdminInfo['paywall'][UserManager.userInfo['uid']],
+                        'Pay for interested event of user')
+                    .then(
+                      (value) async => {
+                        if (value)
+                          {
+                            payLoading = false,
+                            setState(() {}),
+                            Navigator.of(context).pop(true),
+                            loading = true,
+                            setState(() {}),
+                            await con
+                                .interestedEvent(widget.eventInfo['uid'])
+                                .then((value) {}),
+                            interested = !interested,
+                            loading = false,
+                            setState(() {}),
+                          }
+                      },
+                    );
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Pay token for paywall',
+              text:
+                  'Admin of this event set paywall price is ${eventAdminInfo['paywall'][UserManager.userInfo['uid']]}',
+              progress: payLoading),
+        ),
+      );
+    }
   }
 
   @override
@@ -90,7 +153,7 @@ class SearchEventCellState extends mvc.StateMVC<SearchEventCell> {
             // print(con.isFriendRequest);
             requestStatus = true;
             setState(() {});
-            await con.interestedEvent(widget.eventInfo['uid']);
+            await eventInterestedFunc();
             requestStatus = false;
             interested = !interested;
             setState(() {});
@@ -120,7 +183,7 @@ class SearchEventCellState extends mvc.StateMVC<SearchEventCell> {
                           color: Colors.white,
                           size: 18.0,
                         ),
-                        Text(' Interested',
+                        Text(' Interesting',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 11,
