@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
+import 'package:shnatter/src/views/groups/panel/joinedgroups.dart';
 import 'dart:io' show File;
 
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';
@@ -59,8 +60,9 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   groupJoinFunc() async {
     var groupAdminInfo = await ProfileController()
         .getUserInfo(con.group['groupAdmin'][0]['uid']);
-    if (groupAdminInfo!['paywall']['joinMyGroup'] == null ||
-        groupAdminInfo['paywall']['joinMyGroup'] == '0' ||
+    if (groupAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
+        groupAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
+        con.viewGroupJoined ||
         con.group['groupAdmin'][0]['uid'] == UserManager.userInfo['uid']) {
       joinStatus = true;
       setState(() {});
@@ -84,7 +86,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                 await UserController()
                     .payShnToken(
                         groupAdminInfo['paymail'].toString(),
-                        groupAdminInfo['paywall']['joinMyGroup'],
+                        groupAdminInfo['paywall'][UserManager.userInfo['uid']],
                         'Pay for join or unjoin group')
                     .then(
                       (value) async => {
@@ -111,7 +113,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
               },
               header: 'Pay token for join or unjoin this page',
               text:
-                  'Admin of this group set price is ${groupAdminInfo['paywall']['joinMyGroup']} for join or unjoin this page',
+                  'Admin of this group set price is ${groupAdminInfo['paywall'][UserManager.userInfo['uid']]} for join or unjoin this page',
               progress: payLoading),
         ),
       );
