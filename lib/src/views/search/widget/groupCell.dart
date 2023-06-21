@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:shnatter/src/controllers/ProfileController.dart';
+import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 // ignore: must_be_immutable
 class SearchGroupCell extends StatefulWidget {
@@ -26,14 +29,73 @@ class SearchGroupCell extends StatefulWidget {
 
 class SearchGroupCellState extends mvc.StateMVC<SearchGroupCell> {
   late PostController con;
-  bool requestStatus = false;
   bool joined = false;
+  bool loading = false;
+  bool payLoading = false;
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as PostController;
     joined = con.boolJoined(widget.groupInfo, UserManager.userInfo['uid']);
+  }
+
+  groupJoinFunc() async {
+    var groupAdminInfo = await ProfileController()
+        .getUserInfo(widget.groupInfo['groupAdmin'][0]['uid']);
+    if (groupAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
+        groupAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
+        joined ||
+        widget.groupInfo['groupAdmin'][0]['uid'] ==
+            UserManager.userInfo['uid']) {
+      loading = true;
+      joined = !joined;
+      setState(() {});
+      await con.joinedGroup(widget.groupInfo['uid']);
+      loading = false;
+      setState(() {});
+      print("joined function1");
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const SizedBox(),
+          content: AlertYesNoWidget(
+              yesFunc: () async {
+                payLoading = true;
+                setState(() {});
+                await UserController()
+                    .payShnToken(
+                        groupAdminInfo['paymail'].toString(),
+                        groupAdminInfo['paywall'][UserManager.userInfo['uid']],
+                        'Pay for view profile of user')
+                    .then(
+                      (value) async => {
+                        if (value)
+                          {
+                            payLoading = false,
+                            setState(() {}),
+                            Navigator.of(context).pop(true),
+                            loading = true,
+                            setState(() {}),
+                            await con.joinedGroup(widget.groupInfo['uid']),
+                            loading = false,
+                            joined = !joined,
+                            setState(() {}),
+                          }
+                      },
+                    );
+              },
+              noFunc: () {
+                Navigator.of(context).pop(true);
+              },
+              header: 'Pay token for paywall',
+              text:
+                  'Admin of this group set paywall price is ${groupAdminInfo['paywall'][UserManager.userInfo['uid']]}',
+              progress: payLoading),
+        ),
+      );
+    }
   }
 
   @override
@@ -89,24 +151,16 @@ class SearchGroupCellState extends mvc.StateMVC<SearchGroupCell> {
         ),
         trailing: ElevatedButton(
           onPressed: () async {
-            // print(con.isFriendRequest);
-            requestStatus = true;
-            setState(() {});
-            await con.joinedGroup(widget.groupInfo['uid']);
-            requestStatus = false;
-            joined = !joined;
-            setState(() {});
+            groupJoinFunc();
           },
           style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromARGB(255, 33, 37, 41),
               elevation: 3,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(2.0)),
-              minimumSize:
-                  requestStatus ? const Size(60, 35) : const Size(87, 35),
-              maximumSize:
-                  requestStatus ? const Size(60, 35) : const Size(87, 35)),
-          child: requestStatus
+              minimumSize: loading ? const Size(60, 35) : const Size(87, 35),
+              maximumSize: loading ? const Size(60, 35) : const Size(87, 35)),
+          child: loading
               ? const SizedBox(
                   width: 10,
                   height: 10,

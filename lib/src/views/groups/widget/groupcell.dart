@@ -32,7 +32,7 @@ class GroupCell extends StatefulWidget {
 
 class GroupCellState extends mvc.StateMVC<GroupCell> {
   late PostController con;
-  var loading = false;
+  bool loading = false;
   bool payLoading = false;
   bool isOwner = false;
   @override
