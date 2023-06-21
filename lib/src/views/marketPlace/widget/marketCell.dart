@@ -181,6 +181,7 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                       size: 20,
                       color: Color.fromRGBO(31, 156, 255, 1),
                     ),
+                    const SizedBox(width: 10),
                     Text(
                       'Type: ${widget.data['data']["productStatus"]}',
                       overflow: TextOverflow.ellipsis,
@@ -197,7 +198,8 @@ class MarketCellState extends mvc.StateMVC<MarketCell> {
                         size: 20,
                       ),
                       Container(
-                        alignment: Alignment.center,
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.only(left: 10),
                         width: 140,
                         child: Text(
                           widget.data['data']['productLocation'],
