@@ -563,15 +563,20 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                           ),
                         ],
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      Row(
+                        children: (product['productPhoto'] as List).map((e) {
+                          return productPhoto(e['url']);
+                        }).toList(),
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
                       Container(
-                        alignment: Alignment.center,
+                        alignment: Alignment.centerLeft,
                         child: Text(
                           product['productAbout'] ?? '',
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
                       Container(
                         height: 78,
                         decoration: BoxDecoration(
@@ -845,6 +850,20 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
           ),
         ))
       ],
+    );
+  }
+
+  Widget productPhoto(url) {
+    return Expanded(
+      child: Container(
+        height: 300,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(url),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
     );
   }
 }
