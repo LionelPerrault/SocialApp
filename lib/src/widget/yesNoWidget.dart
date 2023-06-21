@@ -41,7 +41,6 @@ class YesNoWidgetState extends mvc.StateMVC<YesNoWidget> {
       ),
       child: Container(
         width: 400,
-        height: 300,
         decoration: const BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -81,9 +80,10 @@ class YesNoWidgetState extends mvc.StateMVC<YesNoWidget> {
                       ],
                     ),
                   ),
+                  Expanded(child: Container()),
                   Container(
                     alignment: Alignment.bottomCenter,
-                    margin: const EdgeInsets.only(top: 180),
+                    margin: const EdgeInsets.only(bottom: 30),
                     child: Row(
                       children: [
                         const Padding(padding: EdgeInsets.only(left: 10)),
