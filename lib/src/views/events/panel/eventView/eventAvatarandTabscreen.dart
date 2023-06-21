@@ -73,7 +73,8 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
         .getUserInfo(con.event['eventAdmin'][0]['uid']);
     if (eventAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
         eventAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
-        con.event['groupAdmin'][0]['uid'] == UserManager.userInfo['uid']) {
+        con.viewEventInterested ||
+        con.event['eventAdmin'][0]['uid'] == UserManager.userInfo['uid']) {
       interestedStatus = true;
       setState(() {});
       await con.interestedEvent(con.viewEventId).then((value) {
@@ -401,8 +402,11 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                                         color: Colors.black,
                                         size: 18.0,
                                       ),
-                                const Text('Interested',
-                                    style: TextStyle(
+                                Text(
+                                    !con.viewEventInterested
+                                        ? 'Interested'
+                                        : 'Interesting',
+                                    style: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 11,
                                         fontWeight: FontWeight.bold)),
