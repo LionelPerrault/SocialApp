@@ -105,46 +105,52 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
             // height: SizeConfig(context).screenHeight,
             child: Padding(
                 padding: EdgeInsets.only(top: 60),
-                child: searchUser.isNotEmpty ? userList() : Container()),
+                child: searchUser.isNotEmpty ? userList(context) : Container()),
           ),
         ],
       )
     ]));
   }
 
-  Widget userList() {
-    return SingleChildScrollView(
+  Widget userList(context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: SingleChildScrollView(
         child: Column(
-      children: searchUser
-          .map((e) => ListTile(
-                contentPadding: EdgeInsets.all(10),
-                enabled: true,
-                tileColor: con.chattingUser == e['userName']
-                    ? Color.fromRGBO(240, 240, 240, 1)
-                    : Colors.white,
-                hoverColor: Color.fromRGBO(240, 240, 240, 1),
-                onTap: () {
-                  con.avatar = e['avatar'];
-                  widget.onBack('new');
-                  con.chattingUser = e['userName'];
-                  con.newRFirstName = e['firstName'];
-                  con.newRLastName = e['lastName'];
-                  con.chatUserFullName = e['firstName'] + ' ' + e['lastName'];
-                  con.setState(() {});
-                  setState(
-                    () {},
-                  );
-                },
-                leading: e['avatar'] == ''
-                    ? CircleAvatar(
-                        radius: 25,
-                        child: SvgPicture.network(Helper.avatar),
-                      )
-                    : CircleAvatar(
-                        radius: 25, backgroundImage: NetworkImage(e['avatar'])),
-                title: Text(e['userName']),
-              ))
-          .toList(),
-    ));
+          children: searchUser
+              .map((e) => ListTile(
+                    contentPadding: EdgeInsets.all(10),
+                    enabled: true,
+                    tileColor: con.chattingUser == e['userName']
+                        ? Color.fromRGBO(240, 240, 240, 1)
+                        : Colors.white,
+                    hoverColor: Color.fromRGBO(240, 240, 240, 1),
+                    onTap: () {
+                      con.avatar = e['avatar'];
+                      widget.onBack('new');
+                      con.chattingUser = e['userName'];
+                      con.newRFirstName = e['firstName'];
+                      con.newRLastName = e['lastName'];
+                      con.chatUserFullName =
+                          e['firstName'] + ' ' + e['lastName'];
+                      con.setState(() {});
+                      setState(
+                        () {},
+                      );
+                    },
+                    leading: e['avatar'] == ''
+                        ? CircleAvatar(
+                            radius: 25,
+                            child: SvgPicture.network(Helper.avatar),
+                          )
+                        : CircleAvatar(
+                            radius: 25,
+                            backgroundImage: NetworkImage(e['avatar'])),
+                    title: Text(e['userName']),
+                  ))
+              .toList(),
+        ),
+      ),
+    );
   }
 }
