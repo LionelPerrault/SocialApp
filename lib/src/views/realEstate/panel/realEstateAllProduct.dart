@@ -48,6 +48,13 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
     }
   }
 
+  removeShow() {
+    for (var i = 0; i < allRealEstates.length; i++) {
+      allRealEstates[i]['state'] = false;
+    }
+    setState(() {});
+  }
+
   void getRealEstateNow() {
     roundFlag = true;
     setState(() {});
@@ -131,12 +138,23 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
                               ),
                             )
                           ]
-                        : allRealEstates
-                            .map((realEstate) => MarketCell2(
-                                  data: realEstate,
-                                  routerChange: widget.routerChange,
-                                ))
-                            .toList())
+                        : allRealEstates.map((realEstate) {
+                            clicked() {
+                              removeShow();
+                              if (realEstate['state'] == true) {
+                                realEstate['state'] = false;
+                              } else {
+                                realEstate['state'] = true;
+                              }
+                              setState(() {});
+                            }
+
+                            return MarketCell2(
+                              clicked: clicked,
+                              data: realEstate,
+                              routerChange: widget.routerChange,
+                            );
+                          }).toList())
                 : allRealEstates.isEmpty
                     ? Container(
                         padding: const EdgeInsets.only(top: 40),
@@ -174,12 +192,23 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
                         shrinkWrap: true,
                         crossAxisSpacing: 10.0,
                         primary: false,
-                        children: allRealEstates
-                            .map((realEstate) => MarketCell2(
-                                  data: realEstate,
-                                  routerChange: widget.routerChange,
-                                ))
-                            .toList()),
+                        children: allRealEstates.map((realEstate) {
+                          clicked() {
+                            removeShow();
+                            if (realEstate['state'] == true) {
+                              realEstate['state'] = false;
+                            } else {
+                              realEstate['state'] = true;
+                            }
+                            setState(() {});
+                          }
+
+                          return MarketCell2(
+                            clicked: clicked,
+                            data: realEstate,
+                            routerChange: widget.routerChange,
+                          );
+                        }).toList()),
           ),
         ],
       ),

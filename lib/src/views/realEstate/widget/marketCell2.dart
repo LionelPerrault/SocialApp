@@ -12,10 +12,12 @@ class MarketCell2 extends StatefulWidget {
   MarketCell2({
     super.key,
     required this.data,
+    required this.clicked,
     required this.routerChange,
   }) : con = PostController();
   // ignore: prefer_typing_uninitialized_variables
   var data;
+  Function clicked;
   Function routerChange;
   late PostController con;
   @override
@@ -28,7 +30,6 @@ class MarketCell2State extends mvc.StateMVC<MarketCell2> {
   // ignore: prefer_typing_uninitialized_variables
   var realEstate;
   var realEstateId = '';
-  var readyShow = false;
   @override
   void initState() {
     add(widget.con);
@@ -45,8 +46,7 @@ class MarketCell2State extends mvc.StateMVC<MarketCell2> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        readyShow = true;
-        setState(() {});
+        widget.clicked();
       },
       child: Stack(
         children: [
@@ -58,7 +58,7 @@ class MarketCell2State extends mvc.StateMVC<MarketCell2> {
             height: SizeConfig(context).screenWidth > 800 ? 440 : 390,
             decoration: BoxDecoration(
               color: Colors.white,
-              boxShadow: readyShow
+              boxShadow: widget.data['state'] == true
                   ? [
                       const BoxShadow(
                         color: Colors.grey,
@@ -114,7 +114,7 @@ class MarketCell2State extends mvc.StateMVC<MarketCell2> {
                     ),
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 500),
-                      child: readyShow
+                      child: widget.data['state'] == true
                           ? Container(
                               // alignment: Alignment.center,
                               decoration: BoxDecoration(
@@ -183,7 +183,8 @@ class MarketCell2State extends mvc.StateMVC<MarketCell2> {
                         size: 20,
                       ),
                       Container(
-                        alignment: Alignment.center,
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.only(left: 10),
                         width: 140,
                         child: Text(
                           widget.data['data']['realEstateLocation'],
