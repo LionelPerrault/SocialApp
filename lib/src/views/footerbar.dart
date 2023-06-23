@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shnatter/src/views/contactus.dart';
+import 'package:shnatter/src/views/privacy.dart';
 import 'package:shnatter/src/views/terms.dart';
 
+import '../routes/route_names.dart';
 import 'about.dart';
 
 class footbar extends StatefulWidget {
@@ -47,15 +49,10 @@ class footbarState extends State<footbar> {
                     ),
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(left: 5)),
+                const Padding(padding: EdgeInsets.only(left: 10)),
                 InkWell(
                   onTap: () => {
-                    Navigator.push<void>(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => const TermsScreen(),
-                      ),
-                    ),
+                    Navigator.pushNamed(context, RouteNames.terms),
                   },
                   child: GestureDetector(
                     child: Container(
@@ -67,7 +64,22 @@ class footbarState extends State<footbar> {
                     ),
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(left: 5)),
+                const Padding(padding: EdgeInsets.only(left: 10)),
+                InkWell(
+                  onTap: () => {
+                    Navigator.pushNamed(context, RouteNames.privacy),
+                  },
+                  child: GestureDetector(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Privacy',
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(left: 10)),
                 InkWell(
                   onTap: () => {
                     Navigator.push<void>(
@@ -87,7 +99,7 @@ class footbarState extends State<footbar> {
                     ),
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(left: 5)),
+                const Padding(padding: EdgeInsets.only(left: 10)),
                 // text('Directory', Colors.grey, 11),
               ]),
             )
@@ -127,7 +139,7 @@ class footbarMState extends State<footbarM> {
             const Padding(padding: EdgeInsets.only(top: 5)),
             Row(
               children: [
-                const Padding(padding: EdgeInsets.only(left: 5)),
+                const Padding(padding: EdgeInsets.only(left: 10)),
                 Expanded(
                     // ignore: sort_child_properties_last
                     child: InkWell(
@@ -151,18 +163,12 @@ class footbarMState extends State<footbarM> {
                       ),
                     ),
                     flex: 1),
-                const Padding(padding: EdgeInsets.only(left: 5)),
+                const Padding(padding: EdgeInsets.only(left: 10)),
                 Expanded(
                   // ignore: sort_child_properties_last
                   child: InkWell(
                     onTap: () => {
-                      Navigator.push<void>(
-                        context,
-                        MaterialPageRoute<void>(
-                          builder: (BuildContext context) =>
-                              const TermsScreen(),
-                        ),
-                      ),
+                      Navigator.pushNamed(context, RouteNames.terms),
                     },
                     child: GestureDetector(
                       child: Container(
@@ -176,8 +182,27 @@ class footbarMState extends State<footbarM> {
                   ),
                   flex: 1,
                 ),
+                const Padding(padding: EdgeInsets.only(left: 10)),
+                Expanded(
+                  // ignore: sort_child_properties_last
+                  child: InkWell(
+                    onTap: () => {
+                      Navigator.pushNamed(context, RouteNames.privacy),
+                    },
+                    child: GestureDetector(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Privacy',
+                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                        ),
+                      ),
+                    ),
+                  ),
+                  flex: 1,
+                ),
                 // text('Terms', Colors.grey, 13),
-                const Padding(padding: EdgeInsets.only(left: 5)),
+                const Padding(padding: EdgeInsets.only(left: 10)),
                 Expanded(
                   // ignore: sort_child_properties_last
                   child: InkWell(
@@ -201,7 +226,7 @@ class footbarMState extends State<footbarM> {
                   ),
                   flex: 1,
                 ),
-                // const Padding(padding: EdgeInsets.only(left: 5)),
+                // const Padding(padding: EdgeInsets.only(left: 10)),
                 // Expanded(
                 //   // ignore: sort_child_properties_last
                 //   child: text('Directory', Colors.grey, 13),

@@ -3,12 +3,14 @@ import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/views/emailverification.dart';
 import 'package:shnatter/src/views/mainScreen.dart';
+import 'package:shnatter/src/views/privacy.dart';
 import 'package:shnatter/src/views/registerscreen.dart';
 import 'package:shnatter/src/views/loginscreen.dart';
 import 'package:shnatter/src/views/resetPasswordCallback.dart';
 import 'package:shnatter/src/views/resetpassword.dart';
 import 'package:shnatter/src/views/admin/adminscreen.dart';
 import 'package:shnatter/src/views/startedscreen.dart';
+import 'package:shnatter/src/views/terms.dart';
 
 import '../managers/user_manager.dart';
 
@@ -76,6 +78,12 @@ class RouteGenerator {
       case RouteNames.started:
         return MaterialPageRoute(
             builder: (context) => StartedScreen(), settings: settings);
+      case RouteNames.privacy:
+        return MaterialPageRoute(
+            builder: (context) => const PrivacyScreen(), settings: settings);
+      case RouteNames.terms:
+        return MaterialPageRoute(
+            builder: (context) => const TermsScreen(), settings: settings);
 
       //admin routes generators
       case RouteNames.adp:

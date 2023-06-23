@@ -1,10 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
-import 'package:shnatter/src/helpers/helper.dart';
-import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/models/userModel.dart';
 import 'package:shnatter/src/views/panel/mainpanel.dart';
 import 'package:shnatter/src/views/panel/rightpanel.dart';
 import 'package:shnatter/src/views/whiteFooter.dart';
@@ -87,7 +83,10 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: footbar(),
+                      child: SizeConfig(context).screenWidth <
+                              SizeConfig.smallScreenSize
+                          ? rightFootbar()
+                          : footbar(),
                     )
                   ],
                 ),
