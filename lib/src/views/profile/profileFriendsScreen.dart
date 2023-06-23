@@ -42,7 +42,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     //add(widget.con);
     //con = controller as PeopleController;
 
-    friendModel.getFriends(profileCon.viewProfileUserName).then((value) {
+    friendModel.getFriends(profileCon.viewProfileUid).then((value) {
       setState(() {});
     });
     _gotoHome();
@@ -58,13 +58,8 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
 
   bool isMyFriend() {
     //profile selected is my friend?
-    String friendUserName;
     for (var item in friendModel.friends) {
-      friendUserName = item['requester'].toString();
-      if (friendUserName == UserManager.userInfo['userName']) {
-        return true;
-      }
-      if (item['receiver'] == UserManager.userInfo['userName']) {
+      if (item['uid'] == UserManager.userInfo['uid']) {
         return true;
       }
     }
@@ -179,12 +174,6 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
   }
 
   Widget friendCell(value) {
-    var friendUserName = value['requester'];
-    if (friendUserName == profileCon.viewProfileUserName) {
-      friendUserName = value['receiver'];
-    }
-    var friendFullName = value[friendUserName]['name'];
-    var friendAvatar = value[friendUserName]['avatar'];
     return Container(
       alignment: Alignment.center,
       margin: const EdgeInsets.only(left: 10),
@@ -206,14 +195,14 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    ProfileController().updateProfile(friendUserName);
+                    ProfileController().updateProfile(value['userName']);
                     () => widget.routerChangeProile({
                           'router': RouteNames.profile,
-                          'subRouter': friendUserName
+                          'subRouter': value['userName']
                         });
                     setState(() {});
                   },
-                  child: Text(friendFullName),
+                  child: Text('${value['firstName']} ${value['lastName']}'),
                 ),
               ],
             ),
@@ -228,11 +217,11 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(60),
                   border: Border.all(color: Colors.grey)),
-              child: friendAvatar != ''
+              child: value['avatar'] != ''
                   ? CircleAvatar(
                       radius: 60,
                       backgroundImage: NetworkImage(
-                        friendAvatar,
+                        value['avatar'],
                       ))
                   : CircleAvatar(
                       radius: 60,
@@ -243,9 +232,11 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                     ),
             ),
             onTap: () {
-              ProfileController().updateProfile(friendUserName);
-              () => widget.routerChangeProile(
-                  {'router': RouteNames.profile, 'subRouter': friendUserName});
+              ProfileController().updateProfile(value['userName']);
+              () => widget.routerChangeProile({
+                    'router': RouteNames.profile,
+                    'subRouter': value['userName']
+                  });
               setState(() {});
             },
           ),
