@@ -54,7 +54,11 @@ class RouteGenerator {
         url = RouteNames.homePage;
       }
     } else {
-      if (url != '/register' && url != '/login' && url != '/reset') {
+      if (url != '/register' &&
+          url != '/login' &&
+          url != '/reset' &&
+          url != RouteNames.terms &&
+          url != RouteNames.privacy) {
         url = RouteNames.login;
       }
     }
