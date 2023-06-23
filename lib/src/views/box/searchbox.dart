@@ -32,11 +32,17 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
   bool isSound = false;
   // List searchResult = [];
   late SearcherController con;
+
   @override
   void initState() {
     add(widget.con);
     con = controller as SearcherController;
     super.initState();
+  }
+
+  routerChange(value) {
+    widget.routerChange(value);
+    widget.hideSearch();
   }
 
   @override
@@ -164,17 +170,17 @@ class ShnatterSearchBoxState extends mvc.StateMVC<ShnatterSearchBox> {
     if (data['userName'] != null) {
       return SearchUserCell(
         userInfo: data,
-        routerChange: widget.routerChange,
+        routerChange: routerChange,
       );
     } else if (data['eventName'] != null) {
       return SearchEventCell(
         eventInfo: data,
-        routerChange: widget.routerChange,
+        routerChange: routerChange,
       );
     } else {
       return SearchGroupCell(
         groupInfo: data,
-        routerChange: widget.routerChange,
+        routerChange: routerChange,
       );
     }
   }
