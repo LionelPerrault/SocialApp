@@ -41,7 +41,7 @@ class SettingInterestsScreenState extends mvc.StateMVC<SettingInterestsScreen> {
             SettingHeader(
               routerChange: widget.routerChange,
               icon: const Icon(
-                Icons.school,
+                Icons.favorite,
                 color: Color.fromARGB(255, 43, 83, 164),
               ),
               pagename: 'Interests',
