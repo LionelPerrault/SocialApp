@@ -37,7 +37,7 @@ class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      photoModel.photos.isEmpty ? SizedBox() : mainTabs(),
+      photoModel.photos.isEmpty ? const SizedBox() : mainTabs(),
       PhotosData()
     ]);
   }

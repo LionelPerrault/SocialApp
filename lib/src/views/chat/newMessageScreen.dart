@@ -45,7 +45,11 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
     super.initState();
   }
 
+  bool showUserList = false;
+
   chatWithOtherUser(chatUserInfo) async {
+    showUserList = false;
+    setState(() {});
     if (chatUserInfo['paywall'][UserManager.userInfo['uid']] == null ||
         chatUserInfo['paywall'][UserManager.userInfo['uid']] == '0') {
       con.avatar = chatUserInfo['avatar'];
@@ -132,6 +136,7 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
             }
           }
           searchUser = list;
+          showUserList = searchUser.isNotEmpty;
           setState(() {});
         }),
         decoration: InputDecoration(
@@ -139,11 +144,13 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
           hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
           // Enabled Border
           enabledBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey, width: 0.1),
+            borderSide:
+                BorderSide(color: Color.fromARGB(255, 0, 0, 0), width: 0.1),
           ),
           // Focused Border
           focusedBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey, width: 0.1),
+            borderSide:
+                BorderSide(color: Color.fromARGB(255, 0, 0, 0), width: 0.1),
           ),
           // Error Border
           contentPadding: EdgeInsets.only(left: 15, right: 15),
@@ -155,7 +162,7 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
       ),
       SizedBox(
           height: SizeConfig(context).screenHeight - 260,
-          child: searchUser.isNotEmpty ? userList() : Container()),
+          child: showUserList ? userList() : Container()),
       con.chattingUser == ''
           ? Container()
           : WriteMessageScreen(

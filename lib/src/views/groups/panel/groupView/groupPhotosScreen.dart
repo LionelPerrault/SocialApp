@@ -3,7 +3,8 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-
+import 'package:flutter_svg/svg.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import '../../../profile/model/photos.dart';
 
 // ignore: must_be_immutable
@@ -36,7 +37,13 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [mainTabs(), PhotosData()]);
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          photoModel.photos.isEmpty ? const SizedBox() : mainTabs(),
+          PhotosData()
+        ]);
   }
 
   Widget mainTabs() {
@@ -50,7 +57,7 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
         color: const Color.fromRGBO(240, 240, 240, 1),
         borderRadius: BorderRadius.circular(3),
       ),
-      alignment: Alignment.topLeft,
+      // alignment: Alignment.topLeft,
       child: Column(
         children: [
           Container(
@@ -76,14 +83,36 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
   Widget PhotosData() {
     var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
     return Container(
+      width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+          ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth - 60
+          : SizeConfig(context).screenWidth - 60,
       margin: const EdgeInsets.only(top: 10, bottom: 40),
+      alignment: Alignment.center,
       child: photoModel.photos.isEmpty
           ? Container(
               padding: const EdgeInsets.only(top: 40),
               alignment: Alignment.center,
-              child: Text('${con.group['groupName']} doesn`t have photos',
-                  style:
-                      const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.network(Helper.emptySVG, width: 90),
+                  Container(
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    width: 140,
+                    decoration: const BoxDecoration(
+                        color: Color.fromRGBO(240, 240, 240, 1),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: const Text(
+                      'No data to show',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromRGBO(108, 117, 125, 1)),
+                    ),
+                  ),
+                ],
+              ),
             )
           : Row(
               children: [

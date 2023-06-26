@@ -276,10 +276,11 @@ class SettingsLeftPanel extends StatelessWidget {
           //     )),
           ListText(
               onTap: () => {
-                    routerFunction({
-                      'router': RouteNames.settings,
-                      'subRouter': RouteNames.settings_delete,
-                    })
+                    // routerFunction({
+                    //   'router': RouteNames.settings,
+                    //   'subRouter': RouteNames.settings_delete,
+                    // })
+                    Navigator.pushNamed(context, RouteNames.deleteAccount)
                   },
               label: 'Delete Account',
               image: const Icon(

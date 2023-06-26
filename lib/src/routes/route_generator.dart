@@ -11,6 +11,7 @@ import 'package:shnatter/src/views/resetpassword.dart';
 import 'package:shnatter/src/views/admin/adminscreen.dart';
 import 'package:shnatter/src/views/startedscreen.dart';
 import 'package:shnatter/src/views/terms.dart';
+import 'package:shnatter/src/views/setting/pages/delete.dart';
 
 import '../managers/user_manager.dart';
 
@@ -82,6 +83,12 @@ class RouteGenerator {
       case RouteNames.started:
         return MaterialPageRoute(
             builder: (context) => StartedScreen(), settings: settings);
+      case RouteNames.deleteAccount:
+        return MaterialPageRoute(
+            builder: (context) => SettingDeleteScreen(
+                  routerChange: (value) {},
+                ),
+            settings: settings);
       case RouteNames.privacy:
         return MaterialPageRoute(
             builder: (context) => const PrivacyScreen(), settings: settings);
