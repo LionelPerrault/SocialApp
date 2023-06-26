@@ -176,19 +176,19 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                           ),
                         ),
                       ),
-                // const Divider(height: 1, indent: 0),
-                // Container(
-                //     color: Colors.grey[300],
-                //     alignment: Alignment.center,
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         TextButton(
-                //             child: const Text('See All',
-                //                 style: TextStyle(fontSize: 11)),
-                //             onPressed: () {}),
-                //       ],
-                //     ))
+                const Divider(height: 1, indent: 0),
+                Container(
+                    color: Colors.grey[300],
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                            child: const Text('See All',
+                                style: TextStyle(fontSize: 11)),
+                            onPressed: () {}),
+                      ],
+                    ))
               ],
             )),
       ),
