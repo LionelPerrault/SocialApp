@@ -123,7 +123,7 @@ class VideoPlayerWidgetState extends State<VideoPlayerWidget>
                   ),
                   Text(
                     durationToString(_controller.value.duration),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ],
               ),

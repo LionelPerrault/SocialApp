@@ -1,5 +1,4 @@
 import 'package:badges/badges.dart' as badges;
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 

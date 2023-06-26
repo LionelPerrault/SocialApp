@@ -11,7 +11,6 @@ import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as PPath;
-import 'package:shnatter/src/views/groups/panel/joinedgroups.dart';
 import 'dart:io' show File;
 
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';

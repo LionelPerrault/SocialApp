@@ -1271,18 +1271,18 @@ class UserController extends ControllerMVC {
           .where('eventAdmin', arrayContains: {'uid': userManager['uid']})
           .get()
           .then((QuerySnapshot) {
-            QuerySnapshot.docs.forEach((doc) {
+            for (var doc in QuerySnapshot.docs) {
               doc.reference.delete();
-            });
+            }
           });
       await FirebaseFirestore.instance
           .collection(Helper.groupsField)
           .where('groupAdmin', arrayContains: {'uid': userManager['uid']})
           .get()
           .then((QuerySnapshot) {
-            QuerySnapshot.docs.forEach((doc) {
+            for (var doc in QuerySnapshot.docs) {
               doc.reference.delete();
-            });
+            }
           });
 
       await FirebaseFirestore.instance
@@ -1290,9 +1290,9 @@ class UserController extends ControllerMVC {
           .where('postAdmin', isEqualTo: userManager['uid'])
           .get()
           .then((QuerySnapshot) {
-        QuerySnapshot.docs.forEach((doc) {
+        for (var doc in QuerySnapshot.docs) {
           doc.reference.delete();
-        });
+        }
       });
       // groupSnapshot.docs.forEach((doc) {
       //   FirebaseFirestore.instance

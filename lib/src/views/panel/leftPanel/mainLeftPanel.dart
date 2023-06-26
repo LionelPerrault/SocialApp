@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shnatter/src/controllers/ProfileController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
@@ -210,7 +209,7 @@ class MainLeftPanel extends StatelessWidget {
               })
             },
             label: 'Live Streaming',
-            image: Icon(Icons.stream),
+            image: const Icon(Icons.stream),
           ),
           // ListText(
           //   onTap: () => {

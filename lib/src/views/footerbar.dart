@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shnatter/src/views/contactus.dart';
-import 'package:shnatter/src/views/privacy.dart';
-import 'package:shnatter/src/views/terms.dart';
 
 import '../routes/route_names.dart';
 import 'about.dart';

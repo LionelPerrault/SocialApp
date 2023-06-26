@@ -6,7 +6,6 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
-import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_footer.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:shnatter/src/widget/alertYesNoWidget.dart';

@@ -1,7 +1,6 @@
 // ignore_for_file: file_names, must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 class LiveStreaming extends StatefulWidget {
@@ -21,6 +20,6 @@ class LiveStreamingState extends mvc.StateMVC<LiveStreaming>
 
   @override
   Widget build(BuildContext context) {
-    return Text('Live Streaming');
+    return const Text('Live Streaming');
   }
 }
