@@ -186,7 +186,13 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                         TextButton(
                             child: const Text('See All',
                                 style: TextStyle(fontSize: 11)),
-                            onPressed: () {}),
+                            onPressed: () {
+                              widget.hideNavBox();
+                              widget.routerChange({
+                                'router': RouteNames.messages,
+                                'subRouter': '',
+                              });
+                            }),
                       ],
                     ))
               ],
