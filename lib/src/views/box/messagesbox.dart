@@ -178,7 +178,7 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                       ),
                 const Divider(height: 1, indent: 0),
                 Container(
-                    color: Colors.grey[300],
+                    color: const Color.fromARGB(255, 130, 163, 255),
                     alignment: Alignment.center,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
