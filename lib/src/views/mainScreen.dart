@@ -179,7 +179,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                       Stack(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizeConfig(context).screenWidth <
