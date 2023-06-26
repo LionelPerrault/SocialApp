@@ -3,7 +3,8 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
-
+import 'package:flutter_svg/svg.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import '../../../profile/model/photos.dart';
 
 class EventPhotosScreen extends StatefulWidget {
@@ -35,7 +36,10 @@ class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [mainTabs(), PhotosData()]);
+    return Column(children: [
+      photoModel.photos.isEmpty ? SizedBox() : mainTabs(),
+      PhotosData()
+    ]);
   }
 
   Widget mainTabs() {
@@ -123,9 +127,27 @@ class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
         ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
-            child: Text('${con.event['eventName']} doesn`t have photos',
-                style:
-                    const TextStyle(color: Color.fromRGBO(108, 117, 125, 1))),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.network(Helper.emptySVG, width: 90),
+                Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  width: 140,
+                  decoration: const BoxDecoration(
+                      color: Color.fromRGBO(240, 240, 240, 1),
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  child: const Text(
+                    'No data to show',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(108, 117, 125, 1)),
+                  ),
+                ),
+              ],
+            ),
           )
         : Container(
             margin: const EdgeInsets.only(left: 30, right: 30),

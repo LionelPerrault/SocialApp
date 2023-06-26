@@ -112,6 +112,7 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
     add(widget.con);
     con = controller as UserController;
     // sex = userInfo['sex'] ?? 'male';
+    setting_profile['sex'] = userInfo['sex'] ?? 'Male';
     setting_profile['firstName'] = userInfo['firstName'] ?? '';
     setting_profile['lastName'] = userInfo['lastName'] ?? '';
     setting_profile['about'] = userInfo['about'] ?? '';

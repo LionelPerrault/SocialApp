@@ -92,10 +92,13 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
           if (con.postsEvent.isEmpty) {
             newPostFlag = true;
           } else {
-            newPostFlag = Timestamp(
-                    post['postTime'].seconds, post['postTime'].nanoseconds)
-                .toDate()
-                .isAfter(con.postsEvent[0]['time'].toDate());
+            newPostFlag = con.postsEvent.isNotEmpty &&
+                    Timestamp(post['postTime'].seconds,
+                            post['postTime'].nanoseconds)
+                        .toDate()
+                        .isAfter(con.postsEvent[0]['time'].toDate())
+                ? true
+                : false;
           }
           return (eventId == con.viewEventId) && newPostFlag;
         }).length;
@@ -140,14 +143,17 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
 
     return Column(children: [
       (con.event['eventCanPub'] && (inInterested || inInvited || inGoing)) ||
-              UserManager.userInfo['uid'] == con.event['eventAdmin'][0]['uid']
+              (con.event['eventAdmin'].isNotEmpty &&
+                  UserManager.userInfo['uid'] ==
+                      con.event['eventAdmin'][0]['uid'])
           ? MindPost(showPrivacy: false)
           : Container(
               width:
                   SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
-                      ? 530
+                      ? SizeConfig(context).screenWidth - 550
                       : 350,
-              padding: const EdgeInsets.only(left: 30, right: 30)),
+              padding: const EdgeInsets.only(left: 30, right: 30),
+            ),
       const Padding(padding: EdgeInsets.only(top: 20)),
       newPostNum <= 0
           ? const SizedBox()
@@ -204,7 +210,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
           : const SizedBox(),
       con.postsEvent.isNotEmpty
           ? SizedBox(
-              width: 600,
+              width: SizeConfig(context).screenWidth - 550,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -321,14 +327,21 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [postColumn(), eventInfo()])
           : Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  postColumn(),
-                  const Flexible(fit: FlexFit.tight, child: SizedBox()),
-                  eventInfo(),
-                  const Padding(padding: EdgeInsets.only(left: 40))
-                ]),
+                postColumn(),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      eventInfo(),
+                      const SizedBox(width: 40),
+                    ],
+                  ),
+                ),
+              ],
+            ),
     );
   }
 
@@ -366,9 +379,12 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
               icon: const Icon(Icons.punch_clock),
               text:
                   '${con.event["eventStartDate"]} to ${con.event["eventEndDate"]}'),
-          eventInfoCell(
-              icon: const Icon(Icons.person),
-              text: 'Hosted by ${con.event["eventAdmin"][0]["fullName"]}'),
+          con.event['eventAdmin'].isNotEmpty
+              ? eventInfoCell(
+                  icon: const Icon(Icons.person),
+                  text: 'Hosted by ${con.event["eventAdmin"][0]["fullName"]}',
+                )
+              : Container(),
           eventInfoCell(icon: const Icon(Icons.sell), text: 'B/N'),
           eventInfoCell(
               icon: const Icon(Icons.maps_ugc),
@@ -387,7 +403,9 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
               icon: const Icon(Icons.event),
               text: '${con.event["eventInvited"].length} Invited'),
           const Padding(padding: EdgeInsets.only(top: 30)),
-          UserManager.userInfo['uid'] == con.event['eventAdmin'][0]['uid']
+          con.event['eventAdmin'].isNotEmpty &&
+                  UserManager.userInfo['uid'] ==
+                      con.event['eventAdmin'][0]['uid']
               ? friendInvites()
               : const SizedBox(),
         ],
@@ -577,51 +595,57 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                                                                       friendUserName)
                                                               .get();
 
-                                                      String userid = snapshot
-                                                          .docs[0].id
-                                                          .toString();
+                                                      if (snapshot
+                                                          .docs.isNotEmpty) {
+                                                        String userid = snapshot
+                                                            .docs[0].id
+                                                            .toString();
 
-                                                      joined
-                                                          .add({'uid': userid});
+                                                        joined.add(
+                                                            {'uid': userid});
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection(Helper
+                                                                .eventsField)
+                                                            .doc(
+                                                                con.viewEventId)
+                                                            .update({
+                                                          'eventInvited': joined
+                                                        });
+                                                        await con.updateEvent();
+                                                        await getFriends();
 
-                                                      await FirebaseFirestore
-                                                          .instance
-                                                          .collection(Helper
-                                                              .eventsField)
-                                                          .doc(con.viewEventId)
-                                                          .update({
-                                                        'eventInvited': joined
-                                                      });
-                                                      await con.updateEvent();
-                                                      await getFriends();
-
-                                                      await con.getServerTime();
-                                                      var notificationData = {
-                                                        'postType':
-                                                            'requestFriend',
-                                                        'postId': userid,
-                                                        'postAdminId':
-                                                            UserManager
-                                                                    .userInfo[
-                                                                'uid'],
-                                                        'notifyTime':
-                                                            DateTime.now()
-                                                                .toString(),
-                                                        'tsNT':
-                                                            con.serverTimeStamp,
-                                                        'userList': [],
-                                                        'timeStamp': FieldValue
-                                                            .serverTimestamp(),
-                                                      };
-                                                      await FirebaseFirestore
-                                                          .instance
-                                                          .collection(Helper
-                                                              .notificationField)
-                                                          .add(
-                                                              notificationData);
-                                                      setState(() {
-                                                        invitingFriend = false;
-                                                      });
+                                                        await con
+                                                            .getServerTime();
+                                                        var notificationData = {
+                                                          'postType':
+                                                              'requestFriend',
+                                                          'postId': userid,
+                                                          'postAdminId':
+                                                              UserManager
+                                                                      .userInfo[
+                                                                  'uid'],
+                                                          'notifyTime':
+                                                              DateTime.now()
+                                                                  .toString(),
+                                                          'tsNT': con
+                                                              .serverTimeStamp,
+                                                          'userList': [],
+                                                          'timeStamp': FieldValue
+                                                              .serverTimestamp(),
+                                                        };
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection(Helper
+                                                                .notificationField)
+                                                            .add(
+                                                                notificationData);
+                                                        setState(() {
+                                                          invitingFriend =
+                                                              false;
+                                                        });
+                                                        // Do something with userid
+                                                      }
                                                     },
                                                     child: invitingFriend &&
                                                             selectedUserIndex ==

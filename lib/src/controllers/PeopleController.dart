@@ -508,7 +508,7 @@ class PeopleController extends ControllerMVC {
         .orderBy('userName')
         .where('userName', isNotEqualTo: UserManager.userInfo['userName']);
 
-    if (search['userName'] != null) {
+    if (search['userName'] != null && search['userName'] != '') {
       query = query.where('userName', isGreaterThan: search['userName']);
       query = query.where('userName', isLessThan: search['userName'] + 'z');
     }
