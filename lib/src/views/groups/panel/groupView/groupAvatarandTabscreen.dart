@@ -194,7 +194,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
           width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
               ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth
               : SizeConfig(context).screenWidth - 20,
-          margin: const EdgeInsets.only(top: 200),
+          margin: const EdgeInsets.only(top: 140),
           child: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -446,29 +446,29 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                                                   padding:
                                                       EdgeInsets.only(left: 5)),
                                               Text(
-                                                  SizeConfig(context)
-                                                              .screenWidth >
-                                                          SizeConfig
-                                                                  .mediumScreenSize +
-                                                              200
-                                                      ? e['title']
-                                                      : SizeConfig(context)
-                                                                  .screenWidth >
-                                                              SizeConfig
-                                                                  .mediumScreenSize
-                                                          ? ''
-                                                          : SizeConfig(context)
-                                                                      .screenWidth >
-                                                                  600
-                                                              ? e['title']
-                                                              : '',
-                                                  style:
-                                                      const TextStyle(
-                                                          fontSize: 13,
-                                                          color: Color.fromRGBO(
-                                                              76, 76, 76, 1),
-                                                          fontWeight:
-                                                              FontWeight.bold))
+                                                  // SizeConfig(context)
+                                                  //             .screenWidth >
+                                                  //         SizeConfig
+                                                  //                 .mediumScreenSize +
+                                                  //             200
+                                                  //     ? e['title']
+                                                  //     : SizeConfig(context)
+                                                  //                 .screenWidth >
+                                                  //             SizeConfig
+                                                  //                 .mediumScreenSize
+                                                  //         ? ''
+                                                  //         : SizeConfig(context)
+                                                  //                     .screenWidth >
+                                                  //                 600
+                                                  //             ?
+                                                  e['title'],
+                                                  //            : '',
+                                                  style: const TextStyle(
+                                                      fontSize: 13,
+                                                      color: Color.fromRGBO(
+                                                          76, 76, 76, 1),
+                                                      fontWeight:
+                                                          FontWeight.bold))
                                             ]),
                                         e['title'] == con.groupTab
                                             ? Container(
