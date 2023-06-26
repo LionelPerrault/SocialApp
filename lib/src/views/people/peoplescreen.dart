@@ -68,8 +68,8 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
   Widget mainTabWidget(context) {
     return Container(
       alignment: Alignment.center,
-      margin:
-          EdgeInsets.only(left: MediaQuery.of(context).size.width / 2 - 177),
+      // margin:
+      //     EdgeInsets.only(left: MediaQuery.of(context).size.width / 2 - 177),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
