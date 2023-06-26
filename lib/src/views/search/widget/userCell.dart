@@ -52,11 +52,21 @@ class SearchUserCellState extends mvc.StateMVC<SearchUserCell> {
     return Material(
       child: ListTile(
         contentPadding: const EdgeInsets.only(left: 10, right: 10),
-        leading: widget.userInfo['avatar'] == ''
-            ? CircleAvatar(radius: 17, child: SvgPicture.network(Helper.avatar))
-            : CircleAvatar(
-                radius: 17,
-                backgroundImage: NetworkImage(widget.userInfo['avatar'])),
+        leading: InkWell(
+          onTap: () {
+            ProfileController().updateProfile(widget.userInfo['userName']);
+            widget.routerChange({
+              'router': RouteNames.profile,
+              'subRouter': widget.userInfo['userName']
+            });
+          },
+          child: widget.userInfo['avatar'] == ''
+              ? CircleAvatar(
+                  radius: 17, child: SvgPicture.network(Helper.avatar))
+              : CircleAvatar(
+                  radius: 17,
+                  backgroundImage: NetworkImage(widget.userInfo['avatar'])),
+        ),
         title: RichText(
           text: TextSpan(
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),

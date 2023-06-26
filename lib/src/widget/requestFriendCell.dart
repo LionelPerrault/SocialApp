@@ -11,10 +11,12 @@ class RequestFriendCell extends StatefulWidget {
   RequestFriendCell(
       {super.key,
       required this.cellData,
+      this.hideMenu,
       required this.onClick,
       required this.routerChange})
       : con = PeopleController();
   late PeopleController con;
+  var hideMenu;
   Function onClick;
   Function routerChange;
 
@@ -50,21 +52,44 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const Padding(padding: EdgeInsets.only(left: 10)),
-                friendAvatar == ''
-                    ? CircleAvatar(
-                        radius: 20, child: SvgPicture.network(Helper.avatar))
-                    : CircleAvatar(
-                        radius: 20,
-                        backgroundImage: NetworkImage(friendAvatar)),
-                Container(
-                    padding: const EdgeInsets.only(left: 10, top: 5),
-                    child: Text(
-                      friendFullName,
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 11),
-                    )),
+                InkWell(
+                  onTap: () async {
+                    await ProfileController().updateProfile(e['userName']);
+                    print(e);
+                    if (widget.hideMenu != null) {
+                      widget.hideMenu();
+                    }
+                    widget.routerChange({
+                      'router': RouteNames.profile,
+                      'subRouter': e['userName'],
+                    });
+                    print('Tapped on friend avatar and name');
+                  },
+                  child: Row(
+                    children: [
+                      friendAvatar == ''
+                          ? CircleAvatar(
+                              radius: 20,
+                              child: SvgPicture.network(Helper.avatar),
+                            )
+                          : CircleAvatar(
+                              radius: 20,
+                              backgroundImage: NetworkImage(friendAvatar),
+                            ),
+                      Container(
+                        padding: const EdgeInsets.only(left: 10, top: 5),
+                        child: Text(
+                          friendFullName,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 const Flexible(fit: FlexFit.tight, child: SizedBox()),
                 Container(
                   padding: const EdgeInsets.only(top: 6),

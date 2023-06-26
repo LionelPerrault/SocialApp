@@ -1,23 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shnatter/src/helpers/helper.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 
 class Friends {
   Friends();
   var friends = [];
   // get my  friends in collection
-  Future<List> getFriends(name) async {
+  Future<List> getFriends(uid) async {
     var snapshot = await FirebaseFirestore.instance
         .collection(Helper.friendCollection)
-        .where('state', isEqualTo: 1)
-        .where('users.' + name, isEqualTo: true)
+        .where('state', isEqualTo: true)
+        .where('users', arrayContains: uid)
         .get();
-    var s = [];
-    s = snapshot.docs.map((doc) => doc.data()).toList();
     var box = [];
-    for (var element in s) {
-      element['requesterId'] = Helper.userNameToUid[element['requester']];
-      element['receiverId'] = Helper.userNameToUid[element['receiver']];
-      box.add(element);
+    Map cell;
+    for (var element in snapshot.docs) {
+      var friendUid = element['requester'] == UserManager.userInfo['uid']
+          ? element['receiver']
+          : element['requester'];
+      cell = Helper.userUidToInfo[friendUid];
+      cell['uid'] = friendUid;
+      box.add(cell);
     }
     friends = box;
     return friends;

@@ -346,7 +346,7 @@ class PeopleDiscoverScreenState extends mvc.StateMVC<PeopleDiscoverScreen> {
                                                                     .white,
                                                               ),
                                                             )
-                                                          : e.containsKey('state') && e['state'] == 0
+                                                          : e.containsKey('state')
                                                               ? const Row(
                                                                   children: [
                                                                     Icon(

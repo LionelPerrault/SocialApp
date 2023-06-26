@@ -30,6 +30,7 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
   void initState() {
     add(widget.con);
     con = controller as PeopleController;
+
     super.initState();
   }
 
@@ -78,6 +79,7 @@ class ShnatterFriendRequestState extends mvc.StateMVC<ShnatterFriendRequest> {
                           children: con.requestFriends.map((e) {
                           return RequestFriendCell(
                               cellData: e,
+                              hideMenu: widget.hideMenu,
                               onClick: widget.onClick,
                               routerChange: widget.routerChange);
                         }).toList())),

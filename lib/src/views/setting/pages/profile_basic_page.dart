@@ -694,7 +694,12 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
               value: value,
               items: items
                   .map((e) => DropdownMenuItem(
-                      value: e['value'], child: Text(e['title'])))
+                      value: e['value'],
+                      child: Text(
+                        e['title'],
+                        style: const TextStyle(
+                            color: Color.fromARGB(179, 0, 0, 0)),
+                      )))
                   .toList(),
               onChanged: onChange,
               decoration: const InputDecoration(
