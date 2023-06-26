@@ -37,10 +37,13 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      photoModel.photos.isEmpty ? const SizedBox() : mainTabs(),
-      PhotosData()
-    ]);
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          photoModel.photos.isEmpty ? const SizedBox() : mainTabs(),
+          PhotosData()
+        ]);
   }
 
   Widget mainTabs() {
@@ -54,7 +57,7 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
         color: const Color.fromRGBO(240, 240, 240, 1),
         borderRadius: BorderRadius.circular(3),
       ),
-      alignment: Alignment.topLeft,
+      // alignment: Alignment.topLeft,
       child: Column(
         children: [
           Container(
@@ -80,7 +83,11 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
   Widget PhotosData() {
     var screenWidth = SizeConfig(context).screenWidth - SizeConfig.leftBarWidth;
     return Container(
+      width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
+          ? SizeConfig(context).screenWidth - SizeConfig.leftBarWidth - 60
+          : SizeConfig(context).screenWidth - 60,
       margin: const EdgeInsets.only(top: 10, bottom: 40),
+      alignment: Alignment.center,
       child: photoModel.photos.isEmpty
           ? Container(
               padding: const EdgeInsets.only(top: 40),
