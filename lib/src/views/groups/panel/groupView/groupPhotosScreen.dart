@@ -37,7 +37,10 @@ class GroupPhotosScreenState extends mvc.StateMVC<GroupPhotosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [mainTabs(), PhotosData()]);
+    return Column(children: [
+      photoModel.photos.isEmpty ? const SizedBox() : mainTabs(),
+      PhotosData()
+    ]);
   }
 
   Widget mainTabs() {
