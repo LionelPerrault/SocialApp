@@ -110,122 +110,131 @@ class EventCellState extends mvc.StateMVC<EventCell> {
           width: 288,
           height: 233,
           margin: const EdgeInsets.only(top: 10),
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Container(
-                width: 260,
-                margin: const EdgeInsets.only(top: 60),
-                padding: const EdgeInsets.only(top: 70),
-                decoration: BoxDecoration(
-                  color: Colors.grey[350],
-                  borderRadius: BorderRadius.circular(5),
+          child: GestureDetector(
+            onTap: () {
+              widget.routerChange({
+                'router': RouteNames.events,
+                'subRouter': widget.eventData['id'],
+              });
+            },
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Container(
+                  width: 260,
+                  margin: const EdgeInsets.only(top: 60),
+                  padding: const EdgeInsets.only(top: 70),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[350],
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Column(
+                    children: [
+                      RichText(
+                        text: TextSpan(children: <TextSpan>[
+                          TextSpan(
+                              text: widget.eventData['data']['eventName'],
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  con.viewEventId = widget.eventData['id'];
+                                  con.updateEvent();
+                                  widget.routerChange({
+                                    'router': RouteNames.events,
+                                    'subRouter': widget.eventData['id'],
+                                  });
+                                  setState(() {});
+                                }),
+                        ]),
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 5)),
+                      Text(
+                        '${widget.eventData['data']['eventInterested'].length} Interested',
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 13),
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 5)),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(2.0)),
+                              minimumSize: const Size(120, 35),
+                              maximumSize: const Size(120, 35)),
+                          onPressed: () async {
+                            eventInterestedFunc();
+                          },
+                          child: loading
+                              ? const SizedBox(
+                                  width: 10,
+                                  height: 10,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.grey,
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    !widget.eventData['interested']
+                                        ? const Icon(
+                                            Icons.star,
+                                            color: Colors.black,
+                                            size: 18.0,
+                                          )
+                                        : const Icon(
+                                            Icons.check,
+                                            color: Colors.black,
+                                            size: 18.0,
+                                          ),
+                                    const Text('Interested',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                )),
+                      const Padding(padding: EdgeInsets.only(top: 5))
+                    ],
+                  ),
                 ),
-                child: Column(
-                  children: [
-                    RichText(
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                            text: widget.eventData['data']['eventName'],
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                con.viewEventId = widget.eventData['id'];
-                                con.updateEvent();
-                                widget.routerChange({
-                                  'router': RouteNames.events,
-                                  'subRouter': widget.eventData['id'],
-                                });
-                                setState(() {});
-                              }),
-                      ]),
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 5)),
-                    Text(
-                      '${widget.eventData['data']['eventInterested'].length} Interested',
-                      style: const TextStyle(color: Colors.black, fontSize: 13),
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 5)),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2.0)),
-                            minimumSize: const Size(120, 35),
-                            maximumSize: const Size(120, 35)),
-                        onPressed: () async {
-                          eventInterestedFunc();
-                        },
-                        child: loading
-                            ? const SizedBox(
-                                width: 10,
-                                height: 10,
-                                child: CircularProgressIndicator(
-                                  color: Colors.grey,
-                                ),
-                              )
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  !widget.eventData['interested']
-                                      ? const Icon(
-                                          Icons.star,
-                                          color: Colors.black,
-                                          size: 18.0,
-                                        )
-                                      : const Icon(
-                                          Icons.check,
-                                          color: Colors.black,
-                                          size: 18.0,
-                                        ),
-                                  const Text('Interested',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              )),
-                    const Padding(padding: EdgeInsets.only(top: 5))
-                  ],
-                ),
-              ),
-              // Container(
-              //   alignment: Alignment.topCenter,
-              //   width: 120,
-              //   height: 120,
-              //   padding: const EdgeInsets.all(2),
-              //   decoration: BoxDecoration(
-              //       color: Color.fromARGB(255, 150, 99, 99),
-              //       borderRadius: BorderRadius.circular(60),
-              //       border: Border.all(color: Colors.grey)),
-              //   child: SvgPicture.network(
-              //       widget.picture == '' ? Helper.eventImage : widget.picture),
-              // ),
-              GestureDetector(
-                  child: CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.white,
-                      child: GestureDetector(
-                        onTap: () {
-                          widget.routerChange({
-                            'router': RouteNames.events,
-                            'subRouter': widget.eventData['id'],
-                          });
-                        },
-                        child: CircleAvatar(
-                            radius: 75,
-                            backgroundImage: NetworkImage(
-                                widget.eventData['data']['eventPicture'] == ''
-                                    ? Helper.eventImage
-                                    : widget.eventData['data']
-                                        ['eventPicture'])),
-                      )))
-            ],
+                // Container(
+                //   alignment: Alignment.topCenter,
+                //   width: 120,
+                //   height: 120,
+                //   padding: const EdgeInsets.all(2),
+                //   decoration: BoxDecoration(
+                //       color: Color.fromARGB(255, 150, 99, 99),
+                //       borderRadius: BorderRadius.circular(60),
+                //       border: Border.all(color: Colors.grey)),
+                //   child: SvgPicture.network(
+                //       widget.picture == '' ? Helper.eventImage : widget.picture),
+                // ),
+                GestureDetector(
+                    child: CircleAvatar(
+                        radius: 60,
+                        backgroundColor: Colors.white,
+                        child: GestureDetector(
+                          onTap: () {
+                            widget.routerChange({
+                              'router': RouteNames.events,
+                              'subRouter': widget.eventData['id'],
+                            });
+                          },
+                          child: CircleAvatar(
+                              radius: 75,
+                              backgroundImage: NetworkImage(
+                                  widget.eventData['data']['eventPicture'] == ''
+                                      ? Helper.eventImage
+                                      : widget.eventData['data']
+                                          ['eventPicture'])),
+                        )))
+              ],
+            ),
           ),
         )
       ],

@@ -75,34 +75,36 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
           itemCount: clientData.length,
           itemBuilder: (BuildContext context, int index) {
             var data = clientData[index];
-            return ListTile(
-              contentPadding: const EdgeInsets.only(left: 10, right: 10),
-              leading: data['avatar'] == ''
-                  ? CircleAvatar(
-                      radius: 17, child: SvgPicture.network(Helper.avatar))
-                  : CircleAvatar(
-                      radius: 17,
-                      backgroundImage: NetworkImage(data['avatar'])),
-              title: RichText(
-                text: TextSpan(
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 11),
-                  children: <TextSpan>[
-                    TextSpan(
+            return GestureDetector(
+              onTap: () {
+                ProfileController().updateProfile(data["userName"]);
+                widget.routerChange({
+                  'router': RouteNames.profile,
+                  'subRouter': data['userName']
+                });
+              },
+              child: ListTile(
+                contentPadding: const EdgeInsets.only(left: 10, right: 10),
+                leading: data['avatar'] == ''
+                    ? CircleAvatar(
+                        radius: 17, child: SvgPicture.network(Helper.avatar))
+                    : CircleAvatar(
+                        radius: 17,
+                        backgroundImage: NetworkImage(data['avatar'])),
+                title: RichText(
+                  text: TextSpan(
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 11),
+                    children: <TextSpan>[
+                      TextSpan(
                         text: '${data['firstName']} ${data['lastName']}',
                         style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 11,
                             color: Colors.black),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            ProfileController().updateProfile(data["userName"]);
-                            widget.routerChange({
-                              'router': RouteNames.profile,
-                              'subRouter': data['userName']
-                            });
-                          })
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
