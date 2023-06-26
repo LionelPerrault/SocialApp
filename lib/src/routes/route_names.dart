@@ -75,4 +75,7 @@ class RouteNames {
   //terms privacy
   static const terms = '/terms';
   static const privacy = '/privacy';
+
+  //delete
+  static const deleteAccount = '/deleteAccount';
 }
