@@ -10,6 +10,7 @@ import 'package:shnatter/src/views/people/tabs/discoverScreen.dart';
 import 'package:shnatter/src/views/people/tabs/friendRequestsScreen.dart';
 import 'package:shnatter/src/views/people/tabs/friendsScreen.dart';
 import 'package:shnatter/src/views/people/tabs/sendRequestsScreen.dart';
+import 'package:flutter/widgets.dart';
 
 class PeopleScreen extends StatefulWidget {
   PeopleScreen({
@@ -50,7 +51,7 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        mainTabWidget(),
+        mainTabWidget(context),
         con.tabName == 'Discover'
             ? PeopleDiscoverScreen(
                 routerChange: widget.routerChange,
@@ -64,10 +65,11 @@ class PeopleScreenState extends mvc.StateMVC<PeopleScreen>
     );
   }
 
-  Widget mainTabWidget() {
+  Widget mainTabWidget(context) {
     return Container(
       alignment: Alignment.center,
-      margin: const EdgeInsets.only(left: 10),
+      margin:
+          EdgeInsets.only(left: MediaQuery.of(context).size.width / 2 - 177),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
