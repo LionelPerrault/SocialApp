@@ -347,9 +347,13 @@ class ProfileAvatarandTabScreenState extends mvc
                         case 'paywall':
                           modalView();
                           break;
-                        case 'cancelfriend':
+                        case 'addfriend':
                           await PeopleController()
                               .cancelFriend({"userName": friendUserName});
+                          setState(() {});
+                          break;
+                        case 'cancelfriend':
+                          await PeopleController().cancelFriend(con.userInfo);
                           setState(() {});
                           break;
                         default:
@@ -391,14 +395,6 @@ class ProfileAvatarandTabScreenState extends mvc
                         //     style: TextStyle(fontSize: 14),
                         //   ),
                         // ),
-                        // PopupMenuItem(
-                        //   value: 'turn_off',
-                        //   child: Text(
-                        //     "Turn Off Chat",
-                        //     style: TextStyle(fontSize: 14),
-                        //   ),
-
-                        // ),
                         const PopupMenuItem(
                           value: 'paywall',
                           child: Text(
@@ -411,6 +407,14 @@ class ProfileAvatarandTabScreenState extends mvc
                             value: 'cancelfriend',
                             child: Text(
                               "Cancel Friend",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
+                        if (!isMyFriend())
+                          const PopupMenuItem(
+                            value: 'addfriend',
+                            child: Text(
+                              "Add friend",
                               style: TextStyle(fontSize: 14),
                             ),
                           ),
