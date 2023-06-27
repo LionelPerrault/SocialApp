@@ -474,81 +474,78 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
             : 0;
     return Positioned(
       bottom: 30,
-      child: Column(
+      child: Container(
+        margin: const EdgeInsets.only(right: 0),
+        alignment: Alignment.centerRight,
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width:
-                      (SizeConfig(context).screenWidth - leftPaneWidth) * 0.05 +
-                          10,
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      shadowColor: Colors.grey,
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0)),
-                      minimumSize: Size(
-                          (SizeConfig(context).screenWidth - leftPaneWidth) *
-                                  0.9 -
-                              80,
-                          50),
-                    ),
-                    onPressed: () {
-                      choosePoint = searchPoint;
-                      _currentAddress = "Loading...";
-                      setState(() {});
-                      _startQuery();
-                      isSelectArea = false;
-                      _getAddressFromLatLng(choosePoint);
-                      setState(() {});
-                    },
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Explore here",
-                            style: TextStyle(
-                              color: Colors.lightBlue,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            )),
-                      ],
-                    )),
-                const SizedBox(
-                  width: 10,
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      shadowColor: Colors.grey,
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0)),
-                      minimumSize: const Size(50, 50),
-                    ),
-                    onPressed: () {
-                      _currentAddress = "Loading...";
-                      updateGeoInfos();
-                      isSelectArea = false;
-                      setState(() {});
-                    },
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.location_pin,
-                          color: Colors.lightBlue,
-                        )
-                      ],
-                    ))
-              ],
+            SizedBox(
+              width:
+                  (SizeConfig(context).screenWidth - leftPaneWidth) * 0.05 + 10,
             ),
-          ]),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shadowColor: Colors.grey,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0)),
+                  minimumSize: Size(
+                      (SizeConfig(context).screenWidth - leftPaneWidth) * 0.7 -
+                          80,
+                      50),
+                ),
+                onPressed: () {
+                  choosePoint = searchPoint;
+                  _currentAddress = "Loading...";
+                  setState(() {});
+                  _startQuery();
+                  isSelectArea = false;
+                  _getAddressFromLatLng(choosePoint);
+                  setState(() {});
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Explore here",
+                        style: TextStyle(
+                          color: Colors.lightBlue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                        )),
+                  ],
+                )),
+            const SizedBox(
+              width: 10,
+            ),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shadowColor: Colors.grey,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0)),
+                  minimumSize: const Size(50, 50),
+                ),
+                onPressed: () {
+                  _currentAddress = "Loading...";
+                  updateGeoInfos();
+                  isSelectArea = false;
+                  setState(() {});
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.location_pin,
+                      color: Colors.lightBlue,
+                    )
+                  ],
+                ))
+          ],
+        ),
+      ),
     );
   }
 
