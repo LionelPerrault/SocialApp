@@ -7,6 +7,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/MessageController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
+import 'package:shnatter/src/utils/size_config.dart';
 
 class NewMessageScreen extends StatefulWidget {
   Function onBack;
@@ -104,7 +105,8 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
           SizedBox(
             // height: SizeConfig(context).screenHeight,
             child: Padding(
-                padding: EdgeInsets.only(top: 60),
+                padding: EdgeInsets.only(
+                    top: 60, bottom: SizeConfig(context).padding),
                 child: searchUser.isNotEmpty ? userList(context) : Container()),
           ),
         ],
