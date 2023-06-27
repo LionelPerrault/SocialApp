@@ -17,6 +17,7 @@ import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/createRealEstateWidget.dart';
 import 'package:shnatter/src/widget/likesCommentWidget.dart';
 import 'package:shnatter/src/views/messageBoard/messageScreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class RealEstateCell extends StatefulWidget {
@@ -496,6 +497,19 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children:
+                            (realEstate['realEstatePhoto'] as List).map((e) {
+                          return realEstatePhoto(e['url']);
+                        }).toList(),
+                      ),
+                      Column(
+                        children:
+                            (realEstate['realEstateFile'] as List).map((e) {
+                          return realEstateFile(e['url'], e['id']);
+                        }).toList(),
+                      ),
                       const Padding(padding: EdgeInsets.only(top: 30)),
                       Container(
                         alignment: Alignment.center,
@@ -778,6 +792,42 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
           ),
         ))
       ],
+    );
+  }
+
+  Widget realEstatePhoto(url) {
+    return Expanded(
+      child: Container(
+        height: 200,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(url),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget realEstateFile(url, index) {
+    return InkWell(
+      onTap: () async {
+        Uri uri = Uri.parse(url);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri);
+        } else {
+          throw 'Could not launch $uri';
+        }
+      },
+      child: SizedBox(
+        height: 30,
+        child: Row(
+          children: [
+            const Icon(Icons.file_copy),
+            Text('Real estate File ${(index + 1).toString()}'),
+          ],
+        ),
+      ),
     );
   }
 }
