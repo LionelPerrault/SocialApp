@@ -218,7 +218,13 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
       .get();
     const payMail = snapshot.data().paymail;
     var token;
-    var balance = 10;
+    const adminConfigSnap = await admin
+      .firestore()
+      .collection("adminPanel")
+      .doc('config')
+      .get();
+    var balance = adminConfigSnap.data().priceTokenReward;
+    if (balance == 0) return;
     var notes = "Thank you for creating your account in our website !";
     var bodyCode = { email: adminEmail, password: adminPassword };
 

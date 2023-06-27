@@ -74,6 +74,13 @@ class AdminManagePriceState extends mvc.StateMVC<AdminManagePrice> {
         const Padding(padding: EdgeInsets.only(top: 20)),
         Column(children: [
           customInput(
+            title: 'Price of token reward',
+            onChange: (value) async {
+              adminConfig['priceTokenReward'] = value;
+            },
+            value: adminConfig['priceTokenReward'] ?? '',
+          ),
+          customInput(
             title: 'Price for creating a page',
             onChange: (value) async {
               adminConfig['priceCreatingPage'] = value;
