@@ -17,6 +17,7 @@ import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 import 'package:shnatter/src/widget/createProductWidget.dart';
 import 'package:shnatter/src/widget/likesCommentWidget.dart';
 import 'package:shnatter/src/views/messageBoard/messageScreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class ProductCell extends StatefulWidget {
@@ -563,9 +564,15 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 20),
                       Row(
                         children: (product['productPhoto'] as List).map((e) {
                           return productPhoto(e['url']);
+                        }).toList(),
+                      ),
+                      Column(
+                        children: (product['productFile'] as List).map((e) {
+                          return productFile(e['url'], e['id']);
                         }).toList(),
                       ),
                       const Padding(padding: EdgeInsets.only(top: 20)),
@@ -856,12 +863,34 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   Widget productPhoto(url) {
     return Expanded(
       child: Container(
-        height: 300,
+        height: 200,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(url),
             fit: BoxFit.cover,
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget productFile(url, index) {
+    return InkWell(
+      onTap: () async {
+        Uri uri = Uri.parse(url);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri);
+        } else {
+          throw 'Could not launch $uri';
+        }
+      },
+      child: SizedBox(
+        height: 30,
+        child: Row(
+          children: [
+            const Icon(Icons.file_copy),
+            Text('Product File ${(index + 1).toString()}'),
+          ],
         ),
       ),
     );
