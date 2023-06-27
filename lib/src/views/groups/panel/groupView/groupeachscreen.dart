@@ -30,6 +30,7 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
   var userInfo = UserManager.userInfo;
   bool loadingGroup = true;
   late PostController con;
+  var groupData;
 
   @override
   void initState() {
@@ -45,6 +46,7 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
     con.getSelectedGroup(id).then((value) => {
           if (value)
             {
+              groupData = con.group,
               loadingGroup = false,
               setState(() {}),
             }
@@ -85,6 +87,7 @@ class GroupEachScreenState extends mvc.StateMVC<GroupEachScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                           GroupAvatarandTabScreen(
+                            groupData: groupData,
                             onClick: (value) {
                               con.groupTab = value;
                               setState(() {});

@@ -963,6 +963,10 @@ class PostController extends ControllerMVC {
       viewGroupId = id;
       group = value;
       viewGroupJoined = boolJoined(group, UserManager.userInfo['uid']);
+      if (!viewGroupJoined) {
+        viewGroupJoined =
+            UserManager.userInfo['uid'] == group['groupAdmin'][0]['uid'];
+      }
       setState(() {});
       for (var i = 0; i < group['groupAdmin'].length; i++) {
         var addAdmin = await ProfileController()

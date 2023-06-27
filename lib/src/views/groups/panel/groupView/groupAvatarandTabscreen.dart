@@ -18,10 +18,12 @@ import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 // ignore: must_be_immutable
 class GroupAvatarandTabScreen extends StatefulWidget {
   Function onClick;
-  GroupAvatarandTabScreen({Key? key, required this.onClick})
+  GroupAvatarandTabScreen(
+      {Key? key, required this.onClick, required this.groupData})
       : con = PostController(),
         super(key: key);
   final PostController con;
+  var groupData;
   @override
   State createState() => GroupAvatarandTabScreenState();
 }
@@ -57,6 +59,9 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
   }
 
   groupJoinFunc() async {
+    if (UserManager.userInfo['uid'] == con.group['groupAdmin'][0]['uid']) {
+      Helper.showToast('You are admin of this group');
+    }
     var groupAdminInfo = await ProfileController()
         .getUserInfo(con.group['groupAdmin'][0]['uid']);
     if (groupAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
@@ -133,9 +138,6 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
     return Stack(
       children: [
         Container(
-          margin: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-              ? const EdgeInsets.only(left: 0, right: 0)
-              : const EdgeInsets.only(left: 0, right: 0),
           width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
               ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth
               : SizeConfig(context).screenWidth, //- 60,
