@@ -38,6 +38,12 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
   double progress = 0;
   //
   var userInfo = UserManager.userInfo;
+  List<Map> mainTabList = [
+    {'title': 'Timeline', 'icon': Icons.tab},
+    {'title': 'Photos', 'icon': Icons.photo},
+    // {'title': 'Videos', 'icon': Icons.video_call},
+    {'title': 'Members', 'icon': Icons.groups},
+  ];
   @override
   void initState() {
     add(widget.con);
@@ -57,8 +63,13 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
 
   late PostController con;
 
-  void getSelectedEvent(id) {
-    con.getSelectedEvent(id).then((value) => {if (value) {}});
+  void getSelectedEvent(id) async {
+    await con.getSelectedEvent(id).then((value) {
+      if (UserManager.userInfo['uid'] == con.event['eventAdmin'][0]['uid']) {
+        mainTabList.add({'title': 'Settings', 'icon': Icons.settings});
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -88,6 +99,7 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         EventAvatarandTabScreen(
+                          mainTabList: mainTabList,
                           onClick: (value) {
                             con.eventTab = value;
                             setState(() {});

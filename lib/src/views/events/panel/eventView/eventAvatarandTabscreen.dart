@@ -19,10 +19,12 @@ import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 
 class EventAvatarandTabScreen extends StatefulWidget {
   Function onClick;
-  EventAvatarandTabScreen({Key? key, required this.onClick})
+  EventAvatarandTabScreen(
+      {Key? key, required this.onClick, required this.mainTabList})
       : con = PostController(),
         super(key: key);
   final PostController con;
+  final List mainTabList;
   @override
   State createState() => EventAvatarandTabScreenState();
 }
@@ -36,12 +38,6 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
   late String avatar;
   double avatarProgress = 0;
   double coverProgress = 0;
-  List<Map> mainTabList = [
-    {'title': 'Timeline', 'icon': Icons.tab},
-    {'title': 'Photos', 'icon': Icons.photo},
-    // {'title': 'Videos', 'icon': Icons.video_call},
-    {'title': 'Members', 'icon': Icons.groups},
-  ];
   var interestedStatus = false;
   var goingStatus = false;
   var selectedEvent = {};
@@ -53,9 +49,6 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     add(widget.con);
     con = controller as PostController;
     _gotoHome();
-    if (UserManager.userInfo['uid'] == con.event['eventAdmin'][0]['uid']) {
-      mainTabList.add({'title': 'Settings', 'icon': Icons.settings});
-    }
     date = con.event['eventStartDate'].split('-');
   }
 
@@ -540,7 +533,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: mainTabList
+                  children: widget.mainTabList
                       .map((e) => Expanded(
                               child: MouseRegion(
                             cursor: SystemMouseCursors.click,
