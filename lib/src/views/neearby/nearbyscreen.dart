@@ -299,7 +299,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                     child: Text(
                       _currentAddress,
                       textAlign: TextAlign.start,
-                      overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.clip,
                       maxLines: 20,
                       style: const TextStyle(
                           fontSize: 17,

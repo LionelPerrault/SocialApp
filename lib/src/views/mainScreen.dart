@@ -168,7 +168,8 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                 padding: EdgeInsets.only(
                     top: SizeConfig.navbarHeight, bottom: viewInsets.bottom),
                 child: SingleChildScrollView(
-                  physics: mainRouterValue['router'] == RouteNames.messages
+                  physics: (mainRouterValue['router'] == RouteNames.messages ||
+                          mainRouterValue['router'] == RouteNames.nearby)
                       ? const NeverScrollableScrollPhysics()
                       : null,
                   child: Column(
