@@ -20,11 +20,15 @@ import 'package:shnatter/src/widget/alertYesNoWidget.dart';
 class EventAvatarandTabScreen extends StatefulWidget {
   Function onClick;
   EventAvatarandTabScreen(
-      {Key? key, required this.onClick, required this.mainTabList})
+      {Key? key,
+      required this.onClick,
+      required this.mainTabList,
+      required this.eventData})
       : con = PostController(),
         super(key: key);
   final PostController con;
   final List mainTabList;
+  var eventData;
   @override
   State createState() => EventAvatarandTabScreenState();
 }
@@ -41,7 +45,6 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
   var interestedStatus = false;
   var goingStatus = false;
   var selectedEvent = {};
-  var date;
   bool payLoading = false;
   @override
   void initState() {
@@ -49,7 +52,6 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
     add(widget.con);
     con = controller as PostController;
     _gotoHome();
-    date = con.event['eventStartDate'].split('-');
   }
 
   late PostController con;
@@ -63,11 +65,12 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
 
   eventInterestedFunc() async {
     var eventAdminInfo = await ProfileController()
-        .getUserInfo(con.event['eventAdmin'][0]['uid']);
+        .getUserInfo(widget.eventData['eventAdmin'][0]['uid']);
     if (eventAdminInfo!['paywall'][UserManager.userInfo['uid']] == null ||
         eventAdminInfo['paywall'][UserManager.userInfo['uid']] == '0' ||
         con.viewEventInterested ||
-        con.event['eventAdmin'][0]['uid'] == UserManager.userInfo['uid']) {
+        widget.eventData['eventAdmin'][0]['uid'] ==
+            UserManager.userInfo['uid']) {
       interestedStatus = true;
       setState(() {});
       await con.interestedEvent(con.viewEventId).then((value) {
@@ -140,16 +143,17 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
               ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth
               : SizeConfig(context).screenWidth,
           height: SizeConfig(context).screenHeight * 0.5,
-          decoration: con.event['eventPicture'] == ''
+          decoration: widget.eventData['eventPicture'] == ''
               ? const BoxDecoration(
                   color: Color.fromRGBO(115, 202, 231, 1),
                 )
               : const BoxDecoration(),
-          child: con.event['eventPicture'] == ''
+          child: widget.eventData['eventPicture'] == ''
               ? Container()
-              : Image.network(con.event['eventPicture'], fit: BoxFit.cover),
+              : Image.network(widget.eventData['eventPicture'],
+                  fit: BoxFit.cover),
         ),
-        con.event['eventAdmin'][0]['uid'] == UserManager.userInfo['uid']
+        widget.eventData['eventAdmin'][0]['uid'] == UserManager.userInfo['uid']
             ? Container(
                 alignment: Alignment.topLeft,
                 margin: const EdgeInsets.only(left: 50, top: 30),
@@ -242,14 +246,14 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      date[1],
+                      widget.eventData['eventStartDate'].split('-')[1],
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 25,
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      date[2],
+                      widget.eventData['eventStartDate'].split('-')[2],
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 17,
@@ -267,7 +271,7 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                 Row(
                   children: [
                     Text(
-                      '${con.event['eventName']}',
+                      '${widget.eventData['eventName']}',
                       style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -278,9 +282,9 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                     ),
                     const Padding(padding: EdgeInsets.only(left: 6)),
                     Icon(
-                      con.event['eventPrivacy'] == 'public'
+                      widget.eventData['eventPrivacy'] == 'public'
                           ? Icons.language
-                          : con.event['eventPrivacy'] == 'security'
+                          : widget.eventData['eventPrivacy'] == 'security'
                               ? Icons.lock
                               : Icons.lock_open_rounded,
                       color: Colors.white,
@@ -294,11 +298,11 @@ class EventAvatarandTabScreenState extends mvc.StateMVC<EventAvatarandTabScreen>
                       color: Colors.white,
                     ),
                     Text(
-                      '${con.event['eventStartDate']} to',
+                      '${widget.eventData['eventStartDate']} to',
                       style: const TextStyle(color: Colors.white),
                     ),
                     Text(
-                      '${con.event['eventEndDate']}',
+                      '${widget.eventData['eventEndDate']}',
                       style: const TextStyle(color: Colors.white),
                     ),
                   ],

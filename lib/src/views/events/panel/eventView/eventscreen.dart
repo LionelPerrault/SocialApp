@@ -99,6 +99,7 @@ class EventEachScreenState extends mvc.StateMVC<EventEachScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         EventAvatarandTabScreen(
+                          eventData: con.event,
                           mainTabList: mainTabList,
                           onClick: (value) {
                             con.eventTab = value;
