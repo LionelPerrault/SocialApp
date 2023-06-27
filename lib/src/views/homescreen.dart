@@ -61,7 +61,8 @@ class HomeScreenState extends mvc.StateMVC<HomeScreen>
                                 RightPanel(routerChange: widget.routerChange),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(right: 10),
+                            padding:
+                                const EdgeInsets.only(right: 10, bottom: 70),
                             child: rightFootbar(),
                           )
                         ],
