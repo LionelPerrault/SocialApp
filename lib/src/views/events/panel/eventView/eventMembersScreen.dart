@@ -297,7 +297,7 @@ class EventMembersScreenState extends mvc.StateMVC<EventMembersScreen> {
                           : SizeConfig(context).screenWidth > 210
                               ? 2
                               : 1,
-                  childAspectRatio: 1 / 1,
+                  childAspectRatio: 1.25,
                   padding: const EdgeInsets.all(4.0),
                   mainAxisSpacing: 4.0,
                   shrinkWrap: true,
