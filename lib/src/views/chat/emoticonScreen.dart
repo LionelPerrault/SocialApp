@@ -114,7 +114,6 @@ class EmoticonScreenState extends mvc.StateMVC<EmoticonScreen> {
             skinToneIndicatorColor: Colors.white,
             enableSkinTones: true,
 
-            showRecentsTab: true,
             recentsLimit: 28,
             replaceEmojiOnLimitExceed: false,
             noRecents: const Text(
