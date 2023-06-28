@@ -56,7 +56,7 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                 children: [
                   const Text(
                     "Suggested Events",
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                   const Padding(
                     padding: EdgeInsets.only(top: 45.0),
@@ -70,14 +70,14 @@ class ShnatterEventSuggestState extends mvc.StateMVC<ShnatterEventSuggest> {
                       },
                       child: const Text(
                         'See All',
-                        style: TextStyle(fontSize: 11),
+                        style: TextStyle(fontSize: 14),
                       ),
                     ),
                     SizedBox(
                       height: 20,
                       child: Transform.scale(
-                        scaleX: 0.55,
-                        scaleY: 0.55,
+                        scaleX: 0.7,
+                        scaleY: 0.7,
                         child: CupertinoSwitch(
                           //thumbColor: kprimaryColor,
                           activeColor: kprimaryColor,
