@@ -28,7 +28,7 @@ class RealEstateCell extends StatefulWidget {
     this.isShared = false,
   }) : con = PostController();
   var data;
-  var isShared = false;
+  var isShared;
   Function routerChange;
   late PostController con;
   @override
