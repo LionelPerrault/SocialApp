@@ -182,7 +182,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
   Widget MembersData() {
     List members = con.group['groupJoined'];
     return members.isEmpty
-        ?  Container(
+        ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
             child: Column(
@@ -243,7 +243,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
 
   Widget InvitesData() {
     return invites.isEmpty
-        ?  Container(
+        ? Container(
             padding: const EdgeInsets.only(top: 40),
             alignment: Alignment.center,
             child: Column(
@@ -327,21 +327,24 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                   margin: const EdgeInsets.only(top: 50),
                   padding: const EdgeInsets.only(top: 50),
                   decoration: BoxDecoration(
-                    color: Colors.grey[350],
-                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.black87, //color: Colors.grey[350],
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Column(
                     children: [
                       const Padding(padding: EdgeInsets.only(top: 10)),
                       Container(
                         alignment: Alignment.center,
-                        width: 150,
+                        width: 155,
                         child: RichText(
                           text: TextSpan(children: <TextSpan>[
                             TextSpan(
                                 text: header,
                                 style: const TextStyle(
-                                    color: Colors.black, fontSize: 18),
+                                    fontFamily: "OpenSans",
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    fontSize: 15),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     groupTap();
