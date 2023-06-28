@@ -222,7 +222,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                         : SizeConfig(context).screenWidth > 210
                             ? 2
                             : 1,
-                childAspectRatio: 2 / 1,
+                childAspectRatio: 3 / 2,
                 padding: const EdgeInsets.all(4.0),
                 mainAxisSpacing: 4.0,
                 shrinkWrap: true,
