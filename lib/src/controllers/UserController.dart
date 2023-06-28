@@ -1286,6 +1286,16 @@ class UserController extends ControllerMVC {
           });
 
       await FirebaseFirestore.instance
+          .collection(Helper.friendCollection)
+          .where('users', arrayContains: userManager['uid'])
+          .get()
+          .then((QuerySnapshot) {
+        for (var doc in QuerySnapshot.docs) {
+          doc.reference.delete();
+        }
+      });
+
+      await FirebaseFirestore.instance
           .collection(Helper.postField)
           .where('postAdmin', isEqualTo: userManager['uid'])
           .get()
