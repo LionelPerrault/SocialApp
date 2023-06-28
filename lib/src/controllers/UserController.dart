@@ -773,7 +773,7 @@ class UserController extends ControllerMVC {
     var uuid = '';
     try {
       UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(email: email, password: password);
       uuid = userCredential.user!.uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
