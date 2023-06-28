@@ -524,7 +524,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                       filled: true,
                       fillColor: Color.fromARGB(255, 250, 250, 250),
                       hintText:
-                          'What is on your mind? #Hashtag.. @Mention.. Link..',
+                          'What is on your mind?\n #Hashtag.. @Mention.. Link..',
                       border: InputBorder.none,
                       hintStyle: TextStyle(fontSize: 17.0, color: Colors.grey),
                     ),
