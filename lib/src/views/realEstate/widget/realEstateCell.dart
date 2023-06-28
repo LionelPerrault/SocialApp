@@ -68,11 +68,11 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
       'labelE': 'Turn on Commenting',
       'value': 'comment',
     },
-    {
-      'icon': Icons.link,
-      'label': 'Open post in new tab',
-      'value': 'open',
-    },
+    // {
+    //   'icon': Icons.link,
+    //   'label': 'Open post in new tab',
+    //   'value': 'open',
+    // },
   ];
 
   @override

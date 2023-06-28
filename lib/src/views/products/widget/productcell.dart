@@ -68,11 +68,11 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
       'labelE': 'Turn on Commenting',
       'value': 'comment',
     },
-    {
-      'icon': Icons.link,
-      'label': 'Open post in new tab',
-      'value': 'open',
-    },
+    // {
+    //   'icon': Icons.link,
+    //   'label': 'Open post in new tab',
+    //   'value': 'open',
+    // },
   ];
 
   @override
@@ -267,11 +267,11 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
   Widget build(BuildContext context) {
     if (product?['productAdmin']?['uid'] != UserManager.userInfo['uid']) {
       popupMenuItem = [
-        {
-          'icon': Icons.link,
-          'label': 'Open post in new tab',
-          'value': 'open',
-        },
+        // {
+        //   'icon': Icons.link,
+        //   'label': 'Open post in new tab',
+        //   'value': 'open',
+        // },
       ];
     } else {
       popupMenuItem = [
@@ -297,11 +297,11 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
           'labelE': 'Turn on Commenting',
           'value': 'comment',
         },
-        {
-          'icon': Icons.link,
-          'label': 'Open post in new tab',
-          'value': 'open',
-        },
+        // {
+        //   'icon': Icons.link,
+        //   'label': 'Open post in new tab',
+        //   'value': 'open',
+        // },
       ];
     }
 
