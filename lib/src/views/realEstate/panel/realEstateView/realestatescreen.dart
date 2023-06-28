@@ -99,6 +99,9 @@ class RealEstateEachScreenState extends mvc.StateMVC<RealEstateEachScreen>
                                       'adminInfo': con.realEstateAdmin,
                                     },
                                     routerChange: widget.routerChange,
+                                    isShared: con.realEstate['realEstateAdmin']
+                                            ['uid'] !=
+                                        UserManager.userInfo['uid'],
                                   ),
                           )
                         ],

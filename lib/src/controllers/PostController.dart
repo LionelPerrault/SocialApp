@@ -1469,25 +1469,6 @@ class PostController extends ControllerMVC {
 
   Future<Map> editRealEstate(
       context, uid, Map<String, dynamic> realEstateData) async {
-    // if (realEstateData['realEstateName'] == null ||
-    //     realEstateData['realEstateName'] == '') {
-    //   return {
-    //     'msg': 'Please add your real estate name',
-    //     'result': false,
-    //   };
-    // } else if (realEstateData['realEstatePrice'] == null ||
-    //     realEstateData['realEstatePrice'] == '') {
-    //   return {
-    //     'msg': 'Please add your real estate price',
-    //     'result': false,
-    //   };
-    // } else if (realEstateData['realEstateCategory'] == null ||
-    //     realEstateData['realEstateCategory'] == '') {
-    //   return {
-    //     'msg': 'Please add your real estate category',
-    //     'result': false,
-    //   };
-    // }
     String strtoast = "";
     if (realEstateData['realEstateName'] == null ||
         realEstateData['realEstateName'] == '') {

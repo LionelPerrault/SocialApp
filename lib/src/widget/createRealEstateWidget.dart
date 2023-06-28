@@ -77,6 +77,7 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
       realEstateInfo = widget.editData['data'];
     }
     super.initState();
+    print(widget.editData);
   }
 
   getTokenBudget() async {
@@ -758,6 +759,8 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
                             Helper.showToast(value['msg']);
                             if (value['result']) {
                               Navigator.of(context).pop(true);
+                              widget.routerChange(
+                                  {'router': RouteNames.realEstate});
                             }
                           });
                         }
@@ -1037,6 +1040,7 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
   }
 
   Widget customInput({title, onChange, controller, value}) {
+    TextEditingController? controller;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1050,8 +1054,9 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
         const Padding(padding: EdgeInsets.only(top: 2)),
         SizedBox(
           height: 40,
-          child: TextField(
+          child: TextFormField(
             controller: controller,
+            initialValue: value ?? '',
             textInputAction: TextInputAction.done,
             onChanged: (value) {
               onChange(value);
