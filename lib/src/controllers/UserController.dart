@@ -545,7 +545,7 @@ class UserController extends ControllerMVC {
       if (e.code == 'invalid-email') {
         isEmailExist = 'Not email type';
       } else if (e.code == 'user-not-found') {
-        isEmailExist = 'That email is not exist in database now';
+        isEmailExist = 'That email is not exist';
       } else if (e.code == 'network-request-failed') {
         isEmailExist = 'No access the net';
       } else if (e.code == 'missing-email') {
@@ -773,7 +773,7 @@ class UserController extends ControllerMVC {
     var uuid = '';
     try {
       UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(email: email, password: password);
       uuid = userCredential.user!.uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

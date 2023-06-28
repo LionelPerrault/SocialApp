@@ -6,8 +6,8 @@ import '../helpers/helper.dart';
 
 class RelysiaManager {
   static const apiUrlAuth = 'https://api.relysia.com/v1/auth';
-  static const serviceId = '9ab1b69e-92ae-4612-9a4f-c5a102a6c068';
-  static const shnToken = 'aceaa115dc98a05876e6e13453538fdeb4ab8ee4-SHNA1-TEST';
+  static const serviceId = '8c67e277-4baa-44c9-955a-73f054618196';
+  static const shnToken = '90ed65c46635479f2113c6614a002a0dda8455a8-SHNA';
   static var resToken = {};
 
   static var transHistory = [];
@@ -321,29 +321,3 @@ class RelysiaManager {
     return r;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-http
-.post(
-  Uri.parse(
-      'https://api.relysia.com/v1/send?serviceID=9ab1b61e-92ae-4612-9a4f-c5a102a6c068&authToken=$token'),
-  headers: {
-    'authToken': '$token',
-    'content-type': 'application/json',
-    'serviceID': '9ab1b69e-92ae-4612-9a4f-c5a102a6c068'
-  },
-  body:
-      '{ "dataArray" : [{"to" : "4064@shnatter.com","amount" : 10,"tokenId" : "$shnToken"}]}',
-)
-*/

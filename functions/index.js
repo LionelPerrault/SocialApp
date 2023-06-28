@@ -205,8 +205,8 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
     res.set("Access-Control-Allow-Origin", "*"); // you can also whitelist a specific domain like "http://127.0.0.1:4000"
     res.set("Access-Control-Allow-Headers", "Content-Type");
     const apiUrlAuth = "https://api.relysia.com/v1/auth";
-    const serviceId = "9ab1b69e-92ae-4612-9a4f-c5a102a6c068";
-    const shnToken = "aceaa115dc98a05876e6e13453538fdeb4ab8ee4-SHNA1-TEST";
+    const serviceId = "8c67e277-4baa-44c9-955a-73f054618196";
+    const shnToken = "90ed65c46635479f2113c6614a002a0dda8455a8-SHNA";
     const adminEmail = "kalininviktor848@gmail.com";
     const adminPassword = "123456789";
     const adminPaymail = "4410@shnatter.app";

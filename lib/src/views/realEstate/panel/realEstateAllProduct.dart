@@ -107,37 +107,46 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: allRealEstates.isEmpty
-                        ? [
-                            Container(
-                              padding: const EdgeInsets.only(top: 40),
-                              alignment: Alignment.center,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.network(Helper.emptySVG,
-                                      width: 90),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    margin: const EdgeInsets.only(top: 10),
-                                    padding: const EdgeInsets.only(
-                                        top: 10, bottom: 10),
-                                    width: 140,
-                                    decoration: const BoxDecoration(
-                                        color: Color.fromRGBO(240, 240, 240, 1),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
-                                    child: const Text(
-                                      'No data to show',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color:
-                                              Color.fromRGBO(108, 117, 125, 1)),
-                                    ),
+                        ? roundFlag
+                            ? [
+                                Container(
+                                  padding: const EdgeInsets.only(top: 40),
+                                  alignment: Alignment.center,
+                                  child: CircularProgressIndicator(),
+                                )
+                              ]
+                            : [
+                                Container(
+                                  padding: const EdgeInsets.only(top: 40),
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.network(Helper.emptySVG,
+                                          width: 90),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        margin: const EdgeInsets.only(top: 10),
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 10),
+                                        width: 140,
+                                        decoration: const BoxDecoration(
+                                            color: Color.fromRGBO(
+                                                240, 240, 240, 1),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        child: const Text(
+                                          'No data to show',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromRGBO(
+                                                  108, 117, 125, 1)),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            )
-                          ]
+                                )
+                              ]
                         : allRealEstates.map((realEstate) {
                             clicked() {
                               removeShow();
@@ -156,33 +165,40 @@ class RealEstateAllProductState extends mvc.StateMVC<RealEstateAllProduct> {
                             );
                           }).toList())
                 : allRealEstates.isEmpty
-                    ? Container(
-                        padding: const EdgeInsets.only(top: 40),
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.network(Helper.emptySVG, width: 90),
-                            Container(
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.only(top: 10),
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 10),
-                              width: 140,
-                              decoration: const BoxDecoration(
-                                  color: Color.fromRGBO(240, 240, 240, 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: const Text(
-                                'No data to show',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromRGBO(108, 117, 125, 1)),
-                              ),
+                    ? roundFlag
+                        ? Container(
+                            padding: const EdgeInsets.only(top: 40),
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator(),
+                          )
+                        : Container(
+                            padding: const EdgeInsets.only(top: 40),
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.network(Helper.emptySVG, width: 90),
+                                Container(
+                                  alignment: Alignment.center,
+                                  margin: const EdgeInsets.only(top: 10),
+                                  padding: const EdgeInsets.only(
+                                      top: 10, bottom: 10),
+                                  width: 140,
+                                  decoration: const BoxDecoration(
+                                      color: Color.fromRGBO(240, 240, 240, 1),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  child: const Text(
+                                    'No data to show',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color:
+                                            Color.fromRGBO(108, 117, 125, 1)),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      )
+                          )
                     : GridView.count(
                         crossAxisCount:
                             SizeConfig(context).screenWidth > 1000 ? 3 : 2,
