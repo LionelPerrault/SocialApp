@@ -64,7 +64,7 @@ dependencies:
   permission_handler: ^10.2.0
   universal_html: ^2.0.8
   mime: ^1.0.2
-  emoji_picker_flutter: ^1.5.4
+  emoji_picker_flutter: ^1.6.1
   font_awesome_flutter: ^10.2.1
   badges: ^3.0.2
   uuid: ^3.0.7

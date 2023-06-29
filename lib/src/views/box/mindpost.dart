@@ -577,7 +577,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
                     skinToneDialogBgColor: Colors.white,
                     skinToneIndicatorColor: Colors.grey,
                     enableSkinTones: true,
-                    showRecentsTab: true,
+
                     recentsLimit: 28,
                     replaceEmojiOnLimitExceed: false,
                     noRecents: const Text(

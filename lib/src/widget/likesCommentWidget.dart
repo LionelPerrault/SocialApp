@@ -589,7 +589,7 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                     skinToneDialogBgColor: Colors.white,
                     skinToneIndicatorColor: Colors.grey,
                     enableSkinTones: true,
-                    showRecentsTab: true,
+
                     recentsLimit: 28,
                     replaceEmojiOnLimitExceed: false,
                     noRecents: const Text(
