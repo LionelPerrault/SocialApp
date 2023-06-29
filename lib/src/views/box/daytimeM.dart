@@ -38,80 +38,62 @@ class DayTimeM extends StatelessWidget {
     return Container(
       width: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
           ? 530
-          : 350,
+          : 370,
       padding: const EdgeInsets.only(left: 20, right: 20),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(4.0),
-          topRight: Radius.circular(4.0),
+      height: SizeConfig(context).screenWidth > SizeConfig.smallScreenSize
+          ? 120
+          : 90,
+      alignment: Alignment.center,
+      child: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+              left: BorderSide(
+            color: Color.fromARGB(255, 251, 165, 64),
+            width: 3,
+          )),
+          // borderRadius: BorderRadius.circular(12),
         ),
-        child: Container(
-          decoration: const BoxDecoration(
-            border: Border(
-                left: BorderSide(
-              color: Color.fromARGB(255, 251, 165, 64),
-              width: 3,
-            )),
-            // borderRadius: BorderRadius.circular(12),
-          ),
-          height: 92,
-          child: Row(children: [
-            const Padding(padding: EdgeInsets.only(left: 20)),
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          children: [
             SizedBox(
               width: 42,
               child: SvgPicture.network(sampleData[time]['image']),
             ),
             const Padding(padding: EdgeInsets.only(left: 10)),
             Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: SizeConfig(context).screenWidth >
-                                SizeConfig.smallScreenSize
-                            ? 410
-                            : 220,
-                        child: Text(
-                          '${sampleData[time]['welcome']} $username',
-                          style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: SizeConfig(context).screenWidth >
+                          SizeConfig.smallScreenSize
+                      ? 410
+                      : 240,
+                  child: Text(
+                    '${sampleData[time]['welcome']} $username',
+                    style: const TextStyle(
+                        overflow: TextOverflow.clip,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
-                    width: SizeConfig(context).screenWidth >
-                            SizeConfig.smallScreenSize
-                        ? 410
-                        : 220,
-                    child: Text(sampleData[time]['message'],
-                        style: const TextStyle(
-                          fontSize: 14,
-                        )),
+                ),
+                SizedBox(
+                  width: SizeConfig(context).screenWidth >
+                          SizeConfig.smallScreenSize
+                      ? 410
+                      : 240,
+                  child: Text(
+                    sampleData[time]['message'],
+                    style: const TextStyle(
+                      overflow: TextOverflow.clip,
+                      fontSize: 14,
+                    ),
                   ),
-                ]),
-            // Container(
-            //   height: 15,
-            //   width: 15,
-            //   child: ElevatedButton(
-            //     style: ElevatedButton.styleFrom(
-            //       backgroundColor: Colors.white,
-            //       elevation: 3,
-            //       shape: RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(3.0)),
-            //       maximumSize: const Size(20, 20),
-            //       minimumSize: const Size(20, 20),
-            //     ),
-            //     onPressed: () {},
-            //     child: const Icon(
-            //       Icons.close,
-            //       color: Colors.black,
-            //     ),
-            //   ),
-            // )
-          ]),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
