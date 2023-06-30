@@ -114,10 +114,10 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                         e['state'] == -1
                                     ? const Size(80, 35)
                                     : const Size(80, 35),
-                                maximumSize: (e).containsKey('state') &&
-                                        e['state'] == -1
-                                    ? const Size(80, 35)
-                                    : const Size(80, 35)),
+                                maximumSize:
+                                    (e).containsKey('state') && e['state'] == -1
+                                        ? const Size(80, 35)
+                                        : const Size(80, 35)),
                             child: e.containsKey('state') && e['state'] == -1
                                 ? const SizedBox(
                                     width: 10,
@@ -156,16 +156,15 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                 elevation: 3,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(2.0)),
-                                minimumSize: (e).containsKey('state') &&
-                                        e['state'] == -2
-                                    ? const Size(80, 35)
-                                    : const Size(80, 35),
-                                maximumSize: (e).containsKey('state') &&
-                                        e['state'] == -2
-                                    ? const Size(80, 35)
-                                    : const Size(80, 35)),
-                            child: (e).containsKey('state') &&
-                                    e['state'] == -2
+                                minimumSize:
+                                    (e).containsKey('state') && e['state'] == -2
+                                        ? const Size(80, 35)
+                                        : const Size(80, 35),
+                                maximumSize:
+                                    (e).containsKey('state') && e['state'] == -2
+                                        ? const Size(80, 35)
+                                        : const Size(80, 35)),
+                            child: (e).containsKey('state') && e['state'] == -2
                                 ? const SizedBox(
                                     width: 10,
                                     height: 10,
@@ -173,11 +172,18 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                       color: Colors.white,
                                     ),
                                   )
-                                : const Text('Decline',
-                                    style: TextStyle(
-                                        color: Colors.white,
+                                : const FittedBox(
+                                    // Replace the Text widget with FittedBox
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      'Decline',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w900,
                                         fontSize: 11,
-                                        fontWeight: FontWeight.w900)),
+                                      ),
+                                    ),
+                                  ),
                           )
                         ])
                       : ElevatedButton(
@@ -217,10 +223,10 @@ class RequestFriendCellState extends mvc.StateMVC<RequestFriendCell> {
                                       e['state'] == -3
                                   ? const Size(60, 35)
                                   : const Size(90, 35),
-                              maximumSize: (e).containsKey('state') &&
-                                      e['state'] == -3
-                                  ? const Size(60, 35)
-                                  : const Size(90, 35)),
+                              maximumSize:
+                                  (e).containsKey('state') && e['state'] == -3
+                                      ? const Size(60, 35)
+                                      : const Size(90, 35)),
                           child: (e).containsKey('state') &&
                                   (e['state'] == -3 ||
                                       e['state'] == -1 ||
