@@ -54,22 +54,16 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Padding(
-                    padding: const EdgeInsets.only(left: 10),
+                const Padding(
+                    padding: EdgeInsets.only(left: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           "Messages",
                           style: TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold),
                         ),
-                        Row(children: [
-                          TextButton(
-                              child: const Text('ShnatterMessage',
-                                  style: TextStyle(fontSize: 11)),
-                              onPressed: () {}),
-                        ])
                       ],
                     )),
                 const SizedBox(
@@ -172,24 +166,22 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                         ),
                       ),
                 const Divider(height: 1, indent: 0),
-                Container(
+                InkWell(
+                  onTap: () {
+                    widget.hideNavBox();
+                    widget.routerChange({
+                      'router': RouteNames.messages,
+                      'subRouter': '',
+                    });
+                  },
+                  child: Container(
                     color: const Color.fromARGB(255, 130, 163, 255),
                     alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                            child: const Text('See All',
-                                style: TextStyle(fontSize: 11)),
-                            onPressed: () {
-                              widget.hideNavBox();
-                              widget.routerChange({
-                                'router': RouteNames.messages,
-                                'subRouter': '',
-                              });
-                            }),
-                      ],
-                    ))
+                    padding: const EdgeInsets.symmetric(vertical: 3),
+                    child:
+                        const Text('See All', style: TextStyle(fontSize: 11)),
+                  ),
+                ),
               ],
             )),
       ),
