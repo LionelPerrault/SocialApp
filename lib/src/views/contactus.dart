@@ -30,7 +30,9 @@ class ContactUsState extends mvc.StateMVC<ContactUs> {
     String email = emailCon.text;
     String name = nameCon.text;
     String message = messageCon.text;
-    if (!email.contains('@') || !email.contains('.')) {
+    if (!RegExp(
+            r'^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$')
+        .hasMatch(email)) {
       Helper.showToast('Please insert valid email');
       isSending = false;
       setState(() {});

@@ -569,6 +569,7 @@ class UserController extends ControllerMVC {
     password = pass;
     var returnVal = false;
     if (email.contains('@') && email.contains('.')) {
+      email = email.toLowerCase();
       QuerySnapshot<TokenLogin> checkEmail =
           await Helper.authdata.where('email', isEqualTo: email).get();
       if (checkEmail.docs.isEmpty) {

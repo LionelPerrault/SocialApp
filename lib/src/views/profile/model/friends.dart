@@ -18,9 +18,9 @@ class Friends {
       var friendUid = element['requester'] == UserManager.userInfo['uid']
           ? element['receiver']
           : element['requester'];
-      cell = Helper.userUidToInfo[friendUid];
+      cell = Helper.userUidToInfo[friendUid] ?? {};
       cell['uid'] = friendUid;
-      box.add(cell);
+      if (cell != {}) box.add(cell);
     }
     friends = box;
     return friends;

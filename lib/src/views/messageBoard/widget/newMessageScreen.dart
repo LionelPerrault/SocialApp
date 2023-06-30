@@ -116,7 +116,8 @@ class NewMessageScreenState extends mvc.StateMVC<NewMessageScreen> {
 
   Widget userList(context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
+      height:
+          MediaQuery.of(context).size.height - SizeConfig(context).padding - 30,
       child: SingleChildScrollView(
         child: Column(
           children: searchUser

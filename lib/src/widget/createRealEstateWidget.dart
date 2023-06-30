@@ -75,9 +75,10 @@ class CreateRealEstateModalState extends mvc.StateMVC<CreateRealEstateModal> {
       };
     } else {
       realEstateInfo = widget.editData['data'];
+      realEstatePhoto = widget.editData['data']['realEstatePhoto'] ?? [];
+      realEstateFile = widget.editData['data']['realEstateFile'] ?? [];
     }
     super.initState();
-    print(widget.editData);
   }
 
   getTokenBudget() async {

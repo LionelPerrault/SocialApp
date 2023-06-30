@@ -427,74 +427,77 @@ class ProductCellState extends mvc.StateMVC<ProductCell> {
                                             ),
                                           ),
                                         ),
-                                        Visibility(
-                                          visible: !widget.isShared,
-                                          child: Container(
-                                            padding: const EdgeInsets.only(
-                                                left: 5, right: 9.0),
-                                            child: PopupMenuButton(
-                                              onSelected: (value) {
-                                                popUpFunction(value);
-                                              },
-                                              child: const Icon(
-                                                Icons.arrow_drop_down,
-                                                size: 25,
+                                        popupMenuItem.isEmpty
+                                            ? const SizedBox()
+                                            : Visibility(
+                                                visible: !widget.isShared,
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 5, right: 9.0),
+                                                  child: PopupMenuButton(
+                                                    onSelected: (value) {
+                                                      popUpFunction(value);
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.arrow_drop_down,
+                                                      size: 25,
+                                                    ),
+                                                    itemBuilder:
+                                                        (BuildContext bc) {
+                                                      return popupMenuItem
+                                                          .map(
+                                                            (e) =>
+                                                                PopupMenuItem(
+                                                              value: e['value'],
+                                                              child: Row(
+                                                                children: [
+                                                                  const Padding(
+                                                                      padding: EdgeInsets.only(
+                                                                          left:
+                                                                              5.0)),
+                                                                  Icon(e[
+                                                                      'icon']),
+                                                                  const Padding(
+                                                                      padding: EdgeInsets.only(
+                                                                          left:
+                                                                              12.0)),
+                                                                  Text(
+                                                                    e['value'] ==
+                                                                            'timeline'
+                                                                        ? product[
+                                                                                'productTimeline']
+                                                                            ? e[
+                                                                                'label']
+                                                                            : e[
+                                                                                'labelE']
+                                                                        : e['value'] ==
+                                                                                'comment'
+                                                                            ? product['productOnOffCommenting']
+                                                                                ? e['label']
+                                                                                : e['labelE']
+                                                                            : e['label'],
+                                                                    style: const TextStyle(
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            90,
+                                                                            90,
+                                                                            90),
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w900,
+                                                                        fontSize:
+                                                                            12),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          )
+                                                          .toList();
+                                                    },
+                                                  ),
+                                                ),
                                               ),
-                                              itemBuilder: (BuildContext bc) {
-                                                return popupMenuItem
-                                                    .map(
-                                                      (e) => PopupMenuItem(
-                                                        value: e['value'],
-                                                        child: Row(
-                                                          children: [
-                                                            const Padding(
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        left:
-                                                                            5.0)),
-                                                            Icon(e['icon']),
-                                                            const Padding(
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        left:
-                                                                            12.0)),
-                                                            Text(
-                                                              e['value'] ==
-                                                                      'timeline'
-                                                                  ? product[
-                                                                          'productTimeline']
-                                                                      ? e[
-                                                                          'label']
-                                                                      : e[
-                                                                          'labelE']
-                                                                  : e['value'] ==
-                                                                          'comment'
-                                                                      ? product[
-                                                                              'productOnOffCommenting']
-                                                                          ? e['label']
-                                                                          : e['labelE']
-                                                                      : e['label'],
-                                                              style: const TextStyle(
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          90,
-                                                                          90,
-                                                                          90),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w900,
-                                                                  fontSize: 12),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    )
-                                                    .toList();
-                                              },
-                                            ),
-                                          ),
-                                        ),
                                       ],
                                     ),
                                     const Padding(

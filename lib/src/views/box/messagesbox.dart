@@ -86,94 +86,89 @@ class ShnatterMessageState extends mvc.StateMVC<ShnatterMessage> {
                           child: Text("No new messages"),
                         ))
                     : SizedBox(
-                        height: 300,
                         //size: Size(100,100),
-                        child: ListView.separated(
-                          itemCount: con.newMessage.length,
-                          itemBuilder: (context, index) => Material(
-                              child: ListTile(
-                                  onTap: () async {
-                                    if (SizeConfig(context).screenWidth < 700) {
-                                      QuerySnapshot snapshot =
-                                          await FirebaseFirestore.instance
-                                              .collection("user")
-                                              .where('userName',
-                                                  isEqualTo:
-                                                      con.newMessage[index]
-                                                          ['userName'])
-                                              .get();
-// con.avatar = t[chatUserName]['avatar'];
-//                   widget.onBack('message-list');
-//                   con.chattingUser = chatUserName;
-//                   con.chatUserFullName = chatUserFullName;
-                                      con.docId = snapshot.docs[0].id;
-                                      con.setState(() {});
-                                      widget.routerChange({
-                                        'router': RouteNames.messages,
-                                        'subRouter':
-                                            snapshot.docs[0].id.toString()
-                                      });
-                                      setState(() {});
-                                    } else {
-                                      con.avatar =
-                                          con.newMessage[index]['avatar'];
-                                      con.isMessageTap = 'message-list';
-                                      con.hidden = false;
-                                      con.chattingUser =
-                                          con.newMessage[index]['userName'];
-                                      con.chatUserFullName =
-                                          con.newMessage[index]['name'];
-                                      con.docId = con.newMessage[index]['id'];
-                                      con.newMessage = con.newMessage
-                                          .where((e) =>
-                                              e['id'] !=
-                                              con.newMessage[index]['id'])
-                                          .toList();
-                                      // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
-                                      Helper.setting.notifyListeners();
-                                    }
-                                    widget.hideNavBox();
-                                  },
-                                  hoverColor:
-                                      const Color.fromARGB(255, 243, 243, 243),
-                                  tileColor:
-                                      const Color.fromARGB(230, 230, 230, 230),
-                                  contentPadding: const EdgeInsets.only(
-                                      top: 5, bottom: 5, left: 20, right: 10),
-                                  enabled: true,
-                                  leading: con.newMessage[index]['avatar'] != ''
-                                      ? CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                          con.newMessage[index]['avatar'],
-                                        ))
-                                      : CircleAvatar(
-                                          child: SvgPicture.network(
-                                          con.newMessage[index]['avatar'],
-                                        )),
-                                  title: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        con.newMessage[index]['name'],
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 10),
-                                      ),
-                                      const Padding(
-                                          padding: EdgeInsets.only(top: 5)),
-                                      Text(con.newMessage[index]['lastData'],
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 10)),
-                                    ],
-                                  ))),
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const Divider(
-                            height: 1,
-                            endIndent: 10,
-                          ),
+                        child: Column(
+                          children: con.newMessage
+                              .map(
+                                (e) => Material(
+                                    child: ListTile(
+                                        onTap: () async {
+                                          if (SizeConfig(context).screenWidth <
+                                              700) {
+                                            QuerySnapshot snapshot =
+                                                await FirebaseFirestore.instance
+                                                    .collection("user")
+                                                    .where('userName',
+                                                        isEqualTo:
+                                                            e['userName'])
+                                                    .get();
+                                            con.docId = snapshot.docs[0].id;
+                                            con.setState(() {});
+                                            widget.routerChange({
+                                              'router': RouteNames.messages,
+                                              'subRouter':
+                                                  snapshot.docs[0].id.toString()
+                                            });
+                                            setState(() {});
+                                          } else {
+                                            con.avatar = e['avatar'];
+                                            con.isMessageTap = 'message-list';
+                                            con.hidden = false;
+                                            con.chattingUser = e['userName'];
+                                            con.chatUserFullName = e['name'];
+                                            con.docId = e['id'];
+                                            con.newMessage = con.newMessage
+                                                .where(
+                                                    (e) => e['id'] != e['id'])
+                                                .toList();
+                                            // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+                                            Helper.setting.notifyListeners();
+                                          }
+                                          widget.hideNavBox();
+                                        },
+                                        hoverColor: const Color.fromARGB(
+                                            255, 243, 243, 243),
+                                        tileColor: const Color.fromARGB(
+                                            230, 230, 230, 230),
+                                        contentPadding: const EdgeInsets.only(
+                                            top: 5,
+                                            bottom: 5,
+                                            left: 20,
+                                            right: 10),
+                                        enabled: true,
+                                        leading: e['avatar'] != ''
+                                            ? CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                e['avatar'],
+                                              ))
+                                            : CircleAvatar(
+                                                child: SvgPicture.network(
+                                                e['avatar'],
+                                              )),
+                                        title: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              e['name'],
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 10),
+                                            ),
+                                            const Padding(
+                                                padding:
+                                                    EdgeInsets.only(top: 5)),
+                                            Text(e['lastData'],
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    fontSize: 10)),
+                                          ],
+                                        ))),
+                              )
+                              .toList(),
                         ),
                       ),
                 const Divider(height: 1, indent: 0),

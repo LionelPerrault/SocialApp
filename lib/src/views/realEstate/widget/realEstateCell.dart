@@ -360,7 +360,7 @@ class RealEstateCellState extends mvc.StateMVC<RealEstateCell> {
                                                 }),
                                           TextSpan(
                                             text:
-                                                'added new real estate for ${realEstate["realestateOffer"]}',
+                                                'added new real estate for ${realEstate["realEstateOffer"]}',
                                             style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 14,
