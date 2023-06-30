@@ -5,8 +5,10 @@ import 'package:shnatter/src/widget/list_text.dart';
 
 // ignore: must_be_immutable
 class SettingsLeftPanel extends StatelessWidget {
-  SettingsLeftPanel({super.key, required this.routerFunction});
+  SettingsLeftPanel(
+      {super.key, required this.routerFunction, required this.removeLeftPanel});
   Function routerFunction;
+  Function removeLeftPanel;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -275,13 +277,10 @@ class SettingsLeftPanel extends StatelessWidget {
           //       color: Color.fromARGB(255, 40, 167, 69),
           //     )),
           ListText(
-              onTap: () => {
-                    // routerFunction({
-                    //   'router': RouteNames.settings,
-                    //   'subRouter': RouteNames.settings_delete,
-                    // })
-                    Navigator.pushNamed(context, RouteNames.deleteAccount)
-                  },
+              onTap: () {
+                removeLeftPanel();
+                Navigator.pushNamed(context, RouteNames.deleteAccount);
+              },
               label: 'Delete Account',
               image: const Icon(
                 Icons.delete,

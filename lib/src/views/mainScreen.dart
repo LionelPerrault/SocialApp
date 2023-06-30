@@ -121,6 +121,11 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
     super.dispose();
   }
 
+  removeLeftPanel() {
+    showSideBar = false;
+    _drawerSlideController.reverse();
+  }
+
   routerChange(value) {
     print("call route change now $value");
     showSideBar = false;
@@ -191,6 +196,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                                   : LeftPanel(
                                       routerFunction: routerChange,
                                       router: mainRouterValue,
+                                      removeLeftPanel: removeLeftPanel,
                                     ),
                               MainRouter.mainRouter(
                                   mainRouterValue, routerChange),
@@ -240,6 +246,7 @@ class MainScreenState extends mvc.StateMVC<MainScreen>
                                       child: LeftPanel(
                                         routerFunction: routerChange,
                                         router: mainRouterValue,
+                                        removeLeftPanel: removeLeftPanel,
                                       ),
                                     ),
                                   )
