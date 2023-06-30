@@ -270,7 +270,7 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
       children: [
         Padding(padding: EdgeInsets.only(left: 20)),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: SizedBox(
             width: 80,
             child: Text(
@@ -282,9 +282,9 @@ class SettingAccountScreenState extends mvc.StateMVC<SettingAccountScreen> {
             ),
           ),
         ),
-        Padding(padding: EdgeInsets.only(left: 20)),
+        Padding(padding: EdgeInsets.only(left: 10)),
         Expanded(
-            flex: 4,
+            flex: 6,
             child: Container(
               padding: EdgeInsets.only(right: 20),
               width: 350,
