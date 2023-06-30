@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:shnatter/src/controllers/UserController.dart';
+import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/setting/widget/setting_header.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
 class SettingLocationScreen extends StatefulWidget {
   SettingLocationScreen({Key? key, required this.routerChange})
@@ -20,6 +25,7 @@ class SettingLocationScreen extends StatefulWidget {
 class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
   late UserController con;
   var userInfo = UserManager.userInfo;
+  List<Suggestion> autoLocationList = [];
 
   var locationInfo = {};
   @override
@@ -29,6 +35,46 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
     add(widget.con);
     con = controller as UserController;
     super.initState();
+  }
+
+  Future<void> fetchSuggestions(
+    String input,
+  ) async {
+    final sessionToken = const Uuid().v4();
+    // HttpsCallable callable =
+    //     FirebaseFunctions.instance.httpsCallable('getLocationAutoList');
+    // await callable.call(<String, dynamic>{
+    //   'locationKey': input,
+    //   'apiKey': Helper.apiKey,
+    //   'sessionToken': sessionToken
+    // });
+
+    final request =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input &types=address&language=en&key=${Helper.apiKey}&sessiontoken=$sessionToken';
+    try {
+      final response = await http.get(Uri.parse(request));
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+        if (result['status'] == 'OK') {
+          // compose suggestions in a list
+          autoLocationList = result['predictions']
+              .map<Suggestion>(
+                  (p) => Suggestion(p['place_id'], p['description']))
+              .toList();
+          setState(() {});
+        }
+        if (result['status'] == 'ZERO_RESULTS') {
+          autoLocationList = [];
+          setState(() {});
+        }
+      } else {
+        throw Exception('Failed to fetch suggestion');
+      }
+    } catch (e) {
+      autoLocationList = [];
+      setState(() {});
+    }
   }
 
   @override
@@ -224,5 +270,17 @@ class SettingLocationScreenState extends mvc.StateMVC<SettingLocationScreen> {
             ],
           )),
     );
+  }
+}
+
+class Suggestion {
+  final String placeId;
+  final String description;
+
+  Suggestion(this.placeId, this.description);
+
+  @override
+  String toString() {
+    return 'Suggestion(description: $description, placeId: $placeId)';
   }
 }
