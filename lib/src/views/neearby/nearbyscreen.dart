@@ -16,6 +16,7 @@ import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/mprimary_button.dart';
 import 'package:shnatter/src/managers/GeolocationManager.dart';
+import 'package:shnatter/src/managers/user_manager.dart';
 //import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 
 // ignore: must_be_immutable
@@ -243,7 +244,9 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
     for (var document in documentList) {
       Map data = document.data() as Map;
       if (data['nearbyOptOut'] == false) {
-        clientData.add({...data, 'id': document.id});
+        if (document.id != UserManager.userInfo['uid']) {
+          clientData.add({...data, 'id': document.id});
+        }
         GeoPoint pos = data['position']['geopoint'] as GeoPoint;
 
         var marker = gMap.Marker(
@@ -303,6 +306,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                       maxLines: 20,
                       style: const TextStyle(
                           fontSize: 17,
+                          height: 1.3,
                           fontWeight: FontWeight.w900,
                           color: Colors.lightBlue),
                     ),
