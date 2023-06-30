@@ -306,6 +306,7 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
                       maxLines: 20,
                       style: const TextStyle(
                           fontSize: 17,
+                          height: 1.3,
                           fontWeight: FontWeight.w900,
                           color: Colors.lightBlue),
                     ),
