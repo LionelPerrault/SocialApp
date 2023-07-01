@@ -188,7 +188,8 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
           //
           setState(() {
             _currentAddress =
-                '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+                '${place.street}, ${place.subAdministrativeArea}, ${place.country}';
+            // ${place.subLocality},
           });
         }).catchError((e) {
           _currentAddress = '${position.latitude}, ${position.longitude} ';
@@ -288,36 +289,37 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
         ],
       ),
       child: Padding(
-          padding: const EdgeInsets.only(right: 10, left: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: SizeConfig(context).screenWidth - 120,
-                    height: 50,
-                    child: Text(
-                      _currentAddress,
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.clip,
-                      maxLines: 20,
-                      style: const TextStyle(
-                          fontSize: 17,
-                          height: 1.3,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.lightBlue),
-                    ),
+        padding: const EdgeInsets.only(right: 10, left: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: SizeConfig(context).screenWidth - 120,
+                  height: 55,
+                  child: Text(
+                    _currentAddress,
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.clip,
+                    maxLines: 20,
+                    style: const TextStyle(
+                        fontSize: 16,
+                        height: 1.3,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.lightBlue),
                   ),
-                  Text("within $_currentSliderValue km",
-                      style: const TextStyle(color: Colors.lightBlue))
-                ],
-              ),
-              const Icon(Icons.arrow_circle_down)
-            ],
-          )),
+                ),
+                Text("within $_currentSliderValue km",
+                    style: const TextStyle(color: Colors.lightBlue))
+              ],
+            ),
+            const Icon(Icons.arrow_circle_down)
+          ],
+        ),
+      ),
     );
   }
 
@@ -407,15 +409,16 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
               ),
             ),
             Container(
-                padding: const EdgeInsets.all(5.0),
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: (() {
-                    isShowChoosePane = false;
-                    setState(() {});
-                  }),
-                  child: const Icon(Icons.close),
-                )),
+              padding: const EdgeInsets.all(5.0),
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: (() {
+                  isShowChoosePane = false;
+                  setState(() {});
+                }),
+                child: const Icon(Icons.close),
+              ),
+            ),
           ],
         ),
         Container(
@@ -436,18 +439,19 @@ class UserExploreState extends mvc.StateMVC<UserExplore>
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
-                    child: Slider(
-                  value: _currentSliderValue,
-                  min: 10,
-                  max: 5000,
-                  divisions: 5000 - 10,
-                  label: _currentSliderValue.round().toString(),
-                  onChanged: (double value) {
-                    setState(() {
-                      _currentSliderValue = value.roundToDouble();
-                    });
-                  },
-                )),
+                  child: Slider(
+                    value: _currentSliderValue,
+                    min: 10,
+                    max: 5000,
+                    divisions: 5000 - 10,
+                    label: _currentSliderValue.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value.roundToDouble();
+                      });
+                    },
+                  ),
+                ),
                 Text("$_currentSliderValue km")
               ],
             ),
