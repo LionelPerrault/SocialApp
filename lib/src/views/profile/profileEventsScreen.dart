@@ -32,20 +32,15 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
     add(widget.con);
     con = controller as ProfileController;
     getEventNow();
-    friendModel.getFriends(con.viewProfileUserName).then((value) {
+    friendModel.getFriends(con.viewProfileUid).then((value) {
       setState(() {});
     });
   }
 
   bool isMyFriend() {
     //profile selected is my friend?
-    String friendUserName;
     for (var item in friendModel.friends) {
-      friendUserName = item['requester'].toString();
-      if (friendUserName == UserManager.userInfo['userName']) {
-        return true;
-      }
-      if (item['receiver'] == UserManager.userInfo['userName']) {
+      if (item['uid'] == UserManager.userInfo['uid']) {
         return true;
       }
     }

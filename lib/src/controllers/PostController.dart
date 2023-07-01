@@ -1709,7 +1709,7 @@ class PostController extends ControllerMVC {
     try {
       if (privacy == 'Public' || privacy == 'Friends') {
         List friends =
-            await friendModel.getFriends(UserManager.userInfo['userName']);
+            await friendModel.getFriends(UserManager.userInfo['uid']);
 
         for (var item in friends) {
           String friendUserName = item['requester'].toString();

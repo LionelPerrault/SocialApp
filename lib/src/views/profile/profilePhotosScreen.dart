@@ -35,14 +35,14 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
   final Map _focusedIndices = {};
   Friends friendModel = Friends();
   bool deleteLoading = false;
+  bool canSee = false;
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
-    friendModel
-        .getFriends(ProfileController().viewProfileUserName)
-        .then((value) {
+    friendModel.getFriends(ProfileController().viewProfileUid).then((value) {
+      canSee = isMyFriend();
       setState(() {});
     });
 
@@ -56,13 +56,8 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
 
   bool isMyFriend() {
     //profile selected is my friend?
-    String friendUserName;
     for (var item in friendModel.friends) {
-      friendUserName = item['requester'].toString();
-      if (friendUserName == UserManager.userInfo['userName']) {
-        return true;
-      }
-      if (item['receiver'] == UserManager.userInfo['userName']) {
+      if (item['uid'] == UserManager.userInfo['uid']) {
         return true;
       }
     }
@@ -77,7 +72,7 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
       padding: const EdgeInsets.only(right: 30, top: 30, bottom: 30, left: 20),
       child: Column(children: [
         mainTabs(),
-        isMyFriend() ||
+        canSee ||
                 ProfileController().viewProfileUid ==
                     UserManager.userInfo['uid']
             ? PhotosData()

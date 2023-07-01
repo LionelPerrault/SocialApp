@@ -15,9 +15,9 @@ class Friends {
     var box = [];
     Map cell;
     for (var element in snapshot.docs) {
-      var friendUid = element['requester'] == UserManager.userInfo['uid']
-          ? element['receiver']
-          : element['requester'];
+      var friendUid = element.data()['requester'] == uid
+          ? element.data()['receiver']
+          : element.data()['requester'];
       cell = Helper.userUidToInfo[friendUid] ?? {};
       cell['uid'] = friendUid;
       if (cell != {}) box.add(cell);

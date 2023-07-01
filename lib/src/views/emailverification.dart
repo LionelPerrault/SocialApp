@@ -75,34 +75,39 @@ class EmailVerificationScreenState
         ? const Center(
             child: CircularProgressIndicator(),
           )
-        : Center(
+        : Container(
+            margin: const EdgeInsets.all(16.0),
+            alignment: Alignment.center,
             child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                actionString,
-                style: const TextStyle(fontSize: 30),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              invalid
-                  ? const Text(
-                      'Your email was confirmed, you can now login into Shnatter!',
-                      style: TextStyle(fontSize: 30),
-                    )
-                  : Container(),
-              // SizedBox(
-              //     width: 200,
-              //     height: 30,
-              //     child: MyPrimaryButton(
-              //         onPressed: () {
-              //           Navigator.pushReplacementNamed(
-              //               context, RouteNames.login);
-              //         },
-              //         buttonName: "Login Now",
-              //         color: Colors.blue))
-            ],
-          ));
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    actionString,
+                    style: const TextStyle(fontSize: 30),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                invalid
+                    ? const Text(
+                        'Your email was confirmed, you can now login into Shnatter!',
+                        style: TextStyle(fontSize: 30),
+                      )
+                    : Container(),
+                // SizedBox(
+                //     width: 200,
+                //     height: 30,
+                //     child: MyPrimaryButton(
+                //         onPressed: () {
+                //           Navigator.pushReplacementNamed(
+                //               context, RouteNames.login);
+                //         },
+                //         buttonName: "Login Now",
+                //         color: Colors.blue))
+              ],
+            ));
   }
 }

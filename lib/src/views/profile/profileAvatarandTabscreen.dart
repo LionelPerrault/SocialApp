@@ -62,9 +62,7 @@ class ProfileAvatarandTabScreenState extends mvc
     add(widget.con);
     con = controller as ProfileController;
     con.addNotifyCallBack(this);
-    friendModel
-        .getFriends(ProfileController().viewProfileUserName)
-        .then((value) {
+    friendModel.getFriends(ProfileController().viewProfileUid).then((value) {
       setState(() {});
     });
 

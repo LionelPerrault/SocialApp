@@ -80,14 +80,14 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
   var userData = {};
   String userName = '';
   var percent = 20;
+  bool canSee = false;
   @override
   void initState() {
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
-    friendModel
-        .getFriends(ProfileController().viewProfileUserName)
-        .then((value) {
+    friendModel.getFriends(ProfileController().viewProfileUid).then((value) {
+      canSee = isMyFriend();
       setState(() {});
     });
     //postCon = controller as PostController;
@@ -523,13 +523,8 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
 
   bool isMyFriend() {
     //profile selected is my friend?
-    String friendUserName;
     for (var item in friendModel.friends) {
-      friendUserName = item['requester'].toString();
-      if (friendUserName == UserManager.userInfo['userName']) {
-        return true;
-      }
-      if (item['receiver'] == UserManager.userInfo['userName']) {
+      if (item['uid'] == UserManager.userInfo['uid']) {
         return true;
       }
     }
@@ -541,7 +536,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     return Container(
       alignment: Alignment.topLeft,
       child: SizeConfig(context).screenWidth < 800
-          ? isMyFriend() ||
+          ? canSee ||
                   ProfileController().viewProfileUid ==
                       UserManager.userInfo['uid']
               ? Column(
@@ -588,7 +583,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
                     ],
                   ),
                 )
-          : isMyFriend() ||
+          : canSee ||
                   ProfileController().viewProfileUid ==
                       UserManager.userInfo['uid']
               ? Row(

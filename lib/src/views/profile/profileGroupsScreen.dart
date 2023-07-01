@@ -32,7 +32,7 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
-    friendModel.getFriends(con.viewProfileUserName).then((value) {
+    friendModel.getFriends(con.viewProfileUid).then((value) {
       setState(() {});
     });
     getGroupNow();
@@ -51,13 +51,8 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
 
   bool isMyFriend() {
     //profile selected is my friend?
-    String friendUserName;
     for (var item in friendModel.friends) {
-      friendUserName = item['requester'].toString();
-      if (friendUserName == UserManager.userInfo['userName']) {
-        return true;
-      }
-      if (item['receiver'] == UserManager.userInfo['userName']) {
+      if (item['uid'] == UserManager.userInfo['uid']) {
         return true;
       }
     }

@@ -41,9 +41,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
     add(widget.con);
     con = controller as PostController;
     invites = con.group['groupInvites'];
-    friendModel
-        .getFriends(UserManager.userInfo['userName'])
-        .then((value) async {
+    friendModel.getFriends(UserManager.userInfo['uid']).then((value) async {
       for (var index = 0; index < friendModel.friends.length; index++) {
         var friendUserName = friendModel.friends[index]['requester'].toString();
         if (friendUserName == UserManager.userInfo['userName']) {

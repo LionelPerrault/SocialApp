@@ -93,9 +93,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
   }
 
   Future<void> getFriends() async {
-    friendModel
-        .getFriends(UserManager.userInfo['userName'])
-        .then((value) async {
+    friendModel.getFriends(UserManager.userInfo['uid']).then((value) async {
       for (var index = 0; index < friendModel.friends.length; index++) {
         var friendUserName = friendModel.friends[index]['requester'].toString();
         if (friendUserName == UserManager.userInfo['userName'])
