@@ -450,20 +450,10 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                     child: ListView.separated(
                       itemCount: friendModel.friends.length,
                       itemBuilder: (context, index) {
-                        var friendUserName =
-                            friendModel.friends[index]['requester'].toString();
-                        var userId = friendModel.friends[index]['requesterId']
-                            .toString();
-                        if (friendUserName ==
-                            UserManager.userInfo['userName']) {
-                          friendUserName =
-                              friendModel.friends[index]['receiver'].toString();
-                          userId = friendModel.friends[index]['receiverId']
-                              .toString();
-                        }
+                        var userId =
+                            friendModel.friends[index]['uid'].toString();
                         bool sent = con.boolInvitedGroup(con.group, userId);
                         itemData['state'] = sent;
-                        print('$sent this is sent');
 
                         return Material(
                             child: ListTile(
@@ -472,13 +462,11 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                     const Color.fromARGB(255, 243, 243, 243),
                                 // tileColor: Colors.white,
                                 enabled: true,
-                                leading: friendModel.friends[index]
-                                            [friendUserName]['avatar'] !=
+                                leading: friendModel.friends[index]['avatar'] !=
                                         ''
                                     ? CircleAvatar(
                                         backgroundImage: NetworkImage(
-                                          friendModel.friends[index]
-                                              [friendUserName]['avatar'],
+                                          friendModel.friends[index]['avatar'],
                                         ),
                                       )
                                     : CircleAvatar(
@@ -494,7 +482,7 @@ class GroupTimelineScreenState extends mvc.StateMVC<GroupTimelineScreen>
                                           width: 80,
                                           child: Text(
                                             friendModel.friends[index]
-                                                [friendUserName]['name'],
+                                                ['fullName'],
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 11),
