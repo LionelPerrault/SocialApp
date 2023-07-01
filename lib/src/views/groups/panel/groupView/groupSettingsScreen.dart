@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,6 +12,8 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/interests.dart';
+import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
 import '../../../../widget/admin_list_text.dart';
 import '../../../../widget/alertYesNoWidget.dart';
@@ -38,6 +42,46 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   final TextEditingController groupNameController = TextEditingController();
   final TextEditingController groupLocationController = TextEditingController();
   final TextEditingController groupAboutController = TextEditingController();
+  Future<void> fetchSuggestions(
+    String input,
+  ) async {
+    final sessionToken = const Uuid().v4();
+
+    final request =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input &types=address&language=en&key=${Helper.apiKey}&sessiontoken=$sessionToken';
+    try {
+      final response = await http.get(
+        Uri.parse(request),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+        if (result['status'] == 'OK') {
+          // compose suggestions in a list
+          autoLocationList = result['predictions']
+              .map<Suggestion>(
+                  (p) => Suggestion(p['place_id'], p['description']))
+              .toList();
+          setState(() {});
+        }
+        if (result['status'] == 'ZERO_RESULTS') {
+          autoLocationList = [];
+          setState(() {});
+        }
+      } else {
+        throw Exception('Failed to fetch suggestion');
+      }
+    } catch (e) {
+      autoLocationList = [];
+      setState(() {});
+    }
+  }
+
   List<Map> list = [
     {
       'text': 'Group Settings',
@@ -84,6 +128,7 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   var canPub;
   var approval;
   var footerBtnState = false;
+  List<Suggestion> autoLocationList = [];
   @override
   void initState() {
     super.initState();
@@ -178,11 +223,48 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
                     customInput(
                         title: 'Location',
                         onChange: (value) async {
+                          await fetchSuggestions(value);
                           setState(() {
                             groupLocation = value;
                           });
                         },
                         controller: groupLocationController),
+                    if (autoLocationList.isNotEmpty)
+                      SizedBox(
+                        height: 190,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: autoLocationList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                                onTap: () {
+                                  groupLocationController.text =
+                                      autoLocationList[index].description;
+                                  groupLocation =
+                                      autoLocationList[index].description;
+                                  setState(() {
+                                    autoLocationList = [];
+                                  });
+                                },
+                                child: Container(
+                                  height: 50,
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.only(bottom: 3),
+                                  decoration: const BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                              color: Color.fromARGB(
+                                                  255, 209, 209, 209))),
+                                      color:
+                                          Color.fromARGB(255, 224, 224, 224)),
+                                  child: Text(
+                                    autoLocationList[index].description,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ));
+                          },
+                        ),
+                      ),
                     // const Padding(padding: EdgeInsets.only(top: 15)),
                     // customInput(
                     //     title: 'Group Username',
@@ -1090,5 +1172,17 @@ class GroupSettingsScreenState extends mvc.StateMVC<GroupSettingsScreen> {
   onClick(String route) {
     groupSettingTab = route;
     setState(() {});
+  }
+}
+
+class Suggestion {
+  final String placeId;
+  final String description;
+
+  Suggestion(this.placeId, this.description);
+
+  @override
+  String toString() {
+    return 'Suggestion(description: $description, placeId: $placeId)';
   }
 }
