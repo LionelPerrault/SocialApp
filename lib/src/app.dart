@@ -97,7 +97,7 @@ class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
                     Locale.fromSubtags(languageCode: 'ko'),
                     Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
                   ],
-                  initialRoute: RouteNames.login,
+                  initialRoute: '',
                   onGenerateRoute: RouteGenerator.generateRoute,
                   // ignore: dead_code
                   theme: setting.isBright

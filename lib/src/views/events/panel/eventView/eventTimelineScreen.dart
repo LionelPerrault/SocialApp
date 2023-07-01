@@ -487,16 +487,6 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                         child: ListView.separated(
                           itemCount: friendModel.friends.length,
                           itemBuilder: (context, index) {
-                            var friendUserName = friendModel.friends[index]
-                                    ['requester']
-                                .toString();
-                            if (friendUserName ==
-                                UserManager.userInfo['userName']) {
-                              friendUserName = friendModel.friends[index]
-                                      ['receiver']
-                                  .toString();
-                            }
-
                             return Material(
                                 child: ListTile(
                                     onTap: () {},
@@ -505,12 +495,12 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                                     // tileColor: Colors.white,
                                     enabled: true,
                                     leading: friendModel.friends[index]
-                                                [friendUserName]['avatar'] !=
+                                                ['avatar'] !=
                                             ''
                                         ? CircleAvatar(
                                             backgroundImage: NetworkImage(
                                               friendModel.friends[index]
-                                                  [friendUserName]['avatar'],
+                                                  ['avatar'],
                                             ),
                                           )
                                         : CircleAvatar(
@@ -527,7 +517,7 @@ class EventTimelineScreenState extends mvc.StateMVC<EventTimelineScreen>
                                               width: 80,
                                               child: Text(
                                                 friendModel.friends[index]
-                                                    [friendUserName]['name'],
+                                                    ['fullName'],
                                                 style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 11),

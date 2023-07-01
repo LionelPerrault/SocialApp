@@ -312,7 +312,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
         Container(
           alignment: Alignment.center,
           width: 160,
-          height: 150,
+          height: 160,
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
@@ -322,6 +322,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                 },
                 child: Container(
                   width: 160,
+                  alignment: Alignment.center,
                   margin: const EdgeInsets.only(top: 50),
                   padding: const EdgeInsets.only(top: 50),
                   decoration: BoxDecoration(
@@ -335,6 +336,7 @@ class GroupMembersScreenState extends mvc.StateMVC<GroupMembersScreen> {
                         alignment: Alignment.center,
                         width: 155,
                         child: RichText(
+                          textAlign: TextAlign.center,
                           text: TextSpan(children: <TextSpan>[
                             TextSpan(
                                 text: header,

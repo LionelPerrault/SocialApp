@@ -408,7 +408,6 @@ class UserController extends ControllerMVC {
             if (allUser != [])
               {
                 trdata = res['history'],
-                print(trdata),
                 if (trdata != [])
                   {
                     for (int i = 0; i < trdata.length; i++)
@@ -443,7 +442,6 @@ class UserController extends ControllerMVC {
                                 DateTime.parse(trdata[i]['timestamp']),
                             timestampNow =
                                 dateTimeBefore.millisecondsSinceEpoch,
-                            print(dateTimeBefore),
                             if ((timestampNow - timestampBefore).abs() <
                                     10000 &&
                                 trdata[i]['from'] ==
@@ -613,8 +611,6 @@ class UserController extends ControllerMVC {
         isStarted = user.isStarted;
         isVerify = userCredential.user!.emailVerified;
         addFCMTokenToUser(user.documentId, user.paymail);
-        /* template code 
-        */
         HttpsCallable callable =
             FirebaseFunctions.instance.httpsCallable('signup');
         callable.call(<String, dynamic>{
@@ -656,15 +652,14 @@ class UserController extends ControllerMVC {
           setState(() {});
           return false;
         } else {
-          setState(() {});
+          isSendLoginedInfo = false;
           returnVal = true;
+          setState(() {});
           return true;
         }
       }
     } on FirebaseAuthException catch (e) {
       if (kDebugMode) {}
-      print(e.code);
-      print(e.message);
       if (e.code == 'invalid-email' || e.code == 'user-not-found') {
         failLogin = 'The email you entered does not belong to any account';
         setState(() {});

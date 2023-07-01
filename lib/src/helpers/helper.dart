@@ -156,11 +156,6 @@ class Helper {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                     Text(
-                      'Please re-enter password',
-                      style: TextStyle(color: Colors.white, fontSize: 11),
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 6)),
-                    Text(
                       'The password you entered is incorrect. If you forgot your password? Request a new one',
                       style: TextStyle(color: Colors.white, fontSize: 11),
                     ),
