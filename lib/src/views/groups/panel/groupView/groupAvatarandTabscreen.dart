@@ -193,6 +193,7 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
                         ]),
           ),
         Container(
+          alignment: Alignment.center,
           width: SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
               ? SizeConfig(context).screenWidth - SizeConfig.leftBarAdminWidth
               : SizeConfig(context).screenWidth - 20,
@@ -200,11 +201,10 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
           child: SizeConfig(context).screenWidth < SizeConfig.mediumScreenSize
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                       userAvatarWidget(),
-                      Container(
-                        child: mainTabWidget(),
-                      )
+                      mainTabWidget(),
                     ])
               : Row(children: [
                   Container(
@@ -324,167 +324,143 @@ class GroupAvatarandTabScreenState extends mvc.StateMVC<GroupAvatarandTabScreen>
 
   Widget mainTabWidget() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           margin: const EdgeInsets.only(left: 20),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            Row(
-              children: [
-                Text(
-                  '${con.group['groupName']}',
-                  style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-                const Padding(padding: EdgeInsets.only(left: 6)),
-                Icon(
-                  con.group['groupPrivacy'] == 'public'
-                      ? Icons.language
-                      : con.group['groupPrivacy'] == 'security'
-                          ? Icons.lock
-                          : Icons.lock_open_rounded,
-                  color: Colors.white,
-                )
-              ],
-            ),
-            Row(
-              children: [
-                if (con.group['groupAdmin'][0]['uid'] !=
-                    UserManager.userInfo['uid'])
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 45, 205, 137),
-                          elevation: 3,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(2.0)),
-                          minimumSize: const Size(120, 45),
-                          maximumSize: const Size(120, 45)),
-                      onPressed: () {
-                        groupJoinFunc();
-                      },
-                      child: joinStatus
-                          ? const SizedBox(
-                              width: 10,
-                              height: 10,
-                              child: CircularProgressIndicator(
-                                color: Colors.grey,
-                              ),
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                !con.viewGroupJoined
-                                    ? const Icon(
-                                        Icons.edit_calendar,
-                                        color: Colors.white,
-                                        size: 18.0,
-                                      )
-                                    : const Icon(
-                                        Icons.check,
-                                        color: Colors.white,
-                                        size: 18.0,
-                                      ),
-                                Text(con.viewGroupJoined ? 'Joined' : 'Join',
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.bold)),
-                              ],
-                            )),
-              ],
-            )
-          ]),
-        ),
-        SingleChildScrollView(
-            controller: _scrollController,
-            physics: const NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            child: Container(
-              width:
-                  SizeConfig(context).screenWidth > SizeConfig.mediumScreenSize
-                      ? SizeConfig(context).screenWidth -
-                          SizeConfig.leftBarWidth -
-                          250
-                      : SizeConfig(context).screenWidth - 20,
-              margin: const EdgeInsets.only(top: 10, left: 20),
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(3),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    '${con.group['groupName']}',
+                    style: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 6)),
+                  Icon(
+                    con.group['groupPrivacy'] == 'public'
+                        ? Icons.language
+                        : con.group['groupPrivacy'] == 'security'
+                            ? Icons.lock
+                            : Icons.lock_open_rounded,
+                    color: Colors.white,
+                  )
+                ],
               ),
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: mainTabList
-                      .map((e) => Expanded(
-                              child: MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            child: InkWell(
-                                onTap: () {
-                                  widget.onClick(e['title']);
-                                  setState(() {});
-                                },
-                                child: Container(
-                                    padding: const EdgeInsets.only(top: 30),
-                                    width: itemWidth,
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                e['icon'],
-                                                size: 15,
-                                                color: const Color.fromRGBO(
-                                                    76, 76, 76, 1),
-                                              ),
-                                              const Padding(
-                                                  padding:
-                                                      EdgeInsets.only(left: 5)),
-                                              Text(
-                                                  // SizeConfig(context)
-                                                  //             .screenWidth >
-                                                  //         SizeConfig
-                                                  //                 .mediumScreenSize +
-                                                  //             200
-                                                  //     ? e['title']
-                                                  //     : SizeConfig(context)
-                                                  //                 .screenWidth >
-                                                  //             SizeConfig
-                                                  //                 .mediumScreenSize
-                                                  //         ? ''
-                                                  //         : SizeConfig(context)
-                                                  //                     .screenWidth >
-                                                  //                 600
-                                                  //             ?
-                                                  e['title'],
-                                                  //            : '',
-                                                  style: const TextStyle(
-                                                      fontSize: 13,
-                                                      color: Color.fromRGBO(
-                                                          76, 76, 76, 1),
-                                                      fontWeight:
-                                                          FontWeight.bold))
-                                            ]),
-                                        e['title'] == con.groupTab
-                                            ? Container(
-                                                margin: const EdgeInsets.only(
-                                                    top: 23),
-                                                height: 2,
-                                                color: Colors.grey,
-                                              )
-                                            : Container()
-                                      ],
-                                    ))),
-                          )))
-                      .toList()),
-            ))
+              Row(
+                children: [
+                  if (con.group['groupAdmin'][0]['uid'] !=
+                      UserManager.userInfo['uid'])
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 45, 205, 137),
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.0)),
+                            minimumSize: const Size(120, 45),
+                            maximumSize: const Size(120, 45)),
+                        onPressed: () {
+                          groupJoinFunc();
+                        },
+                        child: joinStatus
+                            ? const SizedBox(
+                                width: 10,
+                                height: 10,
+                                child: CircularProgressIndicator(
+                                  color: Colors.grey,
+                                ),
+                              )
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  !con.viewGroupJoined
+                                      ? const Icon(
+                                          Icons.edit_calendar,
+                                          color: Colors.white,
+                                          size: 18.0,
+                                        )
+                                      : const Icon(
+                                          Icons.check,
+                                          color: Colors.white,
+                                          size: 18.0,
+                                        ),
+                                  Text(con.viewGroupJoined ? 'Joined' : 'Join',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              )),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Container(
+          alignment: Alignment.center,
+          margin: const EdgeInsets.only(top: 10, left: 20),
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(3),
+          ),
+          child: Row(
+              children: mainTabList
+                  .map(
+                    (e) => Expanded(
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: InkWell(
+                          onTap: () {
+                            widget.onClick(e['title']);
+                            setState(() {});
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.only(top: 30),
+                            width: 80,
+                            child: Column(
+                              children: [
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        e['icon'],
+                                        size: 15,
+                                        color:
+                                            const Color.fromRGBO(76, 76, 76, 1),
+                                      ),
+                                      const Padding(
+                                          padding: EdgeInsets.only(left: 5)),
+                                      Text(e['title'],
+                                          style: const TextStyle(
+                                              fontSize: 13,
+                                              color:
+                                                  Color.fromRGBO(76, 76, 76, 1),
+                                              fontWeight: FontWeight.bold))
+                                    ]),
+                                e['title'] == con.groupTab
+                                    ? Container(
+                                        margin: const EdgeInsets.only(top: 23),
+                                        height: 2,
+                                        color: Colors.grey,
+                                      )
+                                    : Container()
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList()),
+        ),
       ],
     );
   }
