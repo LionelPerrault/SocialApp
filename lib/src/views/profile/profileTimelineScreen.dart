@@ -87,11 +87,7 @@ class ProfileTimelineScreenState extends mvc.StateMVC<ProfileTimelineScreen>
     add(widget.con);
     con = controller as ProfileController;
     friendModel.getFriends(ProfileController().viewProfileUid).then((value) {
-      for (var item in friendModel.friends) {
-        if (item['uid'] == UserManager.userInfo['uid']) {
-          canSee = true;
-        }
-      }
+      canSee = isMyFriend();
       setState(() {});
     });
     //postCon = controller as PostController;
