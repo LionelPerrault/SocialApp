@@ -178,10 +178,13 @@ class MessageScreenState extends mvc.StateMVC<MessageScreen>
                         ? Padding(
                             padding: EdgeInsets.only(
                                 top: UserManager.userInfo['isVerify']
-                                    ? SizeConfig(context).screenHeight - 280
+                                    ? SizeConfig(context).screenHeight -
+                                        260 -
+                                        viewInsets.bottom
                                     : SizeConfig(context).screenHeight -
-                                        280 -
-                                        verifyAlertToastHeight),
+                                        260 -
+                                        verifyAlertToastHeight -
+                                        viewInsets.bottom),
                             child: WriteMessageScreen(
                               type: 'new',
                               goMessage: (value) {
