@@ -40,28 +40,6 @@ exports.sendEmailToSeller = functions.firestore
       });
   });
 
-// exports.sendEmailToBuyer =  functions.firestore.document('transaction/{transactionId}').onCreate(async (snapshot) => {
-
-//   const mailOptions = {
-//       from: `kalininviktor848@gmail.com`,
-//       to: snapshot.data().buyer.email,
-//       subject: 'Product Sell',
-//       html: `<h1>You purchased product of ${snapshot.data().seller.userName} </h1>
-//                           <p>
-//                              <b>Email: </b>${snapshot.data().seller.email}<br>
-//                           </p>`
-//   };
-
-//   return transporter.sendMail(mailOptions, (error, data) => {
-//       if (error) {
-//         functions.logger.log('error send email**********************************')
-//         functions.logger.log(error)
-//           return
-//       }
-//       functions.logger.log("Sent!***********************************")
-//   });
-// });
-
 exports.sendNotifications = functions.firestore
   .document("notifications/{notificationId}")
   .onCreate(async (snapshot) => {
@@ -207,9 +185,19 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
     const apiUrlAuth = "https://api.relysia.com/v1/auth";
     const serviceId = "8c67e277-4baa-44c9-955a-73f054618196";
     const shnToken = "90ed65c46635479f2113c6614a002a0dda8455a8-SHNA";
-    const adminEmail = "kalininviktor848@gmail.com";
-    const adminPassword = "123456789";
-    const adminPaymail = "4410@shnatter.app";
+    const treasuryAccSnap = await admin
+      .firestore()
+      .collection("adminPanel")
+      .doc('treasure')
+      .get();
+    const adminEmail = treasuryAccSnap.data().adminEmail;
+    const adminPassword = treasuryAccSnap.data().adminPassword;
+    const adminPaymailSnap = await admin
+      .firestore()
+      .collection("adminPanel")
+      .doc('backPaymail')
+      .get();
+    const adminPaymail = adminPaymailSnap.data().address;
     const uuid = req.query.uid;
     const snapshot = await admin
       .firestore()
