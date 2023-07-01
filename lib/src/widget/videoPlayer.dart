@@ -47,10 +47,8 @@ class VideoPlayerWidgetState extends State<VideoPlayerWidget>
 
   @override
   Widget build(BuildContext context) {
-    double videoHeight = MediaQuery.of(context).size.width *
-        (9 / 16); // Set the video height based on aspect ratio (16:9)
     return Container(
-      height: videoHeight,
+      height: 300,
       decoration: BoxDecoration(
         color: Colors.black,
         border: Border.all(color: Colors.grey),
@@ -58,7 +56,8 @@ class VideoPlayerWidgetState extends State<VideoPlayerWidget>
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Center(
+          Container(
+            alignment: Alignment.center,
             child: GestureDetector(
               onTap: () {
                 setState(() {
