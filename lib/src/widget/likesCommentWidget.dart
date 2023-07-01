@@ -1099,25 +1099,27 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                   : Container(
                       padding:
                           const EdgeInsets.only(top: 10, bottom: 30, left: 10),
-                      child: Row(children: [
-                        const Icon(
-                          FontAwesomeIcons.comment,
-                          size: 12,
-                        ),
-                        const Padding(padding: EdgeInsets.only(left: 5)),
-                        InkWell(
-                          onTap: () {
-                            if (!whatReply.contains(e['id'])) {
-                              whatReply.add(e['id']);
-                            }
-                            setState(() {});
-                          },
-                          child: Text(
-                            '${e['reply'].length} Replies',
-                            style: const TextStyle(fontSize: 12),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            FontAwesomeIcons.comment,
+                            size: 12,
                           ),
-                        )
-                      ]),
+                          const Padding(padding: EdgeInsets.only(left: 5)),
+                          InkWell(
+                            onTap: () {
+                              if (!whatReply.contains(e['id'])) {
+                                whatReply.add(e['id']);
+                              }
+                              setState(() {});
+                            },
+                            child: Text(
+                              '${e['reply'].length} Replies',
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
               whatReply.contains(e['id']) &&
                       widget.commentFlag &&
@@ -1481,22 +1483,24 @@ class LikesCommentScreenState extends mvc.StateMVC<LikesCommentScreen> {
                           fontWeight: FontWeight.bold, fontSize: 11),
                       children: <TextSpan>[
                         TextSpan(
-                            text:
-                                '${likeUsers[index]['userInfo']['firstName']} ${likeUsers[index]['userInfo']['lastName']}',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 11,
-                                color: Colors.black),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                ProfileController().updateProfile(
-                                    likeUsers[index]['userInfo']['userName']);
-                                widget.routerChange({
-                                  'router': RouteNames.profile,
-                                  'subRouter': likeUsers[index]['userInfo']
-                                      ['userName']
-                                });
-                              })
+                          text:
+                              '${likeUsers[index]['userInfo']['firstName']} ${likeUsers[index]['userInfo']['lastName']}',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 11,
+                              color: Colors.black),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              ProfileController().updateProfile(
+                                  likeUsers[index]['userInfo']['userName']);
+                              widget.routerChange({
+                                'router': RouteNames.profile,
+                                'subRouter': likeUsers[index]['userInfo']
+                                    ['userName']
+                              });
+                              Navigator.pop(context);
+                            },
+                        )
                       ],
                     ),
                   ),
