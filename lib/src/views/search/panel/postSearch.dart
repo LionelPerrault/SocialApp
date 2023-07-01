@@ -77,7 +77,9 @@ class PostSearchState extends mvc.StateMVC<PostSearch> {
                   ],
                 ),
               )
-            : SizedBox(
+            : Container(
+                padding:
+                    EdgeInsets.only(bottom: SizeConfig(context).padding + 30),
                 width: SizeConfig(context).screenWidth,
                 height: SizeConfig(context).screenHeight -
                     SizeConfig.navbarHeight -
