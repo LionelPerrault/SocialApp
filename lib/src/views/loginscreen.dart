@@ -496,7 +496,10 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
           child: MyPrimaryButton(
             color: Colors.white,
             buttonName: "Back",
-            onPressed: () => {},
+            onPressed: () async {
+              enableTwoFactor = false;
+              setState(() {});
+            },
           ),
         ),
       ],
