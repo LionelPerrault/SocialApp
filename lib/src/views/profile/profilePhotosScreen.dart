@@ -40,9 +40,7 @@ class ProfilePhotosScreenState extends mvc.StateMVC<ProfilePhotosScreen> {
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
-    friendModel
-        .getFriends(ProfileController().viewProfileUserName)
-        .then((value) {
+    friendModel.getFriends(ProfileController().viewProfileUid).then((value) {
       setState(() {});
     });
 

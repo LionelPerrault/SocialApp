@@ -37,7 +37,7 @@ class FriendsScreenState extends mvc.StateMVC<FriendsScreen> {
     super.initState();
     con = controller as PeopleController;
 
-    con.getFriends(UserManager.userInfo['userName']);
+    con.getFriends(UserManager.userInfo['uid']);
     con.addNotifyCallBack(this);
   }
 

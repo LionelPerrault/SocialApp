@@ -36,6 +36,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
   var profileCon = ProfileController();
   List<Map> mainInfoList = [];
   Friends friendModel = Friends();
+  bool canSee = false;
   @override
   void initState() {
     super.initState();
@@ -43,8 +44,10 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
     //con = controller as PeopleController;
 
     friendModel.getFriends(profileCon.viewProfileUid).then((value) {
+      canSee = isMyFriend();
       setState(() {});
     });
+
     _gotoHome();
   }
 
@@ -68,15 +71,12 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // friendModel.getFriends(profileCon.viewProfileUserName).then((value) {
-    //   setState(() {});
-    // });
     return Container(
         padding:
             const EdgeInsets.only(right: 30, top: 30, bottom: 30, left: 20),
         child: Column(children: [
           mainTabs(),
-          isMyFriend() ||
+          canSee ||
                   ProfileController().viewProfileUid ==
                       UserManager.userInfo['uid']
               ? friendsData()

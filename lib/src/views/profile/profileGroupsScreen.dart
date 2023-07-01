@@ -32,7 +32,7 @@ class ProfileGroupsScreenState extends mvc.StateMVC<ProfileGroupsScreen> {
     super.initState();
     add(widget.con);
     con = controller as ProfileController;
-    friendModel.getFriends(con.viewProfileUserName).then((value) {
+    friendModel.getFriends(con.viewProfileUid).then((value) {
       setState(() {});
     });
     getGroupNow();

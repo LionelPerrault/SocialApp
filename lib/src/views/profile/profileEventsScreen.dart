@@ -32,7 +32,7 @@ class ProfileEventsScreenState extends mvc.StateMVC<ProfileEventsScreen> {
     add(widget.con);
     con = controller as ProfileController;
     getEventNow();
-    friendModel.getFriends(con.viewProfileUserName).then((value) {
+    friendModel.getFriends(con.viewProfileUid).then((value) {
       setState(() {});
     });
   }
