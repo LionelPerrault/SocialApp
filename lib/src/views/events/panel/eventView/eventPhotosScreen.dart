@@ -36,16 +36,13 @@ class EventPhotosScreenState extends mvc.StateMVC<EventPhotosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      photoModel.photos.isEmpty ? const SizedBox() : mainTabs(),
-      PhotosData()
-    ]);
+    return Column(children: [mainTabs(), PhotosData()]);
   }
 
   Widget mainTabs() {
     return Container(
       width: SizeConfig(context).screenWidth,
-      height: 110,
+      height: 70,
       margin: const EdgeInsets.only(left: 30, right: 30),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(240, 240, 240, 1),
