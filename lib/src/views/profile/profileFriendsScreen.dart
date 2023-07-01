@@ -202,7 +202,7 @@ class ProfileFriendScreenState extends mvc.StateMVC<ProfileFriendScreen> {
                         });
                     setState(() {});
                   },
-                  child: Text('${value['firstName']} ${value['lastName']}'),
+                  child: Text(value['fullName']),
                 ),
               ],
             ),
