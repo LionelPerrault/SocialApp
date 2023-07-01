@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_is_empty
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -110,29 +111,24 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                       Radius.circular(5))),
                               child: enableTwoFactor
                                   ? twoFactorAuthentication()
-                                  : ListView(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
+                                  : Column(
                                       children: <Widget>[
                                         Container(
+                                          alignment: Alignment.centerLeft,
                                           width: 455,
-                                          height: 90,
+                                          height: 70,
                                           margin:
-                                              const EdgeInsets.only(top: 50.0),
+                                              const EdgeInsets.only(top: 60.0),
+                                          padding:
+                                              const EdgeInsets.only(left: 30),
                                           color: const Color.fromARGB(
                                               255, 11, 35, 45),
-                                          child: const Row(children: <Widget>[
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 45.0),
-                                            ),
-                                            Text('Login',
-                                                style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 238, 238, 238),
-                                                  fontSize: 30,
-                                                )),
-                                          ]),
+                                          child: const Text('Login',
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 238, 238, 238),
+                                                fontSize: 30,
+                                              )),
                                         ),
                                         Container(
                                           alignment: Alignment.centerLeft,
@@ -146,7 +142,7 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                         ),
                                         Container(
                                           margin:
-                                              const EdgeInsets.only(top: 20.0),
+                                              const EdgeInsets.only(top: 10.0),
                                           padding: const EdgeInsets.only(
                                               left: 30, right: 30),
                                           child: Column(children: <Widget>[
@@ -250,7 +246,6 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                               ]),
                                         ),
                                         Container(
-                                          width: 260,
                                           margin:
                                               const EdgeInsets.only(top: 10.0),
                                           padding: const EdgeInsets.only(
@@ -317,6 +312,8 @@ class LoginScreenState extends mvc.StateMVC<LoginScreen> {
                                                     top: 0),
                                                 child: Helper.failAlert(
                                                     con.failLogin))),
+                                        const SizedBox(height: 15),
+                                        const Expanded(child: SizedBox()),
                                       ],
                                     ),
                             ),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shnatter/src/helpers/helper.dart';
 import 'package:shnatter/src/routes/route_names.dart';
@@ -14,6 +15,7 @@ import 'package:shnatter/src/views/terms.dart';
 import 'package:shnatter/src/views/setting/pages/delete.dart';
 
 import '../managers/user_manager.dart';
+import '../views/getStarted.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -60,14 +62,14 @@ class RouteGenerator {
           url != '/reset' &&
           url != RouteNames.terms &&
           url != RouteNames.privacy) {
-        url = RouteNames.login;
+        url = '';
       }
     }
 
     switch (url) {
       case '':
         return MaterialPageRoute(
-            builder: (context) => MainScreen(), settings: settings);
+            builder: (context) => GetStartedScreen(), settings: settings);
       case RouteNames.homePage:
         return MaterialPageRoute(
             builder: (context) => MainScreen(), settings: settings);
