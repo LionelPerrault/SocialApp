@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:shnatter/src/controllers/UserController.dart';
@@ -388,6 +389,58 @@ class SettingBasicScreenState extends mvc.StateMVC<SettingBasicScreen> {
                                 ),
                               ),
                               const Padding(padding: EdgeInsets.only(right: 20))
+                            ],
+                          ),
+                          const SizedBox(height: 30),
+                          Row(
+                            children: [
+                              Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Row(
+                                        children: [
+                                          Text('I am jewish',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 82, 95, 127),
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold)),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 10),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 20)),
+                                          SizedBox(
+                                            height: 20,
+                                            child: Transform.scale(
+                                              scaleX: 0.55,
+                                              scaleY: 0.55,
+                                              child: CupertinoSwitch(
+                                                activeColor: Colors.grey,
+                                                value: userInfo['jew'] ?? false,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    setting_profile['jew'] =
+                                                        value;
+                                                    userInfo['jew'] = value;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  )),
                             ],
                           ),
                           Row(

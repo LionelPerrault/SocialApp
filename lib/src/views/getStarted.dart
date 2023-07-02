@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
@@ -5,6 +7,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:video_player/video_player.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
@@ -16,12 +19,40 @@ class GetStartedScreen extends StatefulWidget {
 
 class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
     with SingleTickerProviderStateMixin {
+  late VideoPlayerController _controller;
+  bool _isPlaying = false;
+  double _sliderValue = 0.0;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = VideoPlayerController.network(
+        'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter.mp4?alt=media&token=896f75f3-e501-4c7b-81e4-f182a9b23c5b')
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+    _controller.addListener(() {
+      setState(() {
+        _sliderValue = _controller.value.position.inMilliseconds.toDouble();
+      });
+      if (_controller.value.position == _controller.value.duration) {
+        setState(() {
+          _isPlaying = false;
+        });
+      }
+    });
+    _controller.play();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('images/get-started.png'),
+          image: AssetImage('assets/images/get-started.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -39,6 +70,34 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                   'assets/images/shnatter-logo-login.svg',
                   semanticsLabel: 'Logo',
                   width: 200,
+                ),
+              ),
+              const SizedBox(height: 40),
+              Container(
+                decoration: const BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                child: Container(
+                  alignment: Alignment.center,
+                  child: GestureDetector(
+                    onTap: () {
+                      print('object');
+                      setState(() {
+                        _isPlaying = !_isPlaying;
+                      });
+                      if (_isPlaying) {
+                        _controller.play();
+                        startTimer();
+                      } else {
+                        _controller.pause();
+                        stopTimer();
+                      }
+                    },
+                    child: AspectRatio(
+                      aspectRatio: _controller.value.aspectRatio,
+                      child: VideoPlayer(_controller),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 40),
@@ -79,7 +138,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                         const SizedBox(height: 30),
                         // ignore: prefer_const_constructors
                         const Text(
-                          'Preregistration starts from June 30th to July 31st.\nRegister now and receive 1000 Tokens welcome gift !\nThe Website is full usable also during this time.',
+                          'Preregistration starts from June 30th to July 31st.\nRegister now and receive 1000 Tokens welcome gift !\nThe Website is full usable also during this time.\n',
                           style: TextStyle(
                             letterSpacing: 0.4,
                             height: 1.5,
@@ -204,7 +263,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                 ],
                               ),
                               child: Image.asset(
-                                'images/appstore-badge.png',
+                                'assets/images/appstore-badge.png',
                                 width: 130,
                               ),
                             ),
@@ -225,7 +284,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                 ],
                               ),
                               child: Image.asset(
-                                'images/google-play-badge.png',
+                                'assets/images/google-play-badge.png',
                                 width: 130,
                               ),
                             ),
@@ -237,7 +296,31 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
               const SizedBox(height: 30),
               Row(
                 children: [
-                  Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox()),
+                  GestureDetector(
+                    onTap: () async {
+                      var url = Uri.parse('https://twitter.com/shnatterteam');
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(5),
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(33)),
+                          border: Border.all(color: Colors.blue, width: 2)),
+                      child: Image.asset(
+                        'images/faq.png',
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
                   GestureDetector(
                     onTap: () async {
                       var url = Uri.parse('https://twitter.com/shnatterteam');
@@ -257,7 +340,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                               const BorderRadius.all(Radius.circular(33)),
                           border: Border.all(color: Colors.blue, width: 2)),
                       child: SvgPicture.asset(
-                        'icon/twitter.svg',
+                        'svg/twitter.svg',
                         color: Colors.blue,
                       ),
                     ),
@@ -269,5 +352,22 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
         ),
       ),
     );
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(milliseconds: 10), (timer) {
+      setState(() {
+        _sliderValue = _controller.value.position.inMilliseconds.toDouble();
+      });
+    });
+  }
+
+  void stopTimer() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
+  String durationToString(Duration duration) {
+    return duration.toString().split('.').first;
   }
 }
