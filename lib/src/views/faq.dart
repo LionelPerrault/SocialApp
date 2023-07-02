@@ -71,7 +71,7 @@ class FAQScreenState extends mvc.StateMVC<FAQScreen> {
                       top: 130,
                     ),
                     padding: const EdgeInsets.all(25),
-                    width: 1000,
+                    constraints: const BoxConstraints(maxWidth: 1000),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(2),
