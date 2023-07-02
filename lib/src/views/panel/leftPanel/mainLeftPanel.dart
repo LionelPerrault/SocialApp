@@ -202,15 +202,15 @@ class MainLeftPanel extends StatelessWidget {
               width: 21,
             ),
           ),
-          ListText(
-            onTap: () => {
-              routerFunction({
-                'router': RouteNames.liveStreaming,
-              })
-            },
-            label: 'Live Streaming',
-            image: const Icon(Icons.stream),
-          ),
+          // ListText(
+          //   onTap: () => {
+          //     routerFunction({
+          //       'router': RouteNames.liveStreaming,
+          //     })
+          //   },
+          //   label: 'Live Streaming',
+          //   image: const Icon(Icons.stream),
+          // ),
           // ListText(
           //   onTap: () => {
           //     routerFunction({
