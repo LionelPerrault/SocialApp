@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as PPath;
+import 'package:http/http.dart' as http;
 
 import 'package:shnatter/src/controllers/PostController.dart';
 import 'package:shnatter/src/helpers/helper.dart';
@@ -17,6 +19,7 @@ import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/widget/mindslice.dart';
 
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
+import 'package:uuid/uuid.dart';
 
 import '../messageBoard/widget/soundRecorder.dart';
 
@@ -55,6 +58,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   bool emojiShowing = false;
   bool popupShowing = false;
   final TextEditingController _controller = TextEditingController();
+  List<Suggestion> autoLocationList = [];
 
   @override
   void dispose() {
@@ -63,6 +67,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     super.dispose();
   }
 
+  TextEditingController checkInController = TextEditingController();
   late PostController con;
   late List<Map> mindPostCase = [
     {
@@ -311,6 +316,46 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     //   }
     // });
     super.initState();
+  }
+
+  Future<void> fetchSuggestions(
+    String input,
+  ) async {
+    final sessionToken = const Uuid().v4();
+
+    final request =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input &types=address&language=en&key=${Helper.apiKey}&sessiontoken=$sessionToken';
+    try {
+      final response = await http.get(
+        Uri.parse(request),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+        if (result['status'] == 'OK') {
+          // compose suggestions in a list
+          autoLocationList = result['predictions']
+              .map<Suggestion>(
+                  (p) => Suggestion(p['place_id'], p['description']))
+              .toList();
+          setState(() {});
+        }
+        if (result['status'] == 'ZERO_RESULTS') {
+          autoLocationList = [];
+          setState(() {});
+        }
+      } else {
+        throw Exception('Failed to fetch suggestion');
+      }
+    } catch (e) {
+      autoLocationList = [];
+      setState(() {});
+    }
   }
 
   uploadPhotoReady(int option) {
@@ -1192,13 +1237,54 @@ class MindPostState extends mvc.StateMVC<MindPost> {
   }
 
   Widget checkInWidget() {
-    return postInput(
-      'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcheckin.svg?alt=media&token=6f228dbc-b1a4-4d13-860b-18b686602738',
-      'Where are you?',
-      (value) {
-        checkLocation = value;
-        setState(() {});
-      },
+    return Column(
+      children: [
+        postInput(
+          'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter-assests%2Fsvg%2Fmind_svg%2Fcheckin.svg?alt=media&token=6f228dbc-b1a4-4d13-860b-18b686602738',
+          'Where are you?',
+          (value) async {
+            // checkLocation = value;
+            await fetchSuggestions(value);
+            // // setState(() {});
+          },
+          controller: checkInController,
+        ),
+        if (autoLocationList.isNotEmpty)
+          Container(
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(4))),
+            height: 190,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: autoLocationList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                    onTap: () {
+                      checkLocation = autoLocationList[index].description;
+                      checkInController.text =
+                          autoLocationList[index].description;
+                      setState(() {
+                        autoLocationList = [];
+                      });
+                    },
+                    child: Container(
+                      height: 50,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.only(bottom: 3),
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: Color.fromARGB(255, 209, 209, 209))),
+                          color: Color.fromARGB(255, 224, 224, 224)),
+                      child: Text(
+                        autoLocationList[index].description,
+                        textAlign: TextAlign.center,
+                      ),
+                    ));
+              },
+            ),
+          ),
+      ],
     );
   }
 
@@ -1261,7 +1347,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     );
   }
 
-  Widget postInput(url, place, onChange) {
+  Widget postInput(url, place, onChange, {controller}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1270,6 +1356,7 @@ class MindPostState extends mvc.StateMVC<MindPost> {
           height: 40,
           child: TextField(
             onChanged: onChange,
+            controller: controller,
             decoration: InputDecoration(
               prefixIcon: Container(
                   margin: const EdgeInsets.only(left: 10),
@@ -1518,5 +1605,17 @@ class MindPostState extends mvc.StateMVC<MindPost> {
     if (type != 'photo' && pickedFile?.path == '') return;
     postLoading = true;
     uploadFile(pickedFile, type);
+  }
+}
+
+class Suggestion {
+  final String placeId;
+  final String description;
+
+  Suggestion(this.placeId, this.description);
+
+  @override
+  String toString() {
+    return 'Suggestion(description: $description, placeId: $placeId)';
   }
 }
