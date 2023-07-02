@@ -298,7 +298,7 @@ class ShnatterNavigationState extends mvc.StateMVC<ShnatterNavigation> {
                 ),
                 Row(children: [
                   Container(
-                      padding: const EdgeInsets.only(right: 12),
+                      padding: const EdgeInsets.only(right: 30),
                       child: InkWell(
                         onTap: () {
                           widget.routerChange({

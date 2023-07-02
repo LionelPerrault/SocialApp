@@ -75,7 +75,6 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
               const SizedBox(height: 40),
               Container(
                 decoration: const BoxDecoration(
-                    color: Colors.green,
                     borderRadius: BorderRadius.all(Radius.circular(30))),
                 child: Container(
                   alignment: Alignment.center,
