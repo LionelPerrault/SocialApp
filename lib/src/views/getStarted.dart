@@ -45,7 +45,6 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
         });
       }
     });
-    _controller.play();
   }
 
   @override
@@ -156,6 +155,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                         _controller.value.duration),
                                     style: const TextStyle(color: Colors.white),
                                   ),
+                                  const SizedBox(width: 10),
                                 ],
                               ),
                             ],
