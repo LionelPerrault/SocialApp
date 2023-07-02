@@ -1712,14 +1712,14 @@ class PostController extends ControllerMVC {
             await friendModel.getFriends(UserManager.userInfo['uid']);
 
         for (var item in friends) {
-          String friendUserName = item['requester'].toString();
-          if (friendUserName == UserManager.userInfo['userName']) {
-            friendUserName = item['receiver'];
+          String friendUid = item['requester'].toString();
+          if (friendUid == UserManager.userInfo['uid']) {
+            friendUid = item['receiver'].toString();
           }
-          followers.add(friendUserName);
+          followers.add(friendUid);
         }
       }
-      followers.add(UserManager.userInfo['userName']);
+      followers.add(UserManager.userInfo['uid']);
       postData = {
         'postAdmin': UserManager.userInfo['uid'],
         'type': type,
@@ -1764,7 +1764,7 @@ class PostController extends ControllerMVC {
 
     if (type == PostType.timeline.index) {
       baseQuery = baseQuery.where('followers',
-          arrayContains: UserManager.userInfo['userName'].toString());
+          arrayContains: UserManager.userInfo['uid'].toString());
       baseQuery = baseQuery.where('privacy', whereIn: ['Public', 'Friends']);
       if (direction == 0) {
         // baseQuery = baseQuery.where('postTime', isLessThan: lastTime);

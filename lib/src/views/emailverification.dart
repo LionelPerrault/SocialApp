@@ -81,6 +81,9 @@ class EmailVerificationScreenState
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Center(
+                  child: Image.asset('assets/images/emailverified.png'),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
