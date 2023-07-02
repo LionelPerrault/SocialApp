@@ -7,6 +7,7 @@ import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/routes/route_names.dart';
 import 'package:shnatter/src/utils/size_config.dart';
+import 'package:shnatter/src/views/faq.dart';
 import 'package:video_player/video_player.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -298,12 +299,12 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                   const Expanded(child: SizedBox()),
                   GestureDetector(
                     onTap: () async {
-                      var url = Uri.parse('https://twitter.com/shnatterteam');
-                      if (await canLaunchUrl(url)) {
-                        await launchUrl(url);
-                      } else {
-                        throw 'Could not launch $url';
-                      }
+                      Navigator.push<void>(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const FAQScreen(),
+                        ),
+                      );
                     },
                     child: Container(
                       margin: const EdgeInsets.all(20),
