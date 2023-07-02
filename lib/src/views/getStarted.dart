@@ -79,7 +79,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                         const SizedBox(height: 30),
                         // ignore: prefer_const_constructors
                         const Text(
-                          'Preregistration starts from June 30th to July 31st.\nRegister now and receive 1000 Tokens welcome gift !\nThe Website is full usable also during this time.',
+                          'Preregistration starts from June 30th to July 31st.\nRegister now and receive 1000 Tokens welcome gift !\nThe Website is full usable also during this time.\n',
                           style: TextStyle(
                             letterSpacing: 0.4,
                             height: 1.5,
@@ -237,7 +237,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
               const SizedBox(height: 30),
               Row(
                 children: [
-                  Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox()),
                   GestureDetector(
                     onTap: () async {
                       var url = Uri.parse('https://twitter.com/shnatterteam');
@@ -257,7 +257,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                               const BorderRadius.all(Radius.circular(33)),
                           border: Border.all(color: Colors.blue, width: 2)),
                       child: SvgPicture.asset(
-                        'assets/icon/twitter.svg',
+                        'icon/twitter.svg',
                         color: Colors.blue,
                       ),
                     ),

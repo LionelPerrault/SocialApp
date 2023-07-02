@@ -134,6 +134,7 @@ flutter:
   assets:
     - assets/images/
     - assets/svg/
+    - assets/icon/
     - assets/images/shnatter-logo-login.svg
   #   - assets/images/svg/
   #   - assets/images/svg/logo.svg
