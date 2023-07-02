@@ -256,8 +256,32 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                           borderRadius:
                               const BorderRadius.all(Radius.circular(33)),
                           border: Border.all(color: Colors.blue, width: 2)),
+                      child: Image.asset(
+                        'images/faq.png',
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      var url = Uri.parse('https://twitter.com/shnatterteam');
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(5),
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(33)),
+                          border: Border.all(color: Colors.blue, width: 2)),
                       child: SvgPicture.asset(
-                        'icon/twitter.svg',
+                        'svg/twitter.svg',
                         color: Colors.blue,
                       ),
                     ),
