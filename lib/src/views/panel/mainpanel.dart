@@ -59,7 +59,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
       time = 2;
     }
     final Stream<QuerySnapshot> postStream = Helper.postCollection
-        .where('followers', arrayContains: UserManager.userInfo['userName'])
+        .where('followers', arrayContains: UserManager.userInfo['uid'])
         .orderBy('postTime', descending: true)
         .snapshots();
     loadingFlag = true;
@@ -93,7 +93,7 @@ class MainPanelState extends mvc.StateMVC<MainPanel> {
         return (post['postAdmin'] == UserManager.userInfo['uid'] ||
                 ((post['privacy'] == 'Public' ||
                         post['privacy'] == 'Friends') &&
-                    followers.contains(UserManager.userInfo['userName']))) &&
+                    followers.contains(UserManager.userInfo['uid']))) &&
             newPostFlag;
       }).length;
 
