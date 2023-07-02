@@ -22,6 +22,7 @@ class EmailVerificationScreenState
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = true;
   String actionString = "";
+  String actionStringExplain = "";
   bool invalid = false;
   @override
   void initState() {
@@ -36,24 +37,24 @@ class EmailVerificationScreenState
           await FirebaseAuth.instance.applyActionCode(widget.oobCode);
       isLoading = false;
       EmailVerified.setVerified(true);
-      actionString =
-          "Good news, your email has been verified!\nPlease log in to your Shnatter app, Your Shnatter Team";
+      actionString = "Verified!";
       // send axios
       http.get(Uri.parse(widget.continueUrl));
-
+      actionStringExplain =
+          "Good news, your email has been verified!\nPlease log in to your Shnatter app.\nYour Shnatter Team";
       setState(() {});
     } on FirebaseAuthException catch (e) {
       if (e.code == 'expired-action-code') {
-        actionString = "Sorry, The code is expired";
+        actionStringExplain = "Sorry, The code is expired";
       } else if (e.code == 'invalid-action-code') {
-        actionString = "Sorry, The code is invalid";
+        actionStringExplain = "Sorry, The code is invalid";
         invalid = true;
       } else if (e.code == 'user-disabled') {
-        actionString = "Sorry, This user disabled";
+        actionStringExplain = "Sorry, This user disabled";
       } else if (e.code == 'user-not-found') {
-        actionString = "Sorry, We can't find user";
+        actionStringExplain = "Sorry, We can't find user";
       } else {
-        actionString = "Unknown Error";
+        actionStringExplain = "Unknown Error";
       }
       isLoading = false;
       setState(() {});
@@ -81,14 +82,33 @@ class EmailVerificationScreenState
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(
-                  child: Image.asset('assets/images/emailverified.png'),
+                actionString == 'Verified!'
+                    ? Center(
+                        child: Image.asset('assets/images/emailverified.png'),
+                      )
+                    : const SizedBox(),
+                actionString == 'Verified!'
+                    ? Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Text(
+                            actionString,
+                            style: TextStyle(fontSize: 30),
+                          ),
+                        ),
+                      )
+                    : SizedBox(),
+                const SizedBox(
+                  height: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    actionString,
-                    style: const TextStyle(fontSize: 30),
+
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      actionStringExplain,
+                      style: const TextStyle(fontSize: 15),
+                    ),
                   ),
                 ),
                 const SizedBox(

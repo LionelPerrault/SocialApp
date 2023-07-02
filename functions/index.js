@@ -120,17 +120,6 @@ exports.sendNotifications = functions.firestore
 exports.sendNewMessageNotifications = functions.firestore
   .document("messages/{messageId}/content/{contentId}")
   .onCreate(async (snapshot) => {
-    // await admin.firestore().collection('mail').add({
-    //   to: 'smartdev924@gmail.com',
-    //   message: {
-    //     subject: 'Shnatter',
-    //     html: `<h2> You purchased product!</h2>
-    //     <p>
-    //        <b>Email: </b>ShantterTeam<br>
-    //     </p>`,
-    //   },
-    // });
-
     const senderSnapShot = await admin
       .firestore()
       .collection("user")
@@ -180,7 +169,7 @@ exports.sendNewMessageNotifications = functions.firestore
 
 exports.emailVerification = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
-    res.set("Access-Control-Allow-Origin", "*"); // you can also whitelist a specific domain like "http://127.0.0.1:4000"
+    res.set("Access-Control-Allow-Origin", "*"); 
     res.set("Access-Control-Allow-Headers", "Content-Type");
     const apiUrlAuth = "https://api.relysia.com/v1/auth";
     const serviceId = "8c67e277-4baa-44c9-955a-73f054618196";
@@ -219,7 +208,7 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
     if (!snapshot.data().isEmailVerify) {
       functions.logger.log("get auth now");
       await axios({
-        method: "post", //you can set what request you want to be
+        method: "post", 
         url: apiUrlAuth,
         data: bodyCode,
         headers: {
@@ -232,7 +221,7 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
       });
       functions.logger.log("send token now");
       await axios({
-        method: "post", //you can set what request you want to be
+        method: "post", 
         url: "https://api.relysia.com/v1/send",
         data: {
           dataArray: [
@@ -250,13 +239,13 @@ exports.emailVerification = functions.https.onRequest(async (req, res) => {
           serviceID: serviceId,
         },
       }).then((res) => {
-        if (res["data"]["statusCode"] == 200) {
-          // returnData = 'Successfully paid',
-          console.log("success" + res["data"]["statusCode"]);
-        } else {
-          // returnData = 'Failed payment';
-          console.log("Failed payment: ", "Failed payment");
-        }
+        // if (res["data"]["statusCode"] == 200) {
+          
+        //   console.log("success" + res["data"]["statusCode"]);
+        // } else {
+          
+        //   console.log("Failed payment: ", "Failed payment");
+        // }
       });
       functions.logger.log("verify true now");
       admin.firestore().collection("user").doc(`${uuid}`).set(
@@ -307,7 +296,6 @@ exports.signup = functions.https.onRequest(async (req, res) => {
     var cipher = crypto.createCipheriv(algorithm, result, iv);
     var encrypted =
       cipher.update(friendId, "utf8", "hex") + cipher.final("hex");
-    //await firebase.auth().signInWithEmailAndPassword(email,password)
     await admin.firestore().collection("user").doc(userId).update({
       friendId: encrypted,
     });
@@ -341,7 +329,7 @@ exports.getLocationAutoList = functions.https.onRequest(async (req, res) => {
       "&sessiontoken=$" +
       sessionToken;
     await axios({
-      method: "get", //you can set what request you want to be
+      method: "get", 
       url: url,
       headers: {
         "content-type": "application/json",
