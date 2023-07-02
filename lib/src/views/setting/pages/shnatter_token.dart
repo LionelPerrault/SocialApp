@@ -31,7 +31,7 @@ class SettingShnatterTokenScreenState
   late List transactionData = [];
   bool loadingTransactionHistory = true;
   late ScrollController _scrollController;
-
+  bool balanceLoading = false;
   // late List<Employee> emData = [];
   @override
   void initState() {
@@ -162,14 +162,16 @@ class SettingShnatterTokenScreenState
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    con.balance.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 25,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                  balanceLoading
+                                      ? CircularProgressIndicator()
+                                      : Text(
+                                          con.balance.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 25,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                 ],
                               ),
                             ),
@@ -237,38 +239,79 @@ class SettingShnatterTokenScreenState
                     ],
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 5),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        padding: const EdgeInsets.all(3),
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(3.0)),
-                        minimumSize: const Size(330, 50),
-                        maximumSize: const Size(330, 50),
-                      ),
-                      onPressed: () {
-                        Navigator.push<void>(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext context) =>
-                                SendTokenWdiget(),
-                          ),
-                        );
-                      },
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Send Token',
-                            style: TextStyle(
-                              color: Colors.black,
+                    alignment: Alignment.center,
+                    width: 320,
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 5),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              padding: const EdgeInsets.all(3),
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(3.0)),
+                              minimumSize: const Size(250, 50),
+                              maximumSize: const Size(250, 50),
+                            ),
+                            onPressed: () {
+                              Navigator.push<void>(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (BuildContext context) =>
+                                      SendTokenWdiget(),
+                                ),
+                              );
+                            },
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Send Token',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        const Expanded(child: SizedBox()),
+                        Container(
+                          margin: const EdgeInsets.only(top: 5),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              padding: const EdgeInsets.all(3),
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25.0)),
+                              minimumSize: const Size(50, 50),
+                              maximumSize: const Size(50, 50),
+                            ),
+                            onPressed: () async {
+                              balanceLoading = true;
+                              setState(() {});
+                              await UserController().getBalance();
+
+                              balanceLoading = false;
+                              setState(() {});
+                            },
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.refresh,
+                                  color: Colors.blue,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   transList()
@@ -481,315 +524,9 @@ class SettingShnatterTokenScreenState
                         child: Center(child: CircularProgressIndicator()),
                       ),
                   ]),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.start,
-            //   crossAxisAlignment: CrossAxisAlignment.center,
-            //   verticalDirection: VerticalDirection.down,
-            //   children: [
-            //     // Row(
-            //     //   verticalDirection: VerticalDirection.up,
-            //     //   children: [
-            //     //     Container(
-            //     //       margin: const EdgeInsets.only(top: 7, bottom: 7),
-            //     //       // alignment: Alignment.center,
-            //     //       child: Row(
-            //     //         children: [
-            //     //           Container(
-            //     //             width: 100,
-            //     //             alignment: Alignment.center,
-            //     //             child: const Text(
-            //     //               'Sender',
-            //     //               style: TextStyle(
-            //     //                 fontSize: 20,
-            //     //               ),
-            //     //             ),
-            //     //           ),
-            //     //           Container(
-            //     //             width: 100,
-            //     //             alignment: Alignment.center,
-            //     //             child: const Text(
-            //     //               'Recipient',
-            //     //               style: TextStyle(
-            //     //                 fontSize: 20,
-            //     //               ),
-            //     //             ),
-            //     //           ),
-            //     //           Container(
-            //     //             width: 100,
-            //     //             alignment: Alignment.center,
-            //     //             child: const Text(
-            //     //               'Time',
-            //     //               style: TextStyle(
-            //     //                 fontSize: 20,
-            //     //               ),
-            //     //             ),
-            //     //           ),
-            //     //           Container(
-            //     //             width: 100,
-            //     //             alignment: Alignment.center,
-            //     //             child: const Text(
-            //     //               'Note',
-            //     //               style: TextStyle(
-            //     //                 fontSize: 20,
-            //     //               ),
-            //     //             ),
-            //     //           ),
-            //     //           Container(
-            //     //             width: 100,
-            //     //             alignment: Alignment.center,
-            //     //             child: const Text(
-            //     //               'Balance',
-            //     //               style: TextStyle(
-            //     //                 fontSize: 20,
-            //     //               ),
-            //     //             ),
-            //     //           )
-            //     //         ],
-            //     //       ),
-            //     //     ),
-            //     //   ],
-            //     // ),
-
-            //   ],
-            // ),
           ),
         ),
       ],
     );
-    // ListView.builder(
-    //   padding: const EdgeInsets.only(top: 50),
-    //   itemCount: transactionData.length,
-    //   itemBuilder: (BuildContext context, int index) {
-    //     var data = transactionData[index];
-    //     var userName = data['from'] != UserManager.userInfo['paymail']
-    //         ? data['sender']
-    //         : data['recipient'];
-    //     print(userName);
-    //     return const ListTile(
-    //       title: Text('123123123123123'),
-    //     );
-    //   },
-    // );
   }
-
-  // Widget button({url, text}) {
-  //   return Expanded(
-  //     flex: 1,
-  //     child: Container(
-  //       width: 90,
-  //       height: 90,
-  //       margin: EdgeInsets.all(5),
-  //       child: ElevatedButton(
-  //         style: ElevatedButton.styleFrom(
-  //           padding: EdgeInsets.all(3),
-  //           backgroundColor: Colors.white,
-  //           elevation: 3,
-  //           shape: RoundedRectangleBorder(
-  //               borderRadius: BorderRadius.circular(3.0)),
-  //           minimumSize: const Size(90, 90),
-  //           maximumSize: const Size(90, 90),
-  //         ),
-  //         onPressed: () {
-  //           (() => {});
-  //         },
-  //         child: Column(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           crossAxisAlignment: CrossAxisAlignment.center,
-  //           children: [
-  //             Container(
-  //               width: 40,
-  //               height: 40,
-  //               decoration: const BoxDecoration(
-  //                   // color: Colors.grey,
-  //                   borderRadius: BorderRadius.all(Radius.circular(20))),
-  //               child: SvgPicture.network(url),
-  //             ),
-  //             Text(
-  //               text,
-  //               style: const TextStyle(
-  //                   fontSize: 11,
-  //                   color: Colors.grey,
-  //                   fontWeight: FontWeight.bold),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Widget _buildProgressIndicator() {
-  //   return Container(
-  //       height: 60.0,
-  //       alignment: Alignment.center,
-  //       width: double.infinity,
-  //       decoration: const BoxDecoration(
-  //         color: Color(0xFFFFFFFF),
-  //         border: BorderDirectional(
-  //           top: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.26)),
-  //         ),
-  //       ),
-  //       child: Container(
-  //           width: 40,
-  //           height: 40,
-  //           alignment: Alignment.center,
-  //           child: const CircularProgressIndicator(
-  //             backgroundColor: Colors.transparent,
-  //           )));
-  // }
-
-  // Widget _buildLoadMoreView(BuildContext context, LoadMoreRows loadMoreRows) {
-  //   Future<String> loadRows() async {
-  //     // Call the loadMoreRows function to call the
-  //     // DataGridSource.handleLoadMoreRows method. So, additional
-  //     // rows can be added from handleLoadMoreRows method.
-  //     await loadMoreRows();
-  //     return Future<String>.value('Completed');
-  //   }
-
-  //   return FutureBuilder<String>(
-  //     initialData: 'Loading',
-  //     future: loadRows(),
-  //     builder: (BuildContext context, AsyncSnapshot<String> snapShot) {
-  //       print(snapShot.data);
-  //       return snapShot.data == 'Loading'
-  //           ? _buildProgressIndicator()
-  //           : SizedBox.fromSize(size: Size.zero);
-  //     },
-  //   );
-  // }
-
-  // List<GridColumn> _getColumns() {
-  //   return <GridColumn>[
-  //     GridColumn(
-  //         columnName: 'ID',
-  //         columnWidthMode: ColumnWidthMode.lastColumnFill,
-  //         label: Container(
-  //             padding: const EdgeInsets.all(8),
-  //             alignment: Alignment.centerRight,
-  //             child: const Text(
-  //               'ID',
-  //               overflow: TextOverflow.ellipsis,
-  //             ))),
-  //     GridColumn(
-  //         columnName: 'Sender',
-  //         columnWidthMode: ColumnWidthMode.lastColumnFill,
-  //         label: Container(
-  //             padding: const EdgeInsets.all(8),
-  //             alignment: Alignment.centerRight,
-  //             child: const Text(
-  //               'Sender',
-  //               overflow: TextOverflow.ellipsis,
-  //             ))),
-  //     GridColumn(
-  //         columnName: 'Recipient',
-  //         columnWidthMode: ColumnWidthMode.lastColumnFill,
-  //         label: Container(
-  //             padding: const EdgeInsets.all(8),
-  //             alignment: Alignment.centerRight,
-  //             child: const Text(
-  //               'Recipient',
-  //               overflow: TextOverflow.ellipsis,
-  //             ))),
-  //     GridColumn(
-  //         columnName: 'Send Time',
-  //         columnWidthMode: ColumnWidthMode.lastColumnFill,
-  //         label: Container(
-  //             padding: const EdgeInsets.all(8),
-  //             alignment: Alignment.centerRight,
-  //             child: const Text(
-  //               'Send Time',
-  //               overflow: TextOverflow.ellipsis,
-  //             ))),
-  //     GridColumn(
-  //         columnName: 'Note',
-  //         columnWidthMode: ColumnWidthMode.lastColumnFill,
-  //         label: Container(
-  //             padding: const EdgeInsets.all(8),
-  //             alignment: Alignment.centerRight,
-  //             child: const Text(
-  //               'Note',
-  //               overflow: TextOverflow.ellipsis,
-  //             ))),
-  //     // GridColumn(
-  //     //     columnName: 'Activated',
-  //     //     columnWidthMode: ColumnWidthMode.lastColumnFill,
-  //     //     label: Container(
-  //     //         padding: const EdgeInsets.all(8),
-  //     //         alignment: Alignment.centerRight,
-  //     //         child: const Text(
-  //     //           'Activated',
-  //     //           overflow: TextOverflow.ellipsis,
-  //     //         ))),
-  //     GridColumn(
-  //         columnName: 'Balance',
-  //         columnWidthMode: ColumnWidthMode.lastColumnFill,
-  //         label: Container(
-  //             padding: const EdgeInsets.all(8),
-  //             alignment: Alignment.centerRight,
-  //             child: const Text(
-  //               'Balance',
-  //               overflow: TextOverflow.ellipsis,
-  //             ))),
-  // GridColumn(
-  //     columnName: 'Actions',
-  //     columnWidthMode: ColumnWidthMode.lastColumnFill,
-  //     label: Container(
-  //         padding: const EdgeInsets.all(8),
-  //         alignment: Alignment.centerRight,
-  //         child: const Text(
-  //           'Actions',
-  //           overflow: TextOverflow.ellipsis,
-  //         )))
-  //   ];
-  // }
-
-  // Widget generalWidget() {
-  //   return Container(
-  //     child: Column(
-  //       children: [
-  //         SizeConfig(context).screenWidth > 800
-  //             ? Container(
-  //                 width: SizeConfig(context).screenWidth > 800
-  //                     ? SizeConfig(context).screenWidth * 0.85
-  //                     : SizeConfig(context).screenWidth,
-  //                 padding: const EdgeInsets.all(15),
-  //                 alignment: Alignment.center,
-  //                 child: Container(
-  //                   width: SizeConfig(context).screenWidth > 800
-  //                       ? SizeConfig(context).screenWidth * 0.85
-  //                       : SizeConfig(context).screenWidth,
-  //                   // height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
-  //                   padding: const EdgeInsets.all(15),
-  //                   child: SfDataGrid(
-  //                     allowSorting: true,
-  //                     allowFiltering: true,
-  //                     loadMoreViewBuilder: _buildLoadMoreView,
-  //                     source: employeeDataSource,
-  //                     columns: _getColumns(),
-  //                     gridLinesVisibility: GridLinesVisibility.both,
-  //                     headerGridLinesVisibility: GridLinesVisibility.both,
-  //                   ),
-  //                 ),
-  //               )
-  //             : Container(
-  //                 width: SizeConfig(context).screenWidth < 800
-  //                     ? SizeConfig(context).screenWidth * 0.85
-  //                     : SizeConfig(context).screenWidth,
-  //                 // height: SizeConfig(context).screenHeight - SizeConfig.navbarHeight,
-  //                 padding: const EdgeInsets.all(15),
-  //                 child: SfDataGrid(
-  //                   allowSorting: true,
-  //                   allowFiltering: true,
-  //                   loadMoreViewBuilder: _buildLoadMoreView,
-  //                   source: employeeDataSource,
-  //                   columns: _getColumns(),
-  //                   gridLinesVisibility: GridLinesVisibility.both,
-  //                   headerGridLinesVisibility: GridLinesVisibility.both,
-  //                 ),
-  //               ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }
