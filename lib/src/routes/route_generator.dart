@@ -53,7 +53,10 @@ class RouteGenerator {
     if (UserManager.isLogined == true) {
       if (!UserManager.userInfo['isStarted']) {
         url = RouteNames.started;
-      } else if (url == '/login' || url == '/register' || url == '/reset') {
+      } else if (url == '/login' ||
+          url == '/register' ||
+          url == '/reset' ||
+          url == '') {
         url = RouteNames.homePage;
       }
     } else {
@@ -62,10 +65,12 @@ class RouteGenerator {
           url != '/reset' &&
           url != RouteNames.terms &&
           url != RouteNames.privacy) {
-        url = '';
+        if (kIsWeb && url == '') {
+        } else {
+          url = RouteNames.login;
+        }
       }
     }
-
     switch (url) {
       case '':
         return MaterialPageRoute(
