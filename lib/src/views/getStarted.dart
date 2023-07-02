@@ -21,7 +21,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('images/get-started.png'),
+          image: AssetImage('assets/images/get-started.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -204,7 +204,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                 ],
                               ),
                               child: Image.asset(
-                                'images/appstore-badge.png',
+                                'assets/images/appstore-badge.png',
                                 width: 130,
                               ),
                             ),
@@ -225,7 +225,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                 ],
                               ),
                               child: Image.asset(
-                                'images/google-play-badge.png',
+                                'assets/images/google-play-badge.png',
                                 width: 130,
                               ),
                             ),
@@ -257,7 +257,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                               const BorderRadius.all(Radius.circular(33)),
                           border: Border.all(color: Colors.blue, width: 2)),
                       child: SvgPicture.asset(
-                        'icon/twitter.svg',
+                        'assets/icon/twitter.svg',
                         color: Colors.blue,
                       ),
                     ),
