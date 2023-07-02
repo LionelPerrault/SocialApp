@@ -158,63 +158,21 @@ class SettingShnatterTokenScreenState
                                   tileMode: TileMode.mirror,
                                 ),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const SizedBox(width: 50),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: 30,
-                                    height: 30,
-                                    margin: const EdgeInsets.all(20),
-                                    child: balanceLoading
-                                        ? const CircularProgressIndicator()
-                                        : Text(
-                                            con.balance.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 25,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 5),
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
-                                        padding: const EdgeInsets.all(3),
-                                        elevation: 3,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(25.0)),
-                                        minimumSize: const Size(50, 50),
-                                        maximumSize: const Size(50, 50),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 30,
+                                height: 30,
+                                margin: const EdgeInsets.all(20),
+                                child: balanceLoading
+                                    ? const CircularProgressIndicator()
+                                    : Text(
+                                        con.balance.toString(),
+                                        style: const TextStyle(
+                                          fontSize: 25,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                      onPressed: () async {
-                                        balanceLoading = true;
-                                        setState(() {});
-                                        await UserController().getBalance();
-
-                                        balanceLoading = false;
-                                        setState(() {});
-                                      },
-                                      child: const Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.refresh,
-                                            color: Colors.blue,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
                           ],
@@ -235,49 +193,89 @@ class SettingShnatterTokenScreenState
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(top: 5),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: const EdgeInsets.all(3),
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(3.0)),
-                            minimumSize: const Size(330, 50),
-                            maximumSize: const Size(330, 50),
-                          ),
-                          onPressed: () {
-                            (() => {});
-                          },
+                          margin: const EdgeInsets.only(top: 5),
+                          width: 330,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                UserManager.userInfo['paymail'],
-                                style: const TextStyle(
-                                  color: Colors.black,
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  padding: const EdgeInsets.all(3),
+                                  elevation: 3,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(3.0)),
+                                  minimumSize: const Size(250, 50),
+                                  maximumSize: const Size(250, 50),
+                                ),
+                                onPressed: () {
+                                  (() => {});
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      UserManager.userInfo['paymail'],
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    const Flexible(
+                                        fit: FlexFit.tight, child: SizedBox()),
+                                    InkWell(
+                                      onTap: () async => {
+                                        await Clipboard.setData(ClipboardData(
+                                            text: UserManager
+                                                .userInfo['paymail'])),
+                                        Helper.showToast('Copied'),
+                                      },
+                                      child: GestureDetector(
+                                        child: const Icon(
+                                          Icons.file_copy,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
-                              const Flexible(
-                                  fit: FlexFit.tight, child: SizedBox()),
-                              InkWell(
-                                onTap: () async => {
-                                  await Clipboard.setData(ClipboardData(
-                                      text: UserManager.userInfo['paymail'])),
-                                  Helper.showToast('Copied'),
-                                },
-                                child: GestureDetector(
-                                  child: const Icon(
-                                    Icons.file_copy,
-                                    color: Colors.black,
+                              const SizedBox(width: 30),
+                              Container(
+                                margin: const EdgeInsets.only(top: 5),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    padding: const EdgeInsets.all(3),
+                                    elevation: 3,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(25.0)),
+                                    minimumSize: const Size(50, 50),
+                                    maximumSize: const Size(50, 50),
+                                  ),
+                                  onPressed: () async {
+                                    balanceLoading = true;
+                                    setState(() {});
+                                    await UserController().getBalance();
+
+                                    balanceLoading = false;
+                                    setState(() {});
+                                  },
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.refresh,
+                                        color: Colors.blue,
+                                      )
+                                    ],
                                   ),
                                 ),
-                              )
+                              ),
                             ],
-                          ),
-                        ),
-                      ),
+                          )),
                     ],
                   ),
                   Container(

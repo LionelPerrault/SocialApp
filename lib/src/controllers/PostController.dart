@@ -1712,9 +1712,10 @@ class PostController extends ControllerMVC {
             await friendModel.getFriends(UserManager.userInfo['uid']);
 
         for (var item in friends) {
-          String friendUid = item['requester'].toString();
+          print("friends is $friends");
+          String friendUid = item['uid'].toString();
           if (friendUid == UserManager.userInfo['uid']) {
-            friendUid = item['receiver'].toString();
+            friendUid = item['uid'].toString();
           }
           followers.add(friendUid);
         }
