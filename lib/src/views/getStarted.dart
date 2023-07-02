@@ -74,31 +74,38 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                 ),
               ),
               const SizedBox(height: 40),
-              Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(30))),
-                child: Container(
-                  alignment: Alignment.center,
-                  child: GestureDetector(
-                    onTap: () {
-                      print('object');
-                      setState(() {
-                        _isPlaying = !_isPlaying;
-                      });
-                      if (_isPlaying) {
-                        _controller.play();
-                        startTimer();
-                      } else {
-                        _controller.pause();
-                        stopTimer();
-                      }
-                    },
-                    child: AspectRatio(
-                      aspectRatio: _controller.value.aspectRatio,
-                      child: VideoPlayer(_controller),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: SizeConfig(context).screenWidth * 0.8,
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: GestureDetector(
+                        onTap: () {
+                          print('object');
+                          setState(() {
+                            _isPlaying = !_isPlaying;
+                          });
+                          if (_isPlaying) {
+                            _controller.play();
+                            startTimer();
+                          } else {
+                            _controller.pause();
+                            stopTimer();
+                          }
+                        },
+                        child: AspectRatio(
+                          aspectRatio: _controller.value.aspectRatio,
+                          child: VideoPlayer(_controller),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  )
+                ],
               ),
               const SizedBox(height: 40),
               SizeConfig(context).screenWidth < 700
@@ -107,7 +114,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                       style: TextStyle(
                         color: Colors.white,
                         decoration: TextDecoration.none,
-                        fontSize: 35,
+                        fontSize: 32,
                         letterSpacing: 0.3,
                       ),
                     )
@@ -130,91 +137,184 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                 style: TextStyle(
                                   color: Colors.white,
                                   decoration: TextDecoration.none,
-                                  fontSize: 35,
+                                  fontSize: 32,
                                   letterSpacing: 0.3,
                                 ),
                               )
                             : const SizedBox(),
                         const SizedBox(height: 30),
                         // ignore: prefer_const_constructors
-                        const Text(
-                          'Preregistration starts from June 30th to July 31st.\nRegister now and receive 1000 Tokens welcome gift !\nThe Website is full usable also during this time.\n',
-                          style: TextStyle(
-                            letterSpacing: 0.4,
-                            height: 1.5,
-                            color: Colors.white,
-                            decoration: TextDecoration.none,
-                            fontSize: 18,
-                          ),
-                        ),
-                        const Text(
-                          'If you wish to buy larger amounts of Tokens to a reduced price,',
-                          style: TextStyle(
-                            letterSpacing: 0.4,
-                            height: 1.5,
-                            color: Colors.white,
-                            decoration: TextDecoration.none,
-                            fontSize: 18,
-                          ),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'please visit ',
-                              style: TextStyle(
-                                letterSpacing: 0.4,
-                                height: 1.5,
-                                color: Colors.white,
-                                decoration: TextDecoration.none,
-                                fontSize: 18,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                var url =
-                                    Uri.parse('https://shnatterprebuy.com/');
-                                if (await canLaunchUrl(url)) {
-                                  await launchUrl(url);
-                                } else {
-                                  throw 'Could not launch $url';
-                                }
-                              },
-                              child: const Text(
-                                'www.shantterprebuy.com',
+                        SizeConfig(context).screenWidth < 700
+                            ? SizedBox(
+                                width: SizeConfig(context).screenWidth - 60,
+                                child: const Text(
+                                  'Preregistration starts from June 30th to July 31st.\nRegister now and receive 1000 Tokens welcome gift !\nThe Website is full usable also during this time.\n',
+                                  style: TextStyle(
+                                    letterSpacing: 0.4,
+                                    height: 1.5,
+                                    color: Colors.white,
+                                    decoration: TextDecoration.none,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              )
+                            : const Text(
+                                'Preregistration starts from June 30th to July 31st.\nRegister now and receive 1000 Tokens welcome gift !\nThe Website is full usable also during this time.\n',
                                 style: TextStyle(
                                   letterSpacing: 0.4,
                                   height: 1.5,
                                   color: Colors.white,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: Colors.white,
-                                  decorationStyle: TextDecorationStyle.solid,
+                                  decoration: TextDecoration.none,
                                   fontSize: 18,
                                 ),
                               ),
-                            ),
-                            const Text(
-                              ' password: Shnatter',
-                              style: TextStyle(
-                                letterSpacing: 0.4,
-                                height: 1.5,
-                                color: Colors.white,
-                                decoration: TextDecoration.none,
-                                fontSize: 18,
+                        SizeConfig(context).screenWidth < 700
+                            ? SizedBox(
+                                width: SizeConfig(context).screenWidth - 60,
+                                child: const Text(
+                                  'If you wish to buy larger amounts of Tokens to a reduced price,',
+                                  style: TextStyle(
+                                    letterSpacing: 0.4,
+                                    height: 1.5,
+                                    color: Colors.white,
+                                    decoration: TextDecoration.none,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              )
+                            : const Text(
+                                'If you wish to buy larger amounts of Tokens to a reduced price,',
+                                style: TextStyle(
+                                  letterSpacing: 0.4,
+                                  height: 1.5,
+                                  color: Colors.white,
+                                  decoration: TextDecoration.none,
+                                  fontSize: 18,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const Text(
-                          'For questions, please contact us on: shnatterteam@gmail.com\n\nYour Shnatter Team',
-                          style: TextStyle(
-                            letterSpacing: 0.4,
-                            height: 1.5,
-                            color: Colors.white,
-                            decoration: TextDecoration.none,
-                            fontSize: 18,
-                          ),
-                        ),
+                        SizeConfig(context).screenWidth < 700
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'please visit ',
+                                    style: TextStyle(
+                                      letterSpacing: 0.4,
+                                      height: 1.5,
+                                      color: Colors.white,
+                                      decoration: TextDecoration.none,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      var url = Uri.parse(
+                                          'https://shnatterprebuy.com/');
+                                      if (await canLaunchUrl(url)) {
+                                        await launchUrl(url);
+                                      } else {
+                                        throw 'Could not launch $url';
+                                      }
+                                    },
+                                    child: const Text(
+                                      'www.shantterprebuy.com',
+                                      style: TextStyle(
+                                        letterSpacing: 0.4,
+                                        height: 1.5,
+                                        color: Colors.white,
+                                        decoration: TextDecoration.underline,
+                                        decorationColor: Colors.white,
+                                        decorationStyle:
+                                            TextDecorationStyle.solid,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                  const Text(
+                                    ' password: Shnatter',
+                                    style: TextStyle(
+                                      letterSpacing: 0.4,
+                                      height: 1.5,
+                                      color: Colors.white,
+                                      decoration: TextDecoration.none,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'please visit ',
+                                    style: TextStyle(
+                                      letterSpacing: 0.4,
+                                      height: 1.5,
+                                      color: Colors.white,
+                                      decoration: TextDecoration.none,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      var url = Uri.parse(
+                                          'https://shnatterprebuy.com/');
+                                      if (await canLaunchUrl(url)) {
+                                        await launchUrl(url);
+                                      } else {
+                                        throw 'Could not launch $url';
+                                      }
+                                    },
+                                    child: const Text(
+                                      'www.shantterprebuy.com',
+                                      style: TextStyle(
+                                        letterSpacing: 0.4,
+                                        height: 1.5,
+                                        color: Colors.white,
+                                        decoration: TextDecoration.underline,
+                                        decorationColor: Colors.white,
+                                        decorationStyle:
+                                            TextDecorationStyle.solid,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                  const Text(
+                                    ' password: Shnatter',
+                                    style: TextStyle(
+                                      letterSpacing: 0.4,
+                                      height: 1.5,
+                                      color: Colors.white,
+                                      decoration: TextDecoration.none,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                        SizeConfig(context).screenWidth < 700
+                            ? SizedBox(
+                                width: SizeConfig(context).screenWidth - 60,
+                                child: const Text(
+                                  'For questions, please contact us on: shnatterteam@gmail.com\n\nYour Shnatter Team',
+                                  style: TextStyle(
+                                    letterSpacing: 0.4,
+                                    height: 1.5,
+                                    color: Colors.white,
+                                    decoration: TextDecoration.none,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              )
+                            : const Text(
+                                'For questions, please contact us on: shnatterteam@gmail.com\n\nYour Shnatter Team',
+                                style: TextStyle(
+                                  letterSpacing: 0.4,
+                                  height: 1.5,
+                                  color: Colors.white,
+                                  decoration: TextDecoration.none,
+                                  fontSize: 18,
+                                ),
+                              ),
                       ],
                     ),
                     const Expanded(child: SizedBox()),
@@ -264,7 +364,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                               ),
                               child: Image.asset(
                                 'assets/images/appstore-badge.png',
-                                width: 130,
+                                width: 120,
                               ),
                             ),
                           ),
@@ -285,7 +385,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                               ),
                               child: Image.asset(
                                 'assets/images/google-play-badge.png',
-                                width: 130,
+                                width: 120,
                               ),
                             ),
                           )
