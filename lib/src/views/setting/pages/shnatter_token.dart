@@ -162,16 +162,58 @@ class SettingShnatterTokenScreenState
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  balanceLoading
-                                      ? CircularProgressIndicator()
-                                      : Text(
-                                          con.balance.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 25,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
+                                  const SizedBox(width: 50),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    width: 30,
+                                    height: 30,
+                                    margin: const EdgeInsets.all(20),
+                                    child: balanceLoading
+                                        ? const CircularProgressIndicator()
+                                        : Text(
+                                            con.balance.toString(),
+                                            style: const TextStyle(
+                                              fontSize: 25,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 5),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        padding: const EdgeInsets.all(3),
+                                        elevation: 3,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0)),
+                                        minimumSize: const Size(50, 50),
+                                        maximumSize: const Size(50, 50),
+                                      ),
+                                      onPressed: () async {
+                                        balanceLoading = true;
+                                        setState(() {});
+                                        await UserController().getBalance();
+
+                                        balanceLoading = false;
+                                        setState(() {});
+                                      },
+                                      child: const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.refresh,
+                                            color: Colors.blue,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -239,79 +281,38 @@ class SettingShnatterTokenScreenState
                     ],
                   ),
                   Container(
-                    alignment: Alignment.center,
-                    width: 320,
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 5),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              padding: const EdgeInsets.all(3),
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(3.0)),
-                              minimumSize: const Size(250, 50),
-                              maximumSize: const Size(250, 50),
-                            ),
-                            onPressed: () {
-                              Navigator.push<void>(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) =>
-                                      SendTokenWdiget(),
-                                ),
-                              );
-                            },
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Send Token',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
+                    margin: const EdgeInsets.only(top: 5),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.all(3),
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(3.0)),
+                        minimumSize: const Size(330, 50),
+                        maximumSize: const Size(330, 50),
+                      ),
+                      onPressed: () {
+                        Navigator.push<void>(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                SendTokenWdiget(),
+                          ),
+                        );
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Send Token',
+                            style: TextStyle(
+                              color: Colors.black,
                             ),
                           ),
-                        ),
-                        const Expanded(child: SizedBox()),
-                        Container(
-                          margin: const EdgeInsets.only(top: 5),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              padding: const EdgeInsets.all(3),
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0)),
-                              minimumSize: const Size(50, 50),
-                              maximumSize: const Size(50, 50),
-                            ),
-                            onPressed: () async {
-                              balanceLoading = true;
-                              setState(() {});
-                              await UserController().getBalance();
-
-                              balanceLoading = false;
-                              setState(() {});
-                            },
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.refresh,
-                                  color: Colors.blue,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   transList()
