@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -37,8 +35,6 @@ class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
           ],
         );
   static _MyAppState? _this;
-  final _navigatorKey = GlobalKey<NavigatorState>();
-  late StreamSubscription<User?> _sub;
   @override
   void initState() {
     super.initState();
@@ -58,17 +54,11 @@ class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
 
     //   return false;
     // });
-    _sub = FirebaseAuth.instance.authStateChanges().listen((event) {
-      _navigatorKey.currentState!.pushReplacementNamed(
-        event != null ? 'home' : 'login',
-      );
-    });
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _sub.cancel();
     super.dispose();
   }
 
@@ -88,7 +78,6 @@ class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
           return FirebasePhoneAuthProvider(
               child: MaterialApp(
                   title: 'Shnatter',
-                  navigatorKey: _navigatorKey,
                   debugShowCheckedModeBanner: false,
                   //home: HomeScreen(key: UniqueKey()),
                   locale: setting.language,
