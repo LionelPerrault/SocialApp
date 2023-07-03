@@ -28,7 +28,7 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
   late TransformationController _transformationController;
   double _scale = 1.0;
   double _previousScale = 1.0;
-
+  bool canNext = true;
   @override
   void initState() {
     super.initState();
@@ -58,6 +58,12 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
 
   void resetZoomLevel() {
     _transformationController.value = Matrix4.identity();
+    if (_scale == 1.0) {
+      canNext = true;
+    } else {
+      canNext = false;
+    }
+    setState(() {});
   }
 
   void getSelectedPhoto(String docId) {
@@ -72,6 +78,7 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
     return SafeArea(
       child: GestureDetector(
         onHorizontalDragEnd: (DragEndDetails details) {
+          if (!canNext) return;
           if (details.primaryVelocity! < 0) {
             goToNextPhoto();
           } else if (details.primaryVelocity! > 0) {
