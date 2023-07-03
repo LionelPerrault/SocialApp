@@ -46,6 +46,9 @@ class AppController extends ControllerMVC {
         saveToken(token, "mobile");
       }).onError((error, stackTrace) => null);
     }
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      Helper.isIOS = true;
+    }
     //final fcmToken = await FirebaseMessaging.instance
     //    .getToken(vapidKey: "JQK8sPGz8ACuFBQdET1323FwvXlLWEC7E6dlaIzzdWU");
     FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {

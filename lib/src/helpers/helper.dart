@@ -309,4 +309,6 @@ class Helper {
         .get();
     return str['content'] as String;
   }
+
+  static bool isIOS = false;
 }

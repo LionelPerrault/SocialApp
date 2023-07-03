@@ -99,14 +99,17 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                         child: Column(
                           children: [
                             SizedBox(
-                              height: UserManager.userInfo['isVerify']
-                                  ? SizeConfig(context).screenHeight -
-                                      280 -
-                                      viewInsets.bottom
-                                  : SizeConfig(context).screenHeight -
-                                      280 -
-                                      verifyAlertHeight -
-                                      viewInsets.bottom,
+                              height: (UserManager.userInfo['isVerify']
+                                      ? SizeConfig(context).screenHeight -
+                                          SizeConfig.navbarHeight * 2 -
+                                          130 -
+                                          viewInsets.bottom
+                                      : SizeConfig(context).screenHeight -
+                                          SizeConfig.navbarHeight * 2 -
+                                          130 -
+                                          verifyAlertHeight -
+                                          viewInsets.bottom) -
+                                  (Helper.isIOS ? 30 : 0),
                               child: ListView.builder(
                                 controller: _scrollController,
                                 itemCount: messageList.length,
