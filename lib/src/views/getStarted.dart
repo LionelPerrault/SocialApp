@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import 'package:flutter_svg/flutter_svg.dart';
@@ -352,29 +353,173 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                       ),
                                     ],
                                   ),
-                            SizeConfig(context).screenWidth < 700
-                                ? SizedBox(
-                                    width: SizeConfig(context).screenWidth - 60,
-                                    child: const Text(
-                                      'For questions, please contact us on: shnatterteam@gmail.com\n\nYour Shnatter Team',
-                                      style: TextStyle(
-                                        letterSpacing: 0.4,
-                                        height: 1.5,
-                                        color: Colors.white,
-                                        decoration: TextDecoration.none,
-                                        fontSize: 18,
+                            SizeConfig(context).screenWidth < 1100
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            'For questions please read the ',
+                                            style: TextStyle(
+                                              letterSpacing: 0.4,
+                                              height: 1.5,
+                                              color: Colors.white,
+                                              decoration: TextDecoration.none,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.push<void>(
+                                                context,
+                                                MaterialPageRoute<void>(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          const FAQScreen(),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text(
+                                              'FAQ',
+                                              style: TextStyle(
+                                                letterSpacing: 0.4,
+                                                height: 1.5,
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                decorationColor: Colors.white,
+                                                decorationStyle:
+                                                    TextDecorationStyle.solid,
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                    ),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        width: SizeConfig(context).screenWidth -
+                                            60,
+                                        child: const Text(
+                                          'or contact us at shnatterteam@gmail.com or Twitter support channel',
+                                          style: TextStyle(
+                                            letterSpacing: 0.4,
+                                            height: 1.5,
+                                            color: Colors.white,
+                                            decoration: TextDecoration.none,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            '@ShnatterSupport',
+                                            style: TextStyle(
+                                              letterSpacing: 0.4,
+                                              height: 1.5,
+                                              color: Colors.white,
+                                              decoration: TextDecoration.none,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          InkWell(
+                                            onTap: () async {
+                                              var url = Uri.parse(
+                                                  'https://twitter.com/shnatterteam');
+                                              if (await canLaunchUrl(url)) {
+                                                await launchUrl(url);
+                                              } else {
+                                                throw 'Could not launch $url';
+                                              }
+                                            },
+                                            child: const Icon(
+                                              FontAwesomeIcons.twitter,
+                                              color: Colors.blue,
+                                              size: 20,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
                                   )
-                                : const Text(
-                                    'For questions, please contact us on: shnatterteam@gmail.com\n\nYour Shnatter Team',
-                                    style: TextStyle(
-                                      letterSpacing: 0.4,
-                                      height: 1.5,
-                                      color: Colors.white,
-                                      decoration: TextDecoration.none,
-                                      fontSize: 18,
-                                    ),
+                                : Row(
+                                    children: [
+                                      const Text(
+                                        'For questions please read the ',
+                                        style: TextStyle(
+                                          letterSpacing: 0.4,
+                                          height: 1.5,
+                                          color: Colors.white,
+                                          decoration: TextDecoration.none,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push<void>(
+                                            context,
+                                            MaterialPageRoute<void>(
+                                              builder: (BuildContext context) =>
+                                                  const FAQScreen(),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text(
+                                          'FAQ',
+                                          style: TextStyle(
+                                            letterSpacing: 0.4,
+                                            height: 1.5,
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            decorationColor: Colors.white,
+                                            decorationStyle:
+                                                TextDecorationStyle.solid,
+                                          ),
+                                        ),
+                                      ),
+                                      const Text(
+                                        ' or contact us at shnatterteam@gmail.com or Twitter support channel @ShnatterSupport',
+                                        style: TextStyle(
+                                          letterSpacing: 0.4,
+                                          height: 1.5,
+                                          color: Colors.white,
+                                          decoration: TextDecoration.none,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      InkWell(
+                                        onTap: () async {
+                                          var url = Uri.parse(
+                                              'https://twitter.com/shnatterteam');
+                                          if (await canLaunchUrl(url)) {
+                                            await launchUrl(url);
+                                          } else {
+                                            throw 'Could not launch $url';
+                                          }
+                                        },
+                                        child: const Icon(
+                                          FontAwesomeIcons.twitter,
+                                          color: Colors.blue,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                           ],
                         ),

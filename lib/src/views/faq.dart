@@ -89,12 +89,6 @@ class FAQScreenState extends mvc.StateMVC<FAQScreen> {
                     ),
                     child: Html(
                       data: faqContent,
-                      style: {
-                        'p': Style(
-                          lineHeight: const LineHeight(1.8),
-                        ),
-                        'li': Style(lineHeight: const LineHeight(1.8))
-                      },
                     ),
                   )
                 ],
