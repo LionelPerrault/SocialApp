@@ -26,6 +26,8 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
   late PostController con;
   var userInfo = UserManager.userInfo;
   late TransformationController _transformationController;
+  double _scale = 1.0;
+  double _previousScale = 1.0;
 
   @override
   void initState() {
@@ -76,27 +78,38 @@ class PhotoEachScreenState extends mvc.StateMVC<PhotoEachScreen>
             goToPreviousPhoto();
           }
         },
+        onScaleStart: (ScaleStartDetails details) {
+          _previousScale = _scale;
+        },
+        onScaleUpdate: (ScaleUpdateDetails details) {
+          setState(() {
+            _scale = (_previousScale * details.scale).clamp(1.0, 3.0);
+          });
+        },
+        onScaleEnd: (ScaleEndDetails details) {
+          _previousScale = _scale;
+        },
         child: Stack(
           children: [
-            Container(
-              color: Colors.black,
-              width: SizeConfig(context).screenWidth,
-              height: SizeConfig(context).screenHeight,
-              alignment: Alignment.center,
+            Transform.scale(
+              scale: _scale,
               child: Container(
                 color: Colors.black,
-                child: Center(
-                  child: FittedBox(
-                    fit: BoxFit.none,
-                    child: LimitedBox(
-                      maxWidth: SizeConfig(context).screenWidth,
-                      maxHeight: SizeConfig(context).screenHeight,
-                      child: InteractiveViewer(
-                        transformationController: _transformationController,
-                        boundaryMargin: const EdgeInsets.all(20),
-                        onInteractionEnd: (_) {
-                          //  _transformationController.value = Matrix4.identity();
-                        },
+                width: SizeConfig(context).screenWidth,
+                height: SizeConfig(context).screenHeight,
+                alignment: Alignment.center,
+                child: Container(
+                  color: Colors.black,
+                  child: Center(
+                    child: InteractiveViewer(
+                      transformationController: _transformationController,
+                      boundaryMargin: const EdgeInsets.all(20),
+                      onInteractionEnd: (_) {
+                        //  _transformationController.value = Matrix4.identity();
+                      },
+                      child: Container(
+                        width: SizeConfig(context).screenWidth,
+                        height: SizeConfig(context).screenHeight,
                         child: Image.network(widget.photoUrls[currentIndex]),
                       ),
                     ),

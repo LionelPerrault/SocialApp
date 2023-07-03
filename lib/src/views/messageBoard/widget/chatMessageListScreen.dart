@@ -12,6 +12,7 @@ import 'package:shnatter/src/managers/user_manager.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/messageBoard/widget/writeMessageScreen.dart';
 import 'package:shnatter/src/widget/messageAudioPlayer.dart';
+import '../../../views/photoView/photoscreen.dart';
 
 import 'emoticonScreen.dart';
 
@@ -217,11 +218,36 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                                         Radius.circular(
                                                                             15),
                                                                   ),
-                                                                  child: Image
-                                                                      .network(
-                                                                    list[
-                                                                        'data'],
-                                                                    width: 150,
+                                                                  child:
+                                                                      GestureDetector(
+                                                                    onTap: () {
+                                                                      Navigator
+                                                                          .push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              PhotoEachScreen(
+                                                                            photoUrls: [
+                                                                              list['data']
+                                                                            ],
+                                                                            initialIndex:
+                                                                                0,
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                    child:
+                                                                        Container(
+                                                                      color: const Color(
+                                                                          0xfff5f5f5),
+                                                                      child: Image
+                                                                          .network(
+                                                                        list[
+                                                                            'data'],
+                                                                        width:
+                                                                            150,
+                                                                      ),
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               )
@@ -271,9 +297,32 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                                               Radius.circular(
                                                                   15),
                                                         ),
-                                                        child: Image.network(
-                                                          list['data'],
-                                                          width: 150,
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        PhotoEachScreen(
+                                                                  photoUrls: [
+                                                                    list['data']
+                                                                  ],
+                                                                  initialIndex:
+                                                                      0,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                          child: Container(
+                                                            color: const Color(
+                                                                0xfff5f5f5),
+                                                            child:
+                                                                Image.network(
+                                                              list['data'],
+                                                              width: 150,
+                                                            ),
+                                                          ),
                                                         ),
                                                       )
                                                     : MessageAudioPlayer(
