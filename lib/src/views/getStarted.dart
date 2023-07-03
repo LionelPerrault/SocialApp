@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shnatter/model/service.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/faq.dart';
 import 'package:video_player/video_player.dart';
@@ -45,12 +44,6 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
         });
       }
     });
-    checkHuman();
-  }
-
-  checkHuman() async {
-    bool _isNotABot = await RecaptchaService.isNotABot();
-    print(_isNotABot);
   }
 
   @override
