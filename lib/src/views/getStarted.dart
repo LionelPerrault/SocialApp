@@ -4,12 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
-
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/faq.dart';
 import 'package:video_player/video_player.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:captcha_solver/captcha_solver.dart';
 
 // ignore: must_be_immutable
 class GetStartedScreen extends StatefulWidget {
@@ -44,6 +44,35 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
         });
       }
     });
+    checkRecaptcha();
+  }
+
+  void checkRecaptcha() async {
+    /// Initiate query Properties
+    String apiKey = '6LdHP-8mAAAAACqaLOFoA1oO37sR8QXT5Yq4vOZ2';
+    String websiteURL = 'https://www.google.com/recaptcha/api/siteverify';
+    String websiteKey = '6LdHP-8mAAAAADnryZcH-fo8x9CABZGhgDLfuLhT';
+
+    /// Initiate CaptchaSolver
+    CaptchaSolver captchaSolver = CaptchaSolver(apiKey);
+
+    /// Example of the request
+    Map inputs = {
+      "clientKey": apiKey,
+      "task": {
+        "type": "RecaptchaV2TaskProxyless",
+        "websiteURL": websiteURL,
+        "websiteKey": websiteKey,
+        "isInvisible": false
+      }
+    };
+
+    /// Get captcha solution
+    Map response = await captchaSolver.recaptcha(inputs);
+    print('response: $response');
+    if (response['status'] == 'ready') {
+      print(response['solution']['gRecaptchaResponse']);
+    }
   }
 
   @override
@@ -496,17 +525,6 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                                       ),
                                                     ),
                                                   ),
-                                                  const Text(
-                                                    ' or Twitter support channel',
-                                                    style: TextStyle(
-                                                      letterSpacing: 0.4,
-                                                      height: 1.5,
-                                                      color: Colors.white,
-                                                      decoration:
-                                                          TextDecoration.none,
-                                                      fontSize: 18,
-                                                    ),
-                                                  )
                                                 ],
                                               ),
                                       ),
@@ -517,7 +535,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                             CrossAxisAlignment.start,
                                         children: [
                                           const Text(
-                                            '@ShnatterSupport',
+                                            'or Twitter support channel',
                                             style: TextStyle(
                                               letterSpacing: 0.4,
                                               height: 1.5,
@@ -530,7 +548,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                           InkWell(
                                             onTap: () async {
                                               var url = Uri.parse(
-                                                  'https://twitter.com/shnatterteam');
+                                                  'https://twitter.com/ShnatterSupport');
                                               if (await canLaunchUrl(url)) {
                                                 await launchUrl(url);
                                               } else {
@@ -618,7 +636,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                             ),
                                           ),
                                           const Text(
-                                            ' or Twitter support channel @ShnatterSupport',
+                                            ' or Twitter support channel',
                                             style: TextStyle(
                                               letterSpacing: 0.4,
                                               height: 1.5,
@@ -633,7 +651,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                       InkWell(
                                         onTap: () async {
                                           var url = Uri.parse(
-                                              'https://twitter.com/shnatterteam');
+                                              'https://twitter.com/ShnatterSupport');
                                           if (await canLaunchUrl(url)) {
                                             await launchUrl(url);
                                           } else {
