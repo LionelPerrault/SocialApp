@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart' as mvc;
 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shnatter/src/routes/route_names.dart';
+import 'package:shnatter/model/service.dart';
 import 'package:shnatter/src/utils/size_config.dart';
 import 'package:shnatter/src/views/faq.dart';
 import 'package:video_player/video_player.dart';
@@ -29,7 +29,6 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
   @override
   void initState() {
     super.initState();
-
     _controller = VideoPlayerController.network(
         'https://firebasestorage.googleapis.com/v0/b/shnatter-a69cd.appspot.com/o/shnatter.mp4?alt=media&token=896f75f3-e501-4c7b-81e4-f182a9b23c5b')
       ..initialize().then((_) {
@@ -46,6 +45,12 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
         });
       }
     });
+    checkHuman();
+  }
+
+  checkHuman() async {
+    bool _isNotABot = await RecaptchaService.isNotABot();
+    print(_isNotABot);
   }
 
   @override
@@ -291,7 +296,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                         ),
                                       ),
                                       const Text(
-                                        ' password: Shnatter',
+                                        'password: Shnatter',
                                         style: TextStyle(
                                           letterSpacing: 0.4,
                                           height: 1.5,
@@ -407,16 +412,110 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                         alignment: Alignment.centerLeft,
                                         width: SizeConfig(context).screenWidth -
                                             60,
-                                        child: const Text(
-                                          'or contact us at shnatterteam@gmail.com or Twitter support channel',
-                                          style: TextStyle(
-                                            letterSpacing: 0.4,
-                                            height: 1.5,
-                                            color: Colors.white,
-                                            decoration: TextDecoration.none,
-                                            fontSize: 18,
-                                          ),
-                                        ),
+                                        child: SizeConfig(context).screenWidth >
+                                                630
+                                            ? Row(
+                                                children: [
+                                                  const Text(
+                                                    'or contact us at ',
+                                                    style: TextStyle(
+                                                      letterSpacing: 0.4,
+                                                      height: 1.5,
+                                                      color: Colors.white,
+                                                      decoration:
+                                                          TextDecoration.none,
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () async {
+                                                      var url = Uri.parse(
+                                                          'mailto:shnatterteam@gmail.com');
+                                                      if (await canLaunchUrl(
+                                                          url)) {
+                                                        await launchUrl(url);
+                                                      } else {
+                                                        throw 'Could not launch $url';
+                                                      }
+                                                    },
+                                                    child: const Text(
+                                                      'shnatterteam@gmail.com',
+                                                      style: TextStyle(
+                                                        letterSpacing: 0.4,
+                                                        height: 1.5,
+                                                        color: Colors.white,
+                                                        decoration:
+                                                            TextDecoration.none,
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const Text(
+                                                    ' or Twitter support channel',
+                                                    style: TextStyle(
+                                                      letterSpacing: 0.4,
+                                                      height: 1.5,
+                                                      color: Colors.white,
+                                                      decoration:
+                                                          TextDecoration.none,
+                                                      fontSize: 18,
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            : Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const Text(
+                                                    'or contact us at ',
+                                                    style: TextStyle(
+                                                      letterSpacing: 0.4,
+                                                      height: 1.5,
+                                                      color: Colors.white,
+                                                      decoration:
+                                                          TextDecoration.none,
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () async {
+                                                      var url = Uri.parse(
+                                                          'mailto:shnatterteam@gmail.com');
+                                                      if (await canLaunchUrl(
+                                                          url)) {
+                                                        await launchUrl(url);
+                                                      } else {
+                                                        throw 'Could not launch $url';
+                                                      }
+                                                    },
+                                                    child: const Text(
+                                                      'shnatterteam@gmail.com',
+                                                      style: TextStyle(
+                                                        letterSpacing: 0.4,
+                                                        height: 1.5,
+                                                        color: Colors.white,
+                                                        decoration:
+                                                            TextDecoration.none,
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const Text(
+                                                    ' or Twitter support channel',
+                                                    style: TextStyle(
+                                                      letterSpacing: 0.4,
+                                                      height: 1.5,
+                                                      color: Colors.white,
+                                                      decoration:
+                                                          TextDecoration.none,
+                                                      fontSize: 18,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                       ),
                                       Row(
                                         mainAxisAlignment:
@@ -492,15 +591,50 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                           ),
                                         ),
                                       ),
-                                      const Text(
-                                        ' or contact us at shnatterteam@gmail.com or Twitter support channel @ShnatterSupport',
-                                        style: TextStyle(
-                                          letterSpacing: 0.4,
-                                          height: 1.5,
-                                          color: Colors.white,
-                                          decoration: TextDecoration.none,
-                                          fontSize: 18,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            ' or contact us at ',
+                                            style: TextStyle(
+                                              letterSpacing: 0.4,
+                                              height: 1.5,
+                                              color: Colors.white,
+                                              decoration: TextDecoration.none,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () async {
+                                              var url = Uri.parse(
+                                                  'mailto:shnatterteam@gmail.com');
+                                              if (await canLaunchUrl(url)) {
+                                                await launchUrl(url);
+                                              } else {
+                                                throw 'Could not launch $url';
+                                              }
+                                            },
+                                            child: const Text(
+                                              'shnatterteam@gmail.com',
+                                              style: TextStyle(
+                                                letterSpacing: 0.4,
+                                                height: 1.5,
+                                                color: Colors.white,
+                                                decoration: TextDecoration.none,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ),
+                                          const Text(
+                                            ' or Twitter support channel @ShnatterSupport',
+                                            style: TextStyle(
+                                              letterSpacing: 0.4,
+                                              height: 1.5,
+                                              color: Colors.white,
+                                              decoration: TextDecoration.none,
+                                              fontSize: 18,
+                                            ),
+                                          )
+                                        ],
                                       ),
                                       const SizedBox(width: 10),
                                       InkWell(
