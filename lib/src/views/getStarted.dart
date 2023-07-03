@@ -256,7 +256,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                 ? SizedBox(
                                     width: SizeConfig(context).screenWidth - 60,
                                     child: const Text(
-                                      'If you wish to buy larger amounts of Tokens to a reduced price,',
+                                      'If you wish to buy larger amounts of Tokens to a reduced price,\n',
                                       style: TextStyle(
                                         letterSpacing: 0.4,
                                         height: 1.5,
@@ -267,7 +267,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                     ),
                                   )
                                 : const Text(
-                                    'If you wish to buy larger amounts of Tokens to a reduced price,',
+                                    'If you wish to buy larger amounts of Tokens to a reduced price,\n',
                                     style: TextStyle(
                                       letterSpacing: 0.4,
                                       height: 1.5,
@@ -276,109 +276,110 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                       fontSize: 18,
                                     ),
                                   ),
-                            SizeConfig(context).screenWidth < 700
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        'please visit ',
-                                        style: TextStyle(
-                                          letterSpacing: 0.4,
-                                          height: 1.5,
-                                          color: Colors.white,
-                                          decoration: TextDecoration.none,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          var url = Uri.parse(
-                                              'https://shnatterprebuy.com/');
-                                          if (await canLaunchUrl(url)) {
-                                            await launchUrl(url);
-                                          } else {
-                                            throw 'Could not launch $url';
-                                          }
-                                        },
-                                        child: const Text(
-                                          'www.shantterprebuy.com',
-                                          style: TextStyle(
-                                            letterSpacing: 0.4,
-                                            height: 1.5,
-                                            color: Colors.white,
-                                            decoration:
-                                                TextDecoration.underline,
-                                            decorationColor: Colors.white,
-                                            decorationStyle:
-                                                TextDecorationStyle.solid,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text(
-                                        'password: Shnatter',
-                                        style: TextStyle(
-                                          letterSpacing: 0.4,
-                                          height: 1.5,
-                                          color: Colors.white,
-                                          decoration: TextDecoration.none,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const Text(
-                                        'please visit ',
-                                        style: TextStyle(
-                                          letterSpacing: 0.4,
-                                          height: 1.5,
-                                          color: Colors.white,
-                                          decoration: TextDecoration.none,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          var url = Uri.parse(
-                                              'https://shnatterprebuy.com/');
-                                          if (await canLaunchUrl(url)) {
-                                            await launchUrl(url);
-                                          } else {
-                                            throw 'Could not launch $url';
-                                          }
-                                        },
-                                        child: const Text(
-                                          'www.shantterprebuy.com',
-                                          style: TextStyle(
-                                            letterSpacing: 0.4,
-                                            height: 1.5,
-                                            color: Colors.white,
-                                            decoration:
-                                                TextDecoration.underline,
-                                            decorationColor: Colors.white,
-                                            decorationStyle:
-                                                TextDecorationStyle.solid,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text(
-                                        ' password: Shnatter',
-                                        style: TextStyle(
-                                          letterSpacing: 0.4,
-                                          height: 1.5,
-                                          color: Colors.white,
-                                          decoration: TextDecoration.none,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                            // SizeConfig(context).screenWidth < 700
+                            //     ? Column(
+                            //         crossAxisAlignment:
+                            //             CrossAxisAlignment.start,
+                            //         children: [
+                            //           const Text(
+                            //             'please visit ',
+                            //             style: TextStyle(
+                            //               letterSpacing: 0.4,
+                            //               height: 1.5,
+                            //               color: Colors.white,
+                            //               decoration: TextDecoration.none,
+                            //               fontSize: 18,
+                            //             ),
+                            //           ),
+                            //           GestureDetector(
+                            //             onTap: () async {
+                            //               var url = Uri.parse(
+                            //                   'https://shnatterprebuy.com/');
+                            //               if (await canLaunchUrl(url)) {
+                            //                 await launchUrl(url);
+                            //               } else {
+                            //                 throw 'Could not launch $url';
+                            //               }
+                            //             },
+                            //             child: const Text(
+                            //               'www.shantterprebuy.com',
+                            //               style: TextStyle(
+                            //                 letterSpacing: 0.4,
+                            //                 height: 1.5,
+                            //                 color: Colors.white,
+                            //                 decoration:
+                            //                     TextDecoration.underline,
+                            //                 decorationColor: Colors.white,
+                            //                 decorationStyle:
+                            //                     TextDecorationStyle.solid,
+                            //                 fontSize: 18,
+                            //               ),
+                            //             ),
+                            //           ),
+                            //           const Text(
+                            //             'password: Shnatter',
+                            //             style: TextStyle(
+                            //               letterSpacing: 0.4,
+                            //               height: 1.5,
+                            //               color: Colors.white,
+                            //               decoration: TextDecoration.none,
+                            //               fontSize: 18,
+                            //             ),
+                            //           ),
+                            //         ],
+                            //       )
+                            //     : Row(
+                            //         crossAxisAlignment:
+                            //             CrossAxisAlignment.center,
+                            //         children: [
+                            //           const Text(
+                            //             'please visit ',
+                            //             style: TextStyle(
+                            //               letterSpacing: 0.4,
+                            //               height: 1.5,
+                            //               color: Colors.white,
+                            //               decoration: TextDecoration.none,
+                            //               fontSize: 18,
+                            //             ),
+                            //           ),
+                            //           GestureDetector(
+                            //             onTap: () async {
+                            //               var url = Uri.parse(
+                            //                   'https://shnatterprebuy.com/');
+                            //               if (await canLaunchUrl(url)) {
+                            //                 await launchUrl(url);
+                            //               } else {
+                            //                 throw 'Could not launch $url';
+                            //               }
+                            //             },
+                            //             child: const Text(
+                            //               'www.shantterprebuy.com',
+                            //               style: TextStyle(
+                            //                 letterSpacing: 0.4,
+                            //                 height: 1.5,
+                            //                 color: Colors.white,
+                            //                 decoration:
+                            //                     TextDecoration.underline,
+                            //                 decorationColor: Colors.white,
+                            //                 decorationStyle:
+                            //                     TextDecorationStyle.solid,
+                            //                 fontSize: 18,
+                            //               ),
+                            //             ),
+                            //           ),
+                            //           const Text(
+                            //             ' password: Shnatter',
+                            //             style: TextStyle(
+                            //               letterSpacing: 0.4,
+                            //               height: 1.5,
+                            //               color: Colors.white,
+                            //               decoration: TextDecoration.none,
+                            //               fontSize: 18,
+                            //             ),
+                            //           ),
+                            //         ],
+                            //       ),
+
                             SizeConfig(context).screenWidth < 1100
                                 ? Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -471,17 +472,6 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                                       ),
                                                     ),
                                                   ),
-                                                  const Text(
-                                                    ' or Twitter support channel',
-                                                    style: TextStyle(
-                                                      letterSpacing: 0.4,
-                                                      height: 1.5,
-                                                      color: Colors.white,
-                                                      decoration:
-                                                          TextDecoration.none,
-                                                      fontSize: 18,
-                                                    ),
-                                                  )
                                                 ],
                                               )
                                             : Column(
