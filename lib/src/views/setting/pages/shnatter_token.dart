@@ -120,29 +120,73 @@ class SettingShnatterTokenScreenState
                       Expanded(
                         child: Column(
                           children: [
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 20),
-                              width: 330,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[400],
-                                borderRadius: BorderRadius.circular(3),
-                              ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.attach_money, color: Colors.black),
-                                  Text(
-                                    'Balance',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 250,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[400],
+                                    borderRadius: BorderRadius.circular(3),
+                                  ),
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.attach_money,
+                                          color: Colors.black),
+                                      Text(
+                                        'Balance',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 30),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 5),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      padding: const EdgeInsets.all(3),
+                                      elevation: 3,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(25.0)),
+                                      minimumSize: const Size(40, 40),
+                                      maximumSize: const Size(40, 40),
+                                    ),
+                                    onPressed: () async {
+                                      balanceLoading = true;
+                                      setState(() {});
+                                      await UserController().getBalance();
+
+                                      balanceLoading = false;
+                                      setState(() {});
+                                    },
+                                    child: const Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.refresh,
+                                          color: Colors.blue,
+                                        )
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
+                            const SizedBox(height: 40),
                             Container(
                               width: 330,
                               height: 90,
@@ -193,89 +237,50 @@ class SettingShnatterTokenScreenState
                         ),
                       ),
                       Container(
-                          margin: const EdgeInsets.only(top: 5),
-                          width: 330,
+                        margin: const EdgeInsets.only(top: 5),
+                        width: 330,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            padding: const EdgeInsets.all(3),
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(3.0)),
+                            minimumSize: const Size(330, 50),
+                            maximumSize: const Size(330, 50),
+                          ),
+                          onPressed: () {
+                            (() => {});
+                          },
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  padding: const EdgeInsets.all(3),
-                                  elevation: 3,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(3.0)),
-                                  minimumSize: const Size(250, 50),
-                                  maximumSize: const Size(250, 50),
+                              Text(
+                                UserManager.userInfo['paymail'],
+                                style: const TextStyle(
+                                  color: Colors.black,
                                 ),
-                                onPressed: () {
-                                  (() => {});
+                              ),
+                              const Flexible(
+                                  fit: FlexFit.tight, child: SizedBox()),
+                              InkWell(
+                                onTap: () async => {
+                                  await Clipboard.setData(ClipboardData(
+                                      text: UserManager.userInfo['paymail'])),
+                                  Helper.showToast('Copied'),
                                 },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      UserManager.userInfo['paymail'],
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    const Flexible(
-                                        fit: FlexFit.tight, child: SizedBox()),
-                                    InkWell(
-                                      onTap: () async => {
-                                        await Clipboard.setData(ClipboardData(
-                                            text: UserManager
-                                                .userInfo['paymail'])),
-                                        Helper.showToast('Copied'),
-                                      },
-                                      child: GestureDetector(
-                                        child: const Icon(
-                                          Icons.file_copy,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 30),
-                              Container(
-                                margin: const EdgeInsets.only(top: 5),
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    padding: const EdgeInsets.all(3),
-                                    elevation: 3,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(25.0)),
-                                    minimumSize: const Size(50, 50),
-                                    maximumSize: const Size(50, 50),
-                                  ),
-                                  onPressed: () async {
-                                    balanceLoading = true;
-                                    setState(() {});
-                                    await UserController().getBalance();
-
-                                    balanceLoading = false;
-                                    setState(() {});
-                                  },
-                                  child: const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.refresh,
-                                        color: Colors.blue,
-                                      )
-                                    ],
+                                child: GestureDetector(
+                                  child: const Icon(
+                                    Icons.file_copy,
+                                    color: Colors.black,
                                   ),
                                 ),
-                              ),
+                              )
                             ],
-                          )),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   Container(
