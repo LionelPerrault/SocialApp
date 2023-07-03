@@ -49,9 +49,9 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
 
   void checkRecaptcha() async {
     /// Initiate query Properties
-    String apiKey = '6LdHP-8mAAAAACqaLOFoA1oO37sR8QXT5Yq4vOZ2';
-    String websiteURL = 'https://www.google.com/recaptcha/api/siteverify';
-    String websiteKey = '6LdHP-8mAAAAADnryZcH-fo8x9CABZGhgDLfuLhT';
+    String apiKey = '9396dcee-d1f6-43fb-a64b-d1ca46e3b378';
+    String websiteURL = 'https://hCaptcha.com/?r=6739a1da02e8';
+    String websiteKey = '0x20fD9b6EB3CefBbDa33Ef0f626F74be7bA1D6900';
 
     /// Initiate CaptchaSolver
     CaptchaSolver captchaSolver = CaptchaSolver(apiKey);
@@ -60,10 +60,9 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
     Map inputs = {
       "clientKey": apiKey,
       "task": {
-        "type": "RecaptchaV2TaskProxyless",
+        "type": "HCaptchaTaskProxyless",
         "websiteURL": websiteURL,
         "websiteKey": websiteKey,
-        "isInvisible": false
       }
     };
 
