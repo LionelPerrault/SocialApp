@@ -109,7 +109,7 @@ class ChatMessageListScreenState extends mvc.StateMVC<ChatMessageListScreen> {
                                           130 -
                                           verifyAlertHeight -
                                           viewInsets.bottom) -
-                                  (Helper.isIOS ? 30 : 0),
+                                  (Helper.isIOS ? 10 : 0),
                               child: ListView.builder(
                                 controller: _scrollController,
                                 itemCount: messageList.length,
