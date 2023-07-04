@@ -23,10 +23,6 @@ class SettingShnatterTokenScreen extends StatefulWidget {
 // ignore: must_be_immutable
 class SettingShnatterTokenScreenState
     extends mvc.StateMVC<SettingShnatterTokenScreen> {
-  var setting_security = {};
-
-  // List<Employee> employees = [];
-  // late EmployeeDataSource employeeDataSource;
   late UserController con;
   late List transactionData = [];
   bool loadingTransactionHistory = true;
@@ -164,9 +160,20 @@ class SettingShnatterTokenScreenState
                                     ),
                                     onPressed: () async {
                                       balanceLoading = true;
+                                      loadingTransactionHistory = true;
                                       setState(() {});
                                       await UserController().getBalance();
-
+                                      con.getTransactionHistory("0").then(
+                                            (resData) => {
+                                              if (resData != [])
+                                                {
+                                                  loadingTransactionHistory =
+                                                      false,
+                                                  transactionData = resData,
+                                                  setState(() {}),
+                                                },
+                                            },
+                                          );
                                       balanceLoading = false;
                                       setState(() {});
                                     },
