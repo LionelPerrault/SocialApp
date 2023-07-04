@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  captcha_solver:
+    dependency: "direct main"
+    description:
+      name: captcha_solver
+      sha256: "45da50785944e27c86db93c5bf00af189b9480eca0727f72a20f9a355c00d3ee"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   carousel_slider:
     dependency: "direct main"
     description:
