@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -70,6 +73,41 @@ class SettingShnatterTokenScreenState
           },
         );
     UserController().getBalance();
+    triggerEmailVerify();
+  }
+
+  triggerEmailVerify() async {
+    var timer1 = Timer.periodic(const Duration(seconds: 3), (timer) async {
+      await FirebaseAuth.instance.currentUser!.reload();
+      // ignore: await_only_futures
+      var user = await FirebaseAuth.instance.currentUser!;
+
+      if (user.emailVerified) {
+        Timer(Duration(seconds: 6), () async {
+          loadingTransactionHistory = true;
+
+          balanceLoading = true;
+          setState(() {});
+          await UserController().getBalance();
+
+          balanceLoading = false;
+          setState(() {});
+          con.getTransactionHistory("0").then(
+                (resData) => {
+                  if (resData != [])
+                    {
+                      loadingTransactionHistory = false,
+                      transactionData = resData,
+                      setState(() {}),
+                    },
+                },
+              );
+        });
+        timer.cancel();
+      } else {
+        print('sdfjlsjfdsfjljfd');
+      }
+    });
   }
 
   bool check1 = false;
