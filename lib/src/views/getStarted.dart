@@ -267,7 +267,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                     ),
                                   )
                                 : const Text(
-                                    'For more information regarding the token please check ',
+                                    'For more information regarding the token ',
                                     style: TextStyle(
                                       letterSpacing: 0.4,
                                       height: 1.5,
