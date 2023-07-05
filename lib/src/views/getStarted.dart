@@ -267,7 +267,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                     ),
                                   )
                                 : const Text(
-                                    'If you wish to buy larger amounts of Tokens to a reduced price,',
+                                    'For more information regarding the token please check ',
                                     style: TextStyle(
                                       letterSpacing: 0.4,
                                       height: 1.5,
@@ -302,7 +302,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                           }
                                         },
                                         child: const Text(
-                                          'www.shantterprebuy.com',
+                                          'www.shnatterprebuy.com',
                                           style: TextStyle(
                                             letterSpacing: 0.4,
                                             height: 1.5,
@@ -353,7 +353,7 @@ class GetStartedScreenState extends mvc.StateMVC<GetStartedScreen>
                                           }
                                         },
                                         child: const Text(
-                                          'www.shantterprebuy.com',
+                                          'www.shnatterprebuy.com',
                                           style: TextStyle(
                                             letterSpacing: 0.4,
                                             height: 1.5,
