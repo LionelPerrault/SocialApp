@@ -198,20 +198,20 @@ class SettingShnatterTokenScreenState
                                     ),
                                     onPressed: () async {
                                       balanceLoading = true;
-                                      // loadingTransactionHistory = true;
+                                      loadingTransactionHistory = true;
                                       setState(() {});
                                       await UserController().getBalance();
-                                      // con.getTransactionHistory("0").then(
-                                      //       (resData) => {
-                                      //         if (resData != [])
-                                      //           {
-                                      //             loadingTransactionHistory =
-                                      //                 false,
-                                      //             transactionData = resData,
-                                      //             setState(() {}),
-                                      //           },
-                                      //       },
-                                      //     );
+                                      con.getTransactionHistory("0").then(
+                                            (resData) => {
+                                              if (resData != [])
+                                                {
+                                                  loadingTransactionHistory =
+                                                      false,
+                                                  transactionData = resData,
+                                                  setState(() {}),
+                                                },
+                                            },
+                                          );
                                       balanceLoading = false;
                                       setState(() {});
                                     },
