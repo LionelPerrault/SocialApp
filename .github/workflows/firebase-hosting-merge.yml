@@ -1,4 +1,4 @@
-name: CI
+name: Hosting
 on: 
   workflow_dispatch:
   push:
@@ -8,24 +8,25 @@ on:
     branches:
       - main
 jobs:
-  build_web:
-    name: Build Shnatter (Web)
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v1
-    - uses: subosito/flutter-action@v1
-      with:
-          channel: 'stable'
-    - run: flutter pub get
-    - run: flutter config --enable-web
-    - run: flutter build web
-    - name: Copy well-know to build
-      run: |
-        cp -r .well-known build/web
-    - name: Deploy to Firebase
-      uses: w9jds/firebase-action@master
-      with:
-        args: deploy --only hosting --public build/web
-      env:
-        FIREBASE_TOKEN: '1//09NaVvluAd3LbCgYIARAAGAkSNwF-L9IrrV5Q1ziHI4P_QLra8Aecw8eBqbN-Q_nwY871byeDPd1Tl1XApevwFzhfmWKfQExUJls'
-        PROJECT_ID: shnatter-dev
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.17.1
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Firebase Hosting
+        run: |
+          npm install -g firebase-tools
+          firebase deploy --token ${{ secrets.FIREBASE_TOKEN }} --project ${{ secrets.FIREBASE_PROJECT_ID }}
