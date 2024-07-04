@@ -200,14 +200,7 @@ class UserController extends ControllerMVC {
       setState(() {});
       return false;
     }
-    // RelysiaManager.authUser(relysiaEmail, relysiaPassword).then((res) async => {
-    //       if (res['data'] == null)
-    //         {
-    //           failRegister = 'No access the net',
-    //           isSendRegisterInfo = false,
-    //           setState(() {}),
-    //         }
-    //     });
+
     if (isSendRegisterInfo == false) {
       return false;
     }
@@ -219,10 +212,7 @@ class UserController extends ControllerMVC {
   }
 
   bool passworkdValidate(String value) {
-    // String pattern =
-    //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_\-+=@,\.;\{\}\[\]]).{8,}$';
-    // RegExp regExp = RegExp(pattern);
-    // return regExp.hasMatch(value);
+    
     if (value.length < 8) {
       return false;
     } else {
@@ -293,7 +283,6 @@ class UserController extends ControllerMVC {
       'isEmailVerify': false,
       'walletAddress': walletAddress,
       'relysiaEmail': relysiaEmail.toLowerCase().trim(),
-      // 'relysiaPassword': relysiaPassword,
       'paywall': {},
       'isStarted': false,
       'nearbyOptOut': false,
@@ -305,9 +294,7 @@ class UserController extends ControllerMVC {
       'paymail': paymail,
       'fullName':
           '${signUpUserInfo['firstName']} ${signUpUserInfo['lastName']}',
-      'walletAddress': walletAddress,
-      // 'relysiaEmail': relysiaEmail,
-      // 'relysiaPassword': relysiaPassword,
+      'walletAddress': walletAddress,      
       'isEnableTwoFactor': '',
       'password': password,
       'isStarted': false,
@@ -361,8 +348,6 @@ class UserController extends ControllerMVC {
           .doc(UserManager.userInfo['uid'])
           .update({...twoFactorData});
       isEnableTwoFactor = (type == 'enable' ? true : false);
-      // await Helper.saveJSONPreference(Helper.userField, {...{'isEnableTwoFactor': type == 'enable' ? 'JBSWY3DPEHPK3PXP' : ''}});
-      // await UserManager.getUserInfo();
       setState(() {});
     }
     return codeCheck;
