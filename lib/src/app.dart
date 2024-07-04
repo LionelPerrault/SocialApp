@@ -95,6 +95,7 @@ class _MyAppState extends AppStateMVC<MyApp> with WidgetsBindingObserver {
                     Locale.fromSubtags(languageCode: 'fr', countryCode: 'CA'),
                     Locale.fromSubtags(languageCode: 'in'),
                     Locale.fromSubtags(languageCode: 'ko'),
+                    Locale.fromSubtags(languageCode: 'jp'),
                     Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
                   ],
                   initialRoute: '',
