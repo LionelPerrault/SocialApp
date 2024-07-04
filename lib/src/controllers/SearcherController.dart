@@ -18,11 +18,12 @@ class SearcherController extends ControllerMVC {
         super(state);
   static SearcherController? _this;
 
+  // ignore: prefer_typing_uninitialized_variables
   var userSnap;
   @override
   Future<bool> initAsync() async {
     //
-    print('initasnyc in seach');
+    // print('initasnyc in seach');
     getPosts();
     loadUsers();
     //userSnap = Helper.userCollection.get();
@@ -314,6 +315,7 @@ class SearcherController extends ControllerMVC {
     var allSanp =
         await Helper.postCollection.orderBy('postTime', descending: true).get();
     var allPosts = allSanp.docs;
+    // ignore: prefer_typing_uninitialized_variables
     var postData;
     Map? adminInfo;
     var postsBox = [];

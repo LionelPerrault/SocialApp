@@ -75,6 +75,7 @@ Future<List> findSimilarUsers(String myUserId) async {
   return potentialMatches;
 }
 
+// ignore: unused_element
 Future<QueryDocumentSnapshot<Map<String, dynamic>>> _getInterestById(
     dynamic interestId) async {
   final QueryDocumentSnapshot<Map<String, dynamic>> interestDoc =
@@ -199,14 +200,14 @@ class PeopleController extends ControllerMVC {
     for (var i = 0; i < snapshot.docs.length; i++) {
       var friendUid = snapshot.docs[i].data()['users'];
       friendUid.removeWhere((item) => item == UserManager.userInfo['uid']);
-      print(friendUid);
+      // print(friendUid);
       var fData = Helper.userUidToInfo[friendUid[0]];
       fData['uid'] = friendUid[0];
       fData['fieldUid'] = snapshot.docs[i].id;
       fData['state'] = 1;
       allFriendsData.add(fData);
     }
-    print('getfriend $allFriendsData');
+    // print('getfriend $allFriendsData');
     friends = allFriendsData;
     setState(() {});
   }
@@ -285,7 +286,7 @@ class PeopleController extends ControllerMVC {
       fData['fieldUid'] = doc.id;
       return fData;
     }).toList();
-    print('sendfriends $sendFriends');
+    // print('sendfriends $sendFriends');
     sendBadge.updateBadge(sendFriends.length);
     setState(() {});
   }
@@ -425,7 +426,7 @@ class PeopleController extends ControllerMVC {
         fData['fieldUid'] = doc.id;
         return fData;
       }).toList();
-      print('requestFriends$requestFriends');
+      // print('requestFriends$requestFriends');
       setState(() {});
     });
   }
